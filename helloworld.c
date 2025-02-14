@@ -15,5 +15,6 @@
 int	main(void)
 {
 	printf("Cute wild dark wolve cubs rule the world!\n");
+	printf("It's no more fun!\n");
 	return (0);
 }
