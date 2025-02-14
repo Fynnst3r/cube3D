@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   helloworld.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/14 17:45:40 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/14 17:45:50 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/14 17:56:52 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 int	main(void)
 {
-	printf("Hello world!\n");
+	printf("Cute wild dark wolve cubs rule the world!\n");
 	return (0);
 }
