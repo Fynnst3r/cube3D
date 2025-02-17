@@ -6,11 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 15:50:45 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/17 12:36:37 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:49:50 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/garbage_collector.h"
+#include "../includes/garbage_collector.h"
 
 t_trashnode	*create_trash_node(void *pointer)
 {
@@ -33,7 +33,7 @@ void	add_trash_top(void *pointer)
 	trashman = get_workers();
 	new = create_trash_node(pointer);
 	if (!new)
-		ft_error("Malloc FAIL!", 42);
+		ft_error("Malloc FAIL!", 42, NULL);
 	if (trashman->head == NULL)
 	{
 		new->next = NULL;
@@ -54,7 +54,7 @@ void	*ft_malloc(size_t size)
 
 	pointer = malloc(size);
 	if (!pointer)
-		return (ft_error("Malloc FAIL!", 42), NULL);
+		return (ft_error("Malloc FAIL!", 42, NULL), NULL);
 	add_trash_top(pointer);
 	return (pointer);
 }

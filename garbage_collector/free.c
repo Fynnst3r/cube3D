@@ -6,11 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 18:30:37 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/17 12:32:35 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:49:45 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/garbage_collector.h"
+#include "../includes/garbage_collector.h"
 
 void	delete_trash(void)
 {

@@ -6,11 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 15:28:09 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/17 12:32:31 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/17 14:49:55 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/garbage_collector.h"
+#include "../includes/garbage_collector.h"
 
 t_trashman	*get_workers(void)
 {

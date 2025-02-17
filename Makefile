@@ -8,10 +8,11 @@ LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
+		src/hooks/keyhook.c \
 		src/error/error.c \
-		src/garbage_collector/garbage_start.c \
-		src/garbage_collector/ft_malloc.c \
-		src/garbage_collector/free.c \
+		garbage_collector/garbage_start.c \
+		garbage_collector/ft_malloc.c \
+		garbage_collector/free.c \
 
 OBJS = $(SRCS:.c=.o)
 OBJ_DIR = obj
@@ -46,7 +47,8 @@ $(OBJ_DIR)/%.o: %.c | create_dirs
 create_dirs:
 	@mkdir -p $(OBJ_DIR)/src \
 		$(OBJ_DIR)/src/error \
-		$(OBJ_DIR)/src/garbage_collector \
+		$(OBJ_DIR)/src/hooks \
+		$(OBJ_DIR)/garbage_collector \
 
 clean:
 	rm -f $(OBJS)
