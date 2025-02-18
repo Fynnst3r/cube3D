@@ -1,8 +1,0 @@
-.DS_Store
-.vscode
-cub3D
-*.out
-*.o
-*.a
-obj/
-MLX42/
