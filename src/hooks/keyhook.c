@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/17 14:51:59 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/17 16:34:57 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	printf("keyhook called\n");
 	printf("curr key %i\n", keydata.key);
 	printf("last key %i\n", lastkey.key);
+	printf("y %d\n", game->img->instances->y);
+	printf("x %d\n", game->img->instances->x);
 	if (keydata.key == MLX_KEY_ESCAPE)
 	{
 		mlx_close_window(game->mlx);

@@ -6,3 +6,5 @@ cub3D
 *.a
 obj/
 MLX42/
+libft/
+.gitignore
