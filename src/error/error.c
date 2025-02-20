@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/17 13:37:16 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:00:11 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	ft_error(char *msg, int errcode, t_game	*game)
 {
 	if (msg)
-		printf("ERROR %d: %s\n", errcode, msg);
+		printf("%s\nErrorcode: %d\n", msg, errcode);
 	else if (mlx_errno != 0)
 		printf("MLX ERROR: %s\n", mlx_strerror(mlx_errno));
 	// delete_textures(game);
