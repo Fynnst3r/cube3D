@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/20 13:09:17 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/02/20 13:40:12 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,26 @@ int	main(int ac, char **av)
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
 	game.walltex = mlx_load_png("./textures/wallcub.png");
+
+	// start 180225 set all pixels of a tile to one rgba colour
+	// if (!game.img)
+	// 	ft_error("Image didn't create", 1, &game);
+	// int r = 255;
+	// int g = 125;
+	// int b = 0;
+	// int a = 255;
+	// // we set background to cyan and opac = not transparent.
+	// // get_rgba is wizardry calculation using bitshifting
+	// // int is 32 bits and each channal max 155, which is 8 bit and so all 
+	// // bitshiftet to left by 24, 16, 8 and none we get rgba in a row as an int.
+	// ft_pixset(game.bg, get_rgba(126, 220, 238, 255));
+	// ft_pixset(game.img, get_rgba(r , g, b, a));
+	// if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
+	// 	ft_error("Image didn't arrive at window", 1, &game);
+	// if (mlx_image_to_window(game.mlx, game.img, 0, 0) < 0)
+	// 	ft_error("Image didn't arrive at window", 1, &game);
+	//end 180225 
+
 	if (!game.walltex)
 		ft_error("Error\nCould not create wall image\n", 42, &game);
 	game.wall = mlx_texture_to_image(game.mlx, game.walltex);
