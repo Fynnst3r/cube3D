@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/23 20:01:30 by fforster          #+#    #+#             */
-/*   Updated: 2024/12/17 22:00:53 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:05:47 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*get_next_line(int fd)
 
 	if (fd < 0)
 		return (NULL);
-	buffer = malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buffer = ft_malloc(sizeof(char) * BUFFER_SIZE + 1);
 	if (!buffer)
 		return (NULL);
 	if (read(fd, 0, 0) < 0)
