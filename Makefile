@@ -8,6 +8,7 @@ LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
+		src/hooks/game_loop.c \
 		src/hooks/keyhook.c \
 		src/error/error.c \
 		garbage_collector/garbage_start.c \

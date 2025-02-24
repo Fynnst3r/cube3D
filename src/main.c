@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/20 11:40:41 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/24 18:06:21 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ char	**read_tiles(char *av)
 		if (buff == NULL)
 			break ;
 		map_lines = f_strjoin(tmp, buff);
-		free(tmp);
+		ft_free(tmp);
 		tmp = NULL;
-		free(buff);
+		ft_free(buff);
 		buff = NULL;
 	}
 	res = ft_split(map_lines, '\n');
-	free(map_lines);
+	ft_free(map_lines);
 	map_lines = NULL;
 	close(fd);
 	return (res);
@@ -102,10 +102,11 @@ int	main(int ac, char **av)
 		ft_error("Error\nNo map", 2, &game);
 	map_len(&game.map);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
-	game.mlx = mlx_init(1600, 900, "cub3D", true);
+	game.mlx = mlx_init(S_WIDTH, S_HEIGHT, "cub3D", true);
 	if (!game.mlx)
 		ft_error("Error\nMLX has failed to initialze\n", 42, &game);
-
+	game.screen_width = S_WIDTH;
+	game.screen_height = S_HEIGHT;
 	game.bg = mlx_new_image(game.mlx, 1600, 900);
 	if (!game.bg)
 		ft_error("Error\nImage didn't create", 1, &game);
@@ -131,7 +132,11 @@ int	main(int ac, char **av)
 	if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
 	// mlx_resize_image(game.wall, 100, 100);
-	draw_texture_map(game);
+	init_raycaster(&game);
+	printf("test1\n");
+	raycaster_loop(&game);
+	printf("test2\n");
+	// draw_texture_map(game);
 
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop(game.mlx);
