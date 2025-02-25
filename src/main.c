@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/24 18:06:21 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:14:40 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,11 +134,11 @@ int	main(int ac, char **av)
 	// mlx_resize_image(game.wall, 100, 100);
 	init_raycaster(&game);
 	printf("test1\n");
-	raycaster_loop(&game);
 	printf("test2\n");
 	// draw_texture_map(game);
 
 	mlx_key_hook(game.mlx, my_keyhook, &game);
+	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
 	mlx_loop(game.mlx);
 	mlx_terminate(game.mlx);
 	delete_trash();

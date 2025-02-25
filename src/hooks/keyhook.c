@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/17 20:51:48 by fforster         ###   ########.fr       */
+/*   Updated: 2025/02/25 13:24:19 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,8 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		game->img->instances->x -= MV_SPEED;
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
 		game->img->instances->x += MV_SPEED;
+	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+		game->player.dir.x--;
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+		game->player.dir.x++;
 }
