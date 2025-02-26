@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/20 13:07:34 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:42:48 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ typedef struct coordinates
 
 }		t_cords;
 
+typedef struct	height_width
+{
+	u_int32_t	height;
+	u_int32_t	width;
+}				t_height_width;
+
 typedef struct map
 {
 	char	**tiles;
@@ -50,9 +56,10 @@ typedef struct master_struct
 	mlx_image_t		*img;
 	mlx_image_t		*wall;
 	mlx_texture_t	*walltex;
-
 	t_map			map;
-
+	mlx_image_t		*minimap;
+	// mlx_image_t		*miniwall;
+	// mlx_image_t		*miniempty;
 }		t_game;
 
 //src/hooks/keyhook.c
@@ -63,5 +70,9 @@ void	ft_error(char *msg, int errcode, t_game	*game);
 // void	delete_textures(t_game *a);
 
 //src/graphic/image.c
-void	ft_pixset(mlx_image_t *img, int colour);
+void	draw_mini_map(t_game game);
+int		get_rgba(int r, int g, int b, int a);
+void	pixset(mlx_image_t *img, int colour);
+void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords xy,
+			t_height_width height_width);
 #endif
