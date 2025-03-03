@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/25 11:22:14 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:06:00 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,10 @@
 
 # ifndef MV_SPEED
 #  define MV_SPEED 10
+# endif
+
+# ifndef MV_SPEED_MINI
+#  define MV_SPEED_MINI 1
 # endif
 
 # include <stdio.h>
@@ -42,8 +46,8 @@ typedef struct	coordinates_int32
 
 typedef struct	height_width
 {
-	int32_t	height;
-	int32_t	width;
+	u_int32_t	height;
+	u_int32_t	width;
 }				t_height_width;
 
 typedef struct map
@@ -77,7 +81,7 @@ void	ft_error(char *msg, int errcode, t_game	*game);
 
 //src/graphic/image.c
 void	draw_mini_map(t_game game);
-void	draw_mini_player(t_game game);
+void	draw_mini_player(t_game *game);
 int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,

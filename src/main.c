@@ -6,12 +6,14 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/03 13:16:10 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/02/25 16:29:46 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
 
+// READS ENTIRE FILE no checks at all
+// and it deletes all empty lines because of ft_split
 char	**read_tiles(char *av)
 {
 	int		fd;
@@ -105,32 +107,6 @@ int	main(int ac, char **av)
 	game.img = mlx_new_image(game.mlx, 10, 10);
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
-
-	// start 180225 set all pixels of a tile to one rgba colour
-	// if (!game.img)
-	// 	ft_error("Image didn't create", 1, &game);
-	// int r = 255;
-	// int g = 125;
-	// int b = 0;
-	// int a = 255;
-	// // we set background to cyan and opac = not transparent.
-	// // get_rgba is wizardry calculation using bitshifting
-	// // int is 32 bits and each channal max 155, which is 8 bit and so all 
-	// // bitshiftet to left by 24, 16, 8 and none we get rgba in a row as an int.
-	// pixset(game.bg, get_rgba(126, 220, 238, 255));
-	// pixset(game.img, get_rgba(r , g, b, a));
-	// if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
-	// 	ft_error("Image didn't arrive at window", 1, &game);
-	// if (mlx_image_to_window(game.mlx, game.img, 0, 0) < 0)
-	// 	ft_error("Image didn't arrive at window", 1, &game);
-	//end 180225 
-
-	// start200225 - minimap
-	// if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
-	// 	ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
-	// 	ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// end200225 - minimap
 	
 	game.walltex = mlx_load_png("./textures/wallcub.png");
 	if (!game.walltex)
@@ -150,16 +126,18 @@ int	main(int ac, char **av)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
 	if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// mlx_resize_image(game.wall, 100, 100);
-	// draw_texture_map(game);
+	mlx_resize_image(game.wall, 100, 100);
+	draw_texture_map(game);
 	draw_mini_map(game);
-	draw_mini_player(game);
-
+	draw_mini_player(&game);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
-	// printf("%s %d\n", __FILE__, __LINE__);
+	printf("%s %d\n", __FILE__, __LINE__);
 	mlx_loop(game.mlx);
+	printf("%s %d\n", __FILE__, __LINE__);
 	mlx_terminate(game.mlx);
+	printf("%s %d\n", __FILE__, __LINE__);
 	delete_trash();
+	printf("%s %d\n", __FILE__, __LINE__);
 	ft_bzero(get_workers(), sizeof(t_trashman));
 	exit(EXIT_SUCCESS);
 }
