@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/20 16:42:48 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/02/25 11:22:14 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,17 @@ typedef struct coordinates
 
 }		t_cords;
 
+typedef struct	coordinates_int32
+{
+	int32_t	y;
+	int32_t	x;
+
+}		t_cords_int32;
+
 typedef struct	height_width
 {
-	u_int32_t	height;
-	u_int32_t	width;
+	int32_t	height;
+	int32_t	width;
 }				t_height_width;
 
 typedef struct map
@@ -58,8 +65,7 @@ typedef struct master_struct
 	mlx_texture_t	*walltex;
 	t_map			map;
 	mlx_image_t		*minimap;
-	// mlx_image_t		*miniwall;
-	// mlx_image_t		*miniempty;
+	mlx_image_t		*miniplayer;
 }		t_game;
 
 //src/hooks/keyhook.c
@@ -71,8 +77,9 @@ void	ft_error(char *msg, int errcode, t_game	*game);
 
 //src/graphic/image.c
 void	draw_mini_map(t_game game);
+void	draw_mini_player(t_game game);
 int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
-void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords xy,
+void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 			t_height_width height_width);
 #endif
