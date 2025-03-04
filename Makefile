@@ -5,7 +5,7 @@ CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code
 LIBMLX	= ./MLX42
 HEADERS	= -I $(LIBMLX)/include
 LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
-LIBMLXA = $(LIBMLX)/build/libmlx42.a --config Debug
+LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
 		src/hooks/game_loop.c \

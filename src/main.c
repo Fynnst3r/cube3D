@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/25 13:14:40 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/03 17:03:03 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,7 @@ int	main(int ac, char **av)
 	game.mlx = mlx_init(S_WIDTH, S_HEIGHT, "cub3D", true);
 	if (!game.mlx)
 		ft_error("Error\nMLX has failed to initialze\n", 42, &game);
-	game.screen_width = S_WIDTH;
-	game.screen_height = S_HEIGHT;
-	game.bg = mlx_new_image(game.mlx, 1600, 900);
+	game.bg = mlx_new_image(game.mlx, S_WIDTH, S_HEIGHT);
 	if (!game.bg)
 		ft_error("Error\nImage didn't create", 1, &game);
 	game.img = mlx_new_image(game.mlx, 10, 10);
@@ -133,10 +131,8 @@ int	main(int ac, char **av)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
 	// mlx_resize_image(game.wall, 100, 100);
 	init_raycaster(&game);
-	printf("test1\n");
-	printf("test2\n");
 	// draw_texture_map(game);
-
+	game.time = game.mlx->delta_time;
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
 	mlx_loop(game.mlx);
