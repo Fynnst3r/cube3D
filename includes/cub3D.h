@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/26 14:06:00 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/02/26 14:14:26 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ typedef struct master_struct
 	t_map			map;
 	mlx_image_t		*minimap;
 	mlx_image_t		*miniplayer;
+	mlx_image_t		*line;
+	int	dir_x;
+	int	dir_y;
 }		t_game;
 
 //src/hooks/keyhook.c
@@ -82,6 +85,7 @@ void	ft_error(char *msg, int errcode, t_game	*game);
 //src/graphic/image.c
 void	draw_mini_map(t_game game);
 void	draw_mini_player(t_game *game);
+void	draw_line(t_game *game);
 int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,

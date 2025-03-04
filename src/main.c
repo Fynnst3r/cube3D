@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/02/25 16:29:46 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/04 09:19:01 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,6 +130,7 @@ int	main(int ac, char **av)
 	draw_texture_map(game);
 	draw_mini_map(game);
 	draw_mini_player(&game);
+	draw_line(&game);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	printf("%s %d\n", __FILE__, __LINE__);
 	mlx_loop(game.mlx);
