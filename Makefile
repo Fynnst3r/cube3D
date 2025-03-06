@@ -8,6 +8,11 @@ LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
+#<<<<<<< fforster
+#		src/hooks/game_loop.c \
+#		src/hooks/keyhook.c \
+#=======
+#>>>>>>> nsloniow_pullFynn
 		src/error/error.c \
 		src/graphic/image.c \
 		src/hooks/keyhook.c \
