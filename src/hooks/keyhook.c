@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
 /*   Updated: 2025/03/04 13:09:02 by fforster         ###   ########.fr       */
@@ -31,6 +31,7 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	printf("rt_speed %f\n", rt_speed);
 	if (keydata.key == MLX_KEY_ESCAPE)
 	{
+//<<<<<<< fforster
 		mlx_close_window(g->mlx);
 		ft_error("Game closed with esc.\n", 0, g);
 	}
@@ -81,4 +82,45 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	}
 	// printf(ANSI_GREEN"pos x %f, pos y %f\n", game->player.pos.x, game->player.pos.y);
 	// printf("PLAYERdir x %f - PLAYERdir y %f\n"ANSI_RESET, game->player.dir.x, game->player.dir.y);
+/*=======
+		mlx_close_window(game->mlx);
+		ft_error("Game closed with esc.\n", 0, game); 	
+	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+		mlx_close_window(game->mlx);
+	// if (mlx_is_key_down(game->mlx, MLX_KEY_W))
+	// 	game->img->instances->y -= MV_SPEED;
+	// if (mlx_is_key_down(game->mlx, MLX_KEY_S))
+	// 	game->img->instances->y += MV_SPEED;
+	// if (mlx_is_key_down(game->mlx, MLX_KEY_A))
+	// 	game->img->instances->x -= MV_SPEED;
+	// if (mlx_is_key_down(game->mlx, MLX_KEY_D))
+	// 	game->img->instances->x += MV_SPEED;
+	// start nsloniow 200225 arrows will be used for camera! So just for now.
+		// printf("%s %d img.y %u img.x %u\n", __FILE__, __LINE__, game->img->instances->y,game->img->instances->x);
+		// printf("%s %d img.y %u img.x %u\n", __FILE__, __LINE__, game->miniplayer->instances->y,game->miniplayer->instances->x);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_W) || mlx_is_key_down(game->mlx, MLX_KEY_UP))
+	{
+		game->img->instances->y -= MV_SPEED;
+		printf("%s %d img.y %u img.x %u\n", __FILE__, __LINE__, game->img->instances->y,game->img->instances->x);
+		game->miniplayer->instances->y -= MV_SPEED_MINI;
+	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_S) || mlx_is_key_down(game->mlx, MLX_KEY_DOWN))
+	{
+		game->img->instances->y += MV_SPEED;
+		game->miniplayer->instances->y += MV_SPEED_MINI;
+	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_A) || mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+	{
+		game->img->instances->x -= MV_SPEED;
+		game->miniplayer->instances->x -= MV_SPEED_MINI;
+	}
+	if (mlx_is_key_down(game->mlx, MLX_KEY_D) || mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+	{
+		game->img->instances->x += MV_SPEED;
+		game->miniplayer->instances->x += MV_SPEED_MINI;
+	}
+	// end nsloniow 200225
+//>>>>>>> nsloniow_pullFynn
+*/
 }

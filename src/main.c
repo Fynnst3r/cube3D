@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
 /*   Updated: 2025/03/03 17:03:03 by fforster         ###   ########.fr       */
@@ -11,11 +11,6 @@
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
-
-int	get_rgba(int r, int g, int b, int a)
-{
-	return (r << 24 | g << 16 | b << 8 | a);
-}
 
 // READS ENTIRE FILE no checks at all
 // and it deletes all empty lines because of ft_split
@@ -111,6 +106,7 @@ int	main(int ac, char **av)
 	game.img = mlx_new_image(game.mlx, 10, 10);
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
+	
 	game.walltex = mlx_load_png("./textures/wallcub.png");
 	if (!game.walltex)
 		ft_error("Error\nCould not create wall image\n", 42, &game);
@@ -129,15 +125,28 @@ int	main(int ac, char **av)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
 	if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
+//<<<<<<< fforster
 	// mlx_resize_image(game.wall, 100, 100);
 	init_raycaster(&game);
 	// draw_texture_map(game);
 	game.time = game.mlx->delta_time;
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
+//=======
+	//mlx_resize_image(game.wall, 100, 100);
+	//draw_texture_map(game);
+	draw_mini_map(game);
+	draw_mini_player(&game);
+	draw_line(&game);
+	//mlx_key_hook(game.mlx, my_keyhook, &game);
+	//printf("%s %d\n", __FILE__, __LINE__);
+//>>>>>>> nsloniow_pullFynn
 	mlx_loop(game.mlx);
+	printf("%s %d\n", __FILE__, __LINE__);
 	mlx_terminate(game.mlx);
+	printf("%s %d\n", __FILE__, __LINE__);
 	delete_trash();
+	printf("%s %d\n", __FILE__, __LINE__);
 	ft_bzero(get_workers(), sizeof(t_trashman));
 	exit(EXIT_SUCCESS);
 }

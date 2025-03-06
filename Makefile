@@ -1,4 +1,4 @@
-NAME	= cub3d
+NAME	= cub3D
 CC		= cc
 CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code
 
@@ -8,12 +8,18 @@ LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
-		src/hooks/game_loop.c \
-		src/hooks/keyhook.c \
+#<<<<<<< fforster
+#		src/hooks/game_loop.c \
+#		src/hooks/keyhook.c \
+#=======
+#>>>>>>> nsloniow_pullFynn
 		src/error/error.c \
+		src/graphic/image.c \
+		src/hooks/keyhook.c \
 		garbage_collector/garbage_start.c \
 		garbage_collector/ft_malloc.c \
 		garbage_collector/free.c \
+			
 
 OBJS = $(SRCS:.c=.o)
 OBJ_DIR = obj
@@ -48,6 +54,7 @@ $(OBJ_DIR)/%.o: %.c | create_dirs
 create_dirs:
 	@mkdir -p $(OBJ_DIR)/src \
 		$(OBJ_DIR)/src/error \
+		$(OBJ_DIR)/src/graphic \
 		$(OBJ_DIR)/src/hooks \
 		$(OBJ_DIR)/garbage_collector \
 
