@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/10 15:08:38 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/10 21:13:35 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,17 +18,17 @@
 # endif
 
 # ifndef ROTATE_SP
-#  define RT_SPEED 5.0
+#  define RT_SPEED 3.0
 # endif
 
 # ifndef S_WIDTH
-#  define S_WIDTH 960
-// #  define S_WIDTH 1600
+// #  define S_WIDTH 960
+#  define S_WIDTH 1600
 # endif
 
 # ifndef S_HEIGHT
-#  define S_HEIGHT 540
-// #  define S_HEIGHT 900
+// #  define S_HEIGHT 540
+#  define S_HEIGHT 900
 # endif
 
 # include <stdio.h>
@@ -74,14 +74,14 @@ typedef struct map
 typedef struct raycaster
 {
 	//current tile the ray is in
-	size_t		tile_y;
-	size_t		tile_x;
+	size_t	tile_y;
+	size_t	tile_x;
 
 	//camera plane
 	t_cords	plane;
 
 	//x-coordinate in camera space
-	t_cords	camera;
+	double	camera_x;
 
 	//direction of a singular (current) rayf, our eyesight
 	t_cords	ray_dir;
@@ -132,6 +132,7 @@ void	print_ray_status(t_game *g);
 
 //src/hooks/keyhook.c
 void	my_keyhook(mlx_key_data_t keydata, void *param);
+void	movement_keyhook(t_game *g);
 
 //src/error.c
 void	ft_error(char *msg, int errcode, t_game	*game);

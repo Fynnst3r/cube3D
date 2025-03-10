@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/10 16:41:08 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/10 20:47:01 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	set_plane(t_ray *r, char d)
 {
 	double	fov;
 
-	fov = 0.66;
+	fov = 0.77;
 	if (d == 'N')
 	{
 		r->plane.y = 0;
@@ -118,9 +118,9 @@ void	raycaster_loop(void *param)
 	{
 		g->ray.tile_x = (int)g->player.pos.x; //update when new tile has been entered
 		g->ray.tile_y = (int)g->player.pos.y;
-		g->ray.camera.x = 2 * x / (double)S_WIDTH - 1; //x-coordinate in camera space
-		g->ray.ray_dir.x = g->player.dir.x + g->ray.plane.x * g->ray.camera.x;
-		g->ray.ray_dir.y = g->player.dir.y + g->ray.plane.y * g->ray.camera.x;
+		g->ray.camera_x = 2 * x / (double)S_WIDTH - 1; //x-coordinate in camera space
+		g->ray.ray_dir.x = g->player.dir.x + g->ray.plane.x * g->ray.camera_x;
+		g->ray.ray_dir.y = g->player.dir.y + g->ray.plane.y * g->ray.camera_x;
 		if (g->ray.ray_dir.x == 0)
 			g->ray.delta_dist.x = INFINITY;
 		else
@@ -142,6 +142,7 @@ void	raycaster_loop(void *param)
 		draw_vertical_line(g, x);
 		x++;
 	}
+	movement_keyhook(g);
 }
 
 //calc next tile to go/step in to and the first side_dist (closest x/y wall)
@@ -245,6 +246,11 @@ void	draw_vertical_line(t_game *g, int x)
 	y = 0;
 	// printf(ANSI_RED"start %i\n", draw_start);
 	// printf("end %i\n"ANSI_RESET, draw_end);
+	// if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_CONTROL))
+	// {
+	// 	draw_start /= 4;
+	// 	draw_end = draw_start + wall_height;
+	// }
 	while (y < draw_start)
 	{
 		mlx_put_pixel(g->bg, x, y, ceiling_color);
@@ -282,7 +288,7 @@ void	print_ray_status(t_game *g)
 	printf(ANSI_GREEN"PLAYER y %f - PLAYER x %f\n"ANSI_RESET, g->player.pos.y, g->player.pos.x);
 	printf("PLAYERdir x %f - PLAYERdir y %f\n", g->player.dir.x, g->player.dir.y);
 	printf("plane x %f - plane y %f\n", g->ray.plane.x, g->ray.plane.y);
-	printf("camera x %f\n", g->ray.camera.x);
+	printf("camera x %f\n", g->ray.camera_x);
 	printf(ANSI_BLUE"ray tile x %zu - y %zu\n"ANSI_RESET, g->ray.tile_x, g->ray.tile_y);
 	printf("ray_dir x %f - ray_dir y %f\n", g->ray.ray_dir.x, g->ray.ray_dir.y);
 	printf(ANSI_YELLOW"side_dist x %f - side_dist y %f\n"ANSI_RESET, g->ray.side_dist.x, g->ray.side_dist.y);
