@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/03 17:03:03 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/06 21:54:33 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	map_len(t_map *map)
 		if (ft_strlen(map->tiles[y]) > map->max_y)
 			map->max_x = ft_strlen(map->tiles[y]);
 	map->max_y = y;
-	// printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
+	printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
 }
 
 // this is just for testing mlx42 and draws a basic map with the wall texture using image_to_window
@@ -127,8 +127,8 @@ int	main(int ac, char **av)
 
 	if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
-	if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
-		ft_error("Error\nImage didn't arrive at window", 1, &game);
+	// if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
+		// ft_error("Error\nImage didn't arrive at window", 1, &game);
 	// mlx_resize_image(game.wall, 100, 100);
 	init_raycaster(&game);
 	// draw_texture_map(game);

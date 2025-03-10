@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/04 13:08:24 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:41:08 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	find_player(t_game *g)
 			if (g->map.tiles[y][x] == 'N' || g->map.tiles[y][x] == 'E'
 				|| g->map.tiles[y][x] == 'S' || g->map.tiles[y][x] == 'W')
 			{
-				g->player.pos.x = x;
-				g->player.pos.y = y;
+				g->player.pos.x = x + 0.5;
+				g->player.pos.y = y + 0.5;
 			printf(ANSI_GREEN"player.pos.x = %f\nplayer.pos.y = %f\n"ANSI_RESET, g->player.pos.x, g->player.pos.y);
 				found++;
 				g->player.looking = g->map.tiles[y][x];
@@ -71,13 +71,39 @@ void	decide_dir(t_player *p)
 	}
 }
 
+void	set_plane(t_ray *r, char d)
+{
+	double	fov;
+
+	fov = 0.66;
+	if (d == 'N')
+	{
+		r->plane.y = 0;
+		r->plane.x = fov;
+	}
+	if (d == 'S')
+	{
+		r->plane.y = 0;
+		r->plane.x = -fov;
+	}
+	if (d == 'E')
+	{
+		r->plane.x = 0;
+		r->plane.y = fov;
+	}
+	if (d == 'W')
+	{
+		r->plane.x = 0;
+		r->plane.y = -fov;
+	}
+}
+
 void	init_raycaster(t_game *g)
 {
 	if (find_player(g) != 1)
 		ft_error("Too many or no players!", 4, g);
 	decide_dir(&g->player);
-	g->ray.plane.x = 0;
-	g->ray.plane.y = 0.77;
+	set_plane(&g->ray, g->player.looking);
 }
 
 void	raycaster_loop(void *param)
@@ -90,18 +116,19 @@ void	raycaster_loop(void *param)
 	//printf("i = %i xd\n", i);
 	while (x < S_WIDTH)
 	{
-		// init_raycaster(g);
 		g->ray.tile_x = (int)g->player.pos.x; //update when new tile has been entered
 		g->ray.tile_y = (int)g->player.pos.y;
 		g->ray.camera.x = 2 * x / (double)S_WIDTH - 1; //x-coordinate in camera space
 		g->ray.ray_dir.x = g->player.dir.x + g->ray.plane.x * g->ray.camera.x;
 		g->ray.ray_dir.y = g->player.dir.y + g->ray.plane.y * g->ray.camera.x;
-		g->ray.delta_dist.x = fabs(1.0 / g->ray.ray_dir.x);
 		if (g->ray.ray_dir.x == 0)
 			g->ray.delta_dist.x = INFINITY;
-		g->ray.delta_dist.y = fabs(1.0 / g->ray.ray_dir.y);
+		else
+			g->ray.delta_dist.x = fabs(1.0 / g->ray.ray_dir.x);
 		if (g->ray.ray_dir.y == 0)
 			g->ray.delta_dist.y = INFINITY;
+		else
+			g->ray.delta_dist.y = fabs(1.0 / g->ray.ray_dir.y);
 	// printf("deltax = %f xd\n", g->ray.delta_dist.x);
 	// printf("delta y = %f xd\n", g->ray.delta_dist.y);
 	// printf("i = %i xd\n", i);
@@ -166,23 +193,25 @@ void	shoot_ray(t_game *g)
 		if (g->ray.side_dist.y > g->ray.side_dist.x)
 		{
 			g->ray.side_dist.x += g->ray.delta_dist.x;
-			g->ray.tile_x += (int)g->ray.go_x;
+			g->ray.tile_x += (size_t)g->ray.go_x;
 			x_wall = true;
 		}
 		else
 		{
 			g->ray.side_dist.y += g->ray.delta_dist.y;
-			g->ray.tile_y += (int)g->ray.go_y;
+			g->ray.tile_y += (size_t)g->ray.go_y;
 			x_wall = false;
 		}
-// printf("y %i, x %i, shoot loop: %d\n", g->ray.tile_y, g->ray.tile_x, __LINE__);
+// printf("y %zu, x %zu, shoot loop: %d\n", g->ray.tile_y, g->ray.tile_x, __LINE__);
 		// if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] > 0)
+		if (g->map.max_x < g->ray.tile_x || g->ray.tile_y > g->map.max_y)
+			break ;
 		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
 			&& (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1'
 				|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'))
 		{
 			// printf("line %d\n", __LINE__);
-		// printf("!!!HIT WALL!!! on y %i, x %i,\n", g->ray.tile_y, g->ray.tile_x);
+		// printf("!!!HIT WALL!!! on y %zu, x %zu,\n", g->ray.tile_y, g->ray.tile_x);
 			hit_wall = true;
 		}
 // printf(ANSI_UNDERLINE"shoot loop : %d\n"ANSI_RESET,  __LINE__);
@@ -223,12 +252,15 @@ void	draw_vertical_line(t_game *g, int x)
 	}
 	while (y < draw_end)
 	{
-		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-			&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1')
-			mlx_put_pixel(g->bg, x, y, wall_color);
-		else if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-				&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
-			mlx_put_pixel(g->bg, x, y, wall_color2);
+		// if (g->map.max_x > g->ray.tile_x && g->ray.tile_y < g->map.max_y)
+		// {
+			if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
+				&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1')
+				mlx_put_pixel(g->bg, x, y, wall_color);
+			else if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
+					&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
+				mlx_put_pixel(g->bg, x, y, wall_color2);
+		// }
 		y++;
 	}
 	while (y < S_HEIGHT)
@@ -247,12 +279,12 @@ void	draw_vertical_line(t_game *g, int x)
 //prints various info of the state of the ray for debug
 void	print_ray_status(t_game *g)
 {
-	printf("PLAYER x %f - PLAYER y %f\n", g->player.pos.x, g->player.pos.y);
+	printf(ANSI_GREEN"PLAYER y %f - PLAYER x %f\n"ANSI_RESET, g->player.pos.y, g->player.pos.x);
 	printf("PLAYERdir x %f - PLAYERdir y %f\n", g->player.dir.x, g->player.dir.y);
 	printf("plane x %f - plane y %f\n", g->ray.plane.x, g->ray.plane.y);
 	printf("camera x %f\n", g->ray.camera.x);
-	printf(ANSI_BLUE"ray tile x %i = y %i\n"ANSI_RESET, g->ray.tile_x, g->ray.tile_y);
-	printf("ray_dir x %f - ray_dir y %f\n\n", g->ray.ray_dir.x, g->ray.ray_dir.y);
+	printf(ANSI_BLUE"ray tile x %zu - y %zu\n"ANSI_RESET, g->ray.tile_x, g->ray.tile_y);
+	printf("ray_dir x %f - ray_dir y %f\n", g->ray.ray_dir.x, g->ray.ray_dir.y);
 	printf(ANSI_YELLOW"side_dist x %f - side_dist y %f\n"ANSI_RESET, g->ray.side_dist.x, g->ray.side_dist.y);
 	printf(ANSI_MAGENTA"delta_dist x %f - delta_dist y %f\n"ANSI_RESET, g->ray.delta_dist.x, g->ray.delta_dist.y);
 	printf("perpendicular_wall_dist %f\n", g->ray.perp_wall_dist);

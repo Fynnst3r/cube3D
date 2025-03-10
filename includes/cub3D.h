@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/04 12:57:40 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/10 15:08:38 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define CUB3D_H
 
 # ifndef MOVEMENT_SPEED
-#  define MV_SPEED 10.0
+#  define MV_SPEED 8.0
 # endif
 
 # ifndef ROTATE_SP
@@ -74,8 +74,8 @@ typedef struct map
 typedef struct raycaster
 {
 	//current tile the ray is in
-	int		tile_y;
-	int		tile_x;
+	size_t		tile_y;
+	size_t		tile_x;
 
 	//camera plane
 	t_cords	plane;
