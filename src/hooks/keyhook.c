@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/11 14:59:09 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/11 19:53:58 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		// printf(ANSI_RED"next INT x %d\n"ANSI_RESET, (int)(g->player.pos.x + g->player.dir.x * mv_speed));
 		if (g->map.tiles[(int)(next_y)][(int)g->player.pos.x] == '0')
 			g->player.pos.x += g->player.dir.x * mv_speed;
-			if (g->map.tiles[(int)(g->player.pos.y)][(int)(next_x)] == '0')
+		if (g->map.tiles[(int)(g->player.pos.y)][(int)(next_x)] == '0')
 		g->player.pos.y += g->player.dir.y * mv_speed;
 	}
 	if (mlx_is_key_down(g->mlx, MLX_KEY_S))
@@ -78,6 +78,6 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		g->ray.plane.x = g->ray.plane.x * cos(-rt_speed) - g->ray.plane.y * sin(-rt_speed);
 		g->ray.plane.y = oldPlaneX * sin(-rt_speed) + g->ray.plane.y * cos(-rt_speed);
 	}
-	g->miniplayer->instances->x = (int)g->player.pos.x * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
-	g->miniplayer->instances->y = (int)g->player.pos.y * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+	g->miniplayer->instances->x = g->player.pos.x * MINI_UNITS_PER_TILE;
+	g->miniplayer->instances->y = g->player.pos.y * MINI_UNITS_PER_TILE;
 }
