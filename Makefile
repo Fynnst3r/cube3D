@@ -7,14 +7,10 @@ HEADERS	= -I $(LIBMLX)/include
 LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
-SRCS =  src/main.c\
-#<<<<<<< fforster
-#		src/hooks/game_loop.c \
-#		src/hooks/keyhook.c \
-#=======
-#>>>>>>> nsloniow_pullFynn
+SRCS =  src/main.c \
 		src/error/error.c \
 		src/graphic/image.c \
+		src/hooks/game_loop.c \
 		src/hooks/keyhook.c \
 		garbage_collector/garbage_start.c \
 		garbage_collector/ft_malloc.c \
