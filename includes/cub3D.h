@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/11 19:49:28 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/13 15:11:11 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,15 @@
 # endif
 
 # ifndef MINI
-#  define MINI_RESIZE_FACTOR 2
+#  define MINI_RESIZE_FACTOR 3
 #  define MINI_UNITS_PER_TILE 10
-#  define MINI_PLAYER_WIDTH 10
-#  define MINI_PLAYER_HEIGHT 10
-#  define MV_SPEED_MINI 1
+// #  define MINI_PLAYER_WIDTH 10
+// #  define MINI_PLAYER_HEIGHT 10
+#  define MINI_PLAYER_WIDTH MINI_UNITS_PER_TILE
+#  define MINI_PLAYER_HEIGHT MINI_UNITS_PER_TILE
+#  define MINI_LINE_HEIGHT 3
+#  define MINI_LINE_WIDTH 3
+// #  define MV_SPEED_MINI 1
 # endif
 
 # include <stdio.h>
@@ -62,6 +66,7 @@ typedef struct	coordinates_int32
 	
 }		t_cords_int32;
 
+//<<<<<<< fforster
 // holds player info like position and spawn rules
 typedef struct player
 {
@@ -73,11 +78,15 @@ typedef struct player
 	char	looking;
 }		t_player;
 
+//=======
+
 typedef struct	height_width
 {
 	u_int32_t	height;
 	u_int32_t	width;
 }				t_height_width;
+
+//>>>>>>> nsloniow_pullFynn
 
 // holds info about map like size and each tiles content
 typedef struct map
@@ -129,17 +138,22 @@ typedef struct master_struct
 	mlx_image_t		*wall;
 	mlx_texture_t	*walltex;
 	t_map			map;
+//<<<<<<< fforster
 	t_player		player;
 	t_ray			ray;
+
 	int				screen_width;
 	int				screen_height;
 	double			time;
 	double			oldtime;
+
+//=======
 	mlx_image_t		*minimap;
 	mlx_image_t		*miniplayer;
 	mlx_image_t		*line;
 	double			dir_x;
 	double			dir_y;
+//>>>>>>> nsloniow_pullFynn
 }		t_game;
 
 //src/main.c

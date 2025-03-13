@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/11 19:53:58 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/13 16:10:07 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,10 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		g->ray.plane.x = g->ray.plane.x * cos(-rt_speed) - g->ray.plane.y * sin(-rt_speed);
 		g->ray.plane.y = oldPlaneX * sin(-rt_speed) + g->ray.plane.y * cos(-rt_speed);
 	}
-	g->miniplayer->instances->x = g->player.pos.x * MINI_UNITS_PER_TILE;
-	g->miniplayer->instances->y = g->player.pos.y * MINI_UNITS_PER_TILE;
+	// g->miniplayer->instances->x = g->player.pos.x * MINI_UNITS_PER_TILE;
+	// g->miniplayer->instances->y = g->player.pos.y * MINI_UNITS_PER_TILE;
+	g->miniplayer->instances->x = g->player.pos.x * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+	g->miniplayer->instances->y = g->player.pos.y * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+	g->line->instances->x = g->player.pos.x * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+	g->line->instances->y = g->player.pos.y * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
 }
