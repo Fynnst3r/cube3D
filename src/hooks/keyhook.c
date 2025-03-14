@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/10 21:07:24 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:51:35 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,9 +94,15 @@ void	movement_keyhook(t_game *g)
 	rt_speed = g->mlx->delta_time * RT_SPEED;
 	mv_speed = g->mlx->delta_time * MV_SPEED;
 	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SHIFT))
+	{
 		mv_speed *= 2;
+		rt_speed *= 1.5;
+	}
 	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SUPER))
+	{
 		mv_speed /= 2;
+		rt_speed /= 1.5;
+	}
 	if (mlx_is_key_down(g->mlx, MLX_KEY_W))
 	{
 		walk_forward(g->map.tiles, &g->player.pos, &g->player.dir, mv_speed);
@@ -126,9 +132,7 @@ void	movement_keyhook(t_game *g)
 void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_game			*g;
-
 	g = (t_game *)param;
-
 	// double	rt_speed = g->mlx->delta_time * RT_SPEED;
 	// double	mv_speed = 0.12;
 	// printf("mv_speed %f\n rt_speed %f\n", mv_speed, rt_speed);
@@ -138,8 +142,16 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		mlx_close_window(g->mlx);
 		ft_error("Game closed with esc.\n", 0, g);
 	}
-	print_ray_status(g);
-
+	if (g->ray.hit_x_wall && mlx_is_key_down(g->mlx, MLX_KEY_TAB))
+	{
+		print_ray_status(g);
+		printf(ANSI_RED"xhitintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
+	}
+	else if (mlx_is_key_down(g->mlx, MLX_KEY_TAB))
+	{
+		print_ray_status(g);
+		printf(ANSI_GREEN"xintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
+	}
 	// printf(ANSI_GREEN"pos x %f, pos y %f\n", game->player.pos.x, game->player.pos.y);
 	// printf("PLAYERdir x %f - PLAYERdir y %f\n"ANSI_RESET, game->player.dir.x, game->player.dir.y);
 }

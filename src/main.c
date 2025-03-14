@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/10 19:01:25 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 14:56:30 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,34 +61,6 @@ void	map_len(t_map *map)
 	printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
 }
 
-// this is just for testing mlx42 and draws a basic map with the wall texture using image_to_window
-// y- and xsteps are the units and it steps to the next point where it should draw the tile
-void	draw_texture_map(t_game game)
-{
-	int		xsteps;
-	int		ysteps;
-	size_t	y;
-	size_t	x;
-
-	xsteps = 100;
-	ysteps = 100;
-	y = 0;
-	x = 0;
-	while (game.map.tiles[y] != NULL)
-	{
-		while (game.map.tiles[y][x] != 0)
-		{
-			if (game.map.tiles[y][x] == '1')
-				if (mlx_image_to_window(game.mlx, game.wall,
-						x * xsteps, y * ysteps) < 0)
-					ft_error("Error\nImage didn't arrive at window", 1, &game);
-			x += 1;
-		}
-		x = 0;
-		y += 1;
-	}
-}
-
 int	main(int ac, char **av)
 {
 	t_game	game;
@@ -108,31 +80,27 @@ int	main(int ac, char **av)
 	game.bg = mlx_new_image(game.mlx, S_WIDTH, S_HEIGHT);
 	if (!game.bg)
 		ft_error("Error\nImage didn't create", 1, &game);
-	game.img = mlx_new_image(game.mlx, 10, 10);
+	game.textures.walltex = mlx_load_png("./textures/test.png");
+	if (!game.textures.walltex)
+		ft_error("Error\nCould not create wall image\n", 42, &game);
+	game.img = mlx_new_image(game.mlx, game.textures.walltex->width, game.textures.walltex->height);
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
-	game.walltex = mlx_load_png("./textures/wallcub.png");
-	if (!game.walltex)
-		ft_error("Error\nCould not create wall image\n", 42, &game);
-	game.wall = mlx_texture_to_image(game.mlx, game.walltex);
-
+	// game.wall = mlx_texture_to_image(game.mlx, game.textures.walltex);
 	// game.wall = mlx_new_image(game.mlx, 100, 100);
 	// if (!game.wall)
 	// 	ft_error("Image didn't create", 1, &game);
 
 	// Set every pixel of img to white
 	ft_memset(game.bg->pixels, 255, game.bg->width * game.bg->height * sizeof(int32_t));
-	ft_memset(game.img->pixels, get_rgba(200, 200, 200, 150), game.img->width * game.img->height * sizeof(int32_t));
-	// ft_memset(game.wall->pixels, get_rgba(200, 200, 200, 100), game.wall->width * game.wall->height * sizeof(int32_t));
 
 	if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// if (mlx_image_to_window(game.mlx, game.img, 100, 100) < 0)
+	// if (mlx_image_to_window(game.mlx, game.wall, 100, 100) < 0)
 		// ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// mlx_resize_image(game.wall, 100, 100);
+	draw_half_tex(&game);
+	mlx_resize_image(game.img, 100, 100);
 	init_raycaster(&game);
-	// draw_texture_map(game);
-	game.time = game.mlx->delta_time;
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
 	mlx_loop(game.mlx);

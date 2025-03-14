@@ -8,8 +8,10 @@ LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
+		src/init/init_ray.c \
 		src/hooks/game_loop.c \
 		src/hooks/keyhook.c \
+		src/textures.c \
 		src/error/error.c \
 		garbage_collector/garbage_start.c \
 		garbage_collector/ft_malloc.c \
@@ -48,6 +50,7 @@ $(OBJ_DIR)/%.o: %.c | create_dirs
 create_dirs:
 	@mkdir -p $(OBJ_DIR)/src \
 		$(OBJ_DIR)/src/error \
+		$(OBJ_DIR)/src/init \
 		$(OBJ_DIR)/src/hooks \
 		$(OBJ_DIR)/garbage_collector \
 

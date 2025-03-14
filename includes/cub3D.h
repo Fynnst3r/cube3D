@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/10 21:13:35 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:53:49 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 # define CUB3D_H
 
 # ifndef MOVEMENT_SPEED
-#  define MV_SPEED 8.0
+#  define MV_SPEED 4.0
 # endif
 
 # ifndef ROTATE_SP
-#  define RT_SPEED 3.0
+#  define RT_SPEED 2.0
 # endif
 
 # ifndef S_WIDTH
@@ -87,17 +87,31 @@ typedef struct raycaster
 	t_cords	ray_dir;
 
 	// length of the ray from current pos to the closest x/y wall,
-	// will increase when to the lenght of the shot ray using delta dist
+	// will increase to the lenght of the shot ray using delta dist
 	t_cords	side_dist;
 
 	//length of ray from one x or y-side to next x or y-side
 	t_cords	delta_dist;
+
+	//perpandicular distance to the wall
 	double	perp_wall_dist;
+
 	bool	hit_x_wall;
+	//the x point where the ray intersects with the wall
+	//range: 0 - 1.0 (left - right)
+	double	x_intersect;
+
 	int		go_y;
 	int		go_x;
 
 }		t_ray;
+
+typedef struct textures
+{
+	mlx_texture_t	*walltex;
+	int				*wallcolors;
+
+}		t_textures;
 
 typedef struct master_struct
 {
@@ -106,33 +120,34 @@ typedef struct master_struct
 	mlx_image_t		*bg;
 	mlx_image_t		*img;
 	mlx_image_t		*wall;
-	mlx_texture_t	*walltex;
+	t_textures		textures;
 
 	t_map			map;
 	t_player		player;
 	t_ray			ray;
-
-	int				screen_width;
-	int				screen_height;
-	double			time;
-	double			oldtime;
 
 }		t_game;
 
 //src/main.c
 int		get_rgba(int r, int g, int b, int a);
 
-//src/hooks/game_loop.c
+//src/init/init_ray.c
 void	init_raycaster(t_game *g);
+//src/hooks/game_loop.c
 void	raycaster_loop(void *param);
 void	step_which_side(t_game *g);
 void	shoot_ray(t_game *g);
+void	ray_len_and_hitpoint(const t_player p, t_ray *r);
 void	draw_vertical_line(t_game *g, int i);
 void	print_ray_status(t_game *g);
 
 //src/hooks/keyhook.c
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
+
+//src/textures.c
+int		*create_color_array(t_game *g, mlx_texture_t *tex);
+void	draw_half_tex(t_game *g);
 
 //src/error.c
 void	ft_error(char *msg, int errcode, t_game	*game);

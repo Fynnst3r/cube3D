@@ -6,105 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/10 20:47:01 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 15:54:33 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
-
-int	find_player(t_game *g)
-{
-	size_t	x;
-	size_t	y;
-	int		found;
-
-	x = 0;
-	y = 0;
-	found = 0;
-	while (g->map.tiles[y])
-	{
-		while (g->map.tiles[y][x])
-		{
-			if (g->map.tiles[y][x] == 'N' || g->map.tiles[y][x] == 'E'
-				|| g->map.tiles[y][x] == 'S' || g->map.tiles[y][x] == 'W')
-			{
-				g->player.pos.x = x + 0.5;
-				g->player.pos.y = y + 0.5;
-			printf(ANSI_GREEN"player.pos.x = %f\nplayer.pos.y = %f\n"ANSI_RESET, g->player.pos.x, g->player.pos.y);
-				found++;
-				g->player.looking = g->map.tiles[y][x];
-				g->map.tiles[y][x] = '0';
-			}
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-	return (found);
-}
-
-//look dirs (N/E/S/W)
-//						N =(x = 0, Y = -1)
-//		W =(x = -1, Y = 0)				E =(x = 1, Y = 0)
-//						S =(x = 0, Y = 1)
-void	decide_dir(t_player *p)
-{
-	if (p->looking == 'N')
-	{
-		p->dir.x = 0;
-		p->dir.y = -1;
-	}
-	if (p->looking == 'E')
-	{
-		p->dir.x = 1;
-		p->dir.y = 0;
-	}
-	if (p->looking == 'S')
-	{
-		p->dir.x = 0;
-		p->dir.y = 1;
-	}
-	if (p->looking == 'W')
-	{
-		p->dir.x = -1;
-		p->dir.y = 0;
-	}
-}
-
-void	set_plane(t_ray *r, char d)
-{
-	double	fov;
-
-	fov = 0.77;
-	if (d == 'N')
-	{
-		r->plane.y = 0;
-		r->plane.x = fov;
-	}
-	if (d == 'S')
-	{
-		r->plane.y = 0;
-		r->plane.x = -fov;
-	}
-	if (d == 'E')
-	{
-		r->plane.x = 0;
-		r->plane.y = fov;
-	}
-	if (d == 'W')
-	{
-		r->plane.x = 0;
-		r->plane.y = -fov;
-	}
-}
-
-void	init_raycaster(t_game *g)
-{
-	if (find_player(g) != 1)
-		ft_error("Too many or no players!", 4, g);
-	decide_dir(&g->player);
-	set_plane(&g->ray, g->player.looking);
-}
 
 void	raycaster_loop(void *param)
 {
@@ -113,7 +19,6 @@ void	raycaster_loop(void *param)
 
 	g = (t_game *)param;
 	x = 0;
-	//printf("i = %i xd\n", i);
 	while (x < S_WIDTH)
 	{
 		g->ray.tile_x = (int)g->player.pos.x; //update when new tile has been entered
@@ -129,15 +34,12 @@ void	raycaster_loop(void *param)
 			g->ray.delta_dist.y = INFINITY;
 		else
 			g->ray.delta_dist.y = fabs(1.0 / g->ray.ray_dir.y);
-	// printf("deltax = %f xd\n", g->ray.delta_dist.x);
-	// printf("delta y = %f xd\n", g->ray.delta_dist.y);
-	// printf("i = %i xd\n", i);
 	// printf("line %d\n", __LINE__);
 		step_which_side(g);
-	// printf("line %d\n", __LINE__);
 // printf(ANSI_UNDERLINE"main loop : %d\n"ANSI_RESET,  __LINE__);
-// printf("line %d\n", __LINE__);
 		shoot_ray(g);
+// printf(ANSI_UNDERLINE"main loop shot ray: %d\n"ANSI_RESET,  __LINE__);
+		ray_len_and_hitpoint(g->player, &g->ray);
 // printf(ANSI_UNDERLINE"main loop shot ray: %d\n"ANSI_RESET,  __LINE__);
 		draw_vertical_line(g, x);
 		x++;
@@ -150,10 +52,8 @@ void	raycaster_loop(void *param)
 void	step_which_side(t_game *g)
 {
 	// for x
-	//printf("initial sidedistx %f\ninitial sidedist y %f\n", g->ray.side_dist.x, g->ray.side_dist.y);
 	if (g->ray.ray_dir.x < 0)
 	{
-		//printf(ANSI_YELLOW"ray dir x %f ???????????\n"ANSI_RESET, g->ray.ray_dir.x);
 		g->ray.go_x = -1;
 		g->ray.side_dist.x = (g->player.pos.x - g->ray.tile_x)
 			* g->ray.delta_dist.x;
@@ -177,7 +77,6 @@ void	step_which_side(t_game *g)
 		g->ray.side_dist.y = (g->ray.tile_y + 1.0 - g->player.pos.y)
 			* g->ray.delta_dist.y;
 	}
-	//printf("sidedistx %f\nsidedist y %f\n", g->ray.side_dist.x, g->ray.side_dist.y);
 }
 
 //DDA algo
@@ -189,7 +88,6 @@ void	shoot_ray(t_game *g)
 	hit_wall = false;
 	while (!hit_wall)
 	{
-		// printf("line %d\n", __LINE__);
 		// printf(ANSI_UNDERLINE"shoot loop : %d\n"ANSI_RESET,  __LINE__);
 		if (g->ray.side_dist.y > g->ray.side_dist.x)
 		{
@@ -204,38 +102,48 @@ void	shoot_ray(t_game *g)
 			x_wall = false;
 		}
 // printf("y %zu, x %zu, shoot loop: %d\n", g->ray.tile_y, g->ray.tile_x, __LINE__);
-		// if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] > 0)
-		if (g->map.max_x < g->ray.tile_x || g->ray.tile_y > g->map.max_y)
-			break ;
 		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
 			&& (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1'
 				|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'))
 		{
-			// printf("line %d\n", __LINE__);
 		// printf("!!!HIT WALL!!! on y %zu, x %zu,\n", g->ray.tile_y, g->ray.tile_x);
 			hit_wall = true;
 		}
-// printf(ANSI_UNDERLINE"shoot loop : %d\n"ANSI_RESET,  __LINE__);
 	}
-	if (x_wall)
-		g->ray.perp_wall_dist = (g->ray.side_dist.x - g->ray.delta_dist.x);
-	else
-		g->ray.perp_wall_dist = (g->ray.side_dist.y - g->ray.delta_dist.y);
 	g->ray.hit_x_wall = x_wall;
 }
 
+void	ray_len_and_hitpoint(const t_player p, t_ray *r)
+{
+	if (r->hit_x_wall)
+	{
+		r->perp_wall_dist = (r->side_dist.x - r->delta_dist.x);
+		r->x_intersect = p.pos.y + r->perp_wall_dist * r->ray_dir.y;
+	}
+	else
+	{
+		r->perp_wall_dist = (r->side_dist.y - r->delta_dist.y);
+		r->x_intersect = p.pos.x + r->perp_wall_dist * r->ray_dir.x;
+	}
+	r->x_intersect -= floor(r->x_intersect);
+}
+
+// calc tx to the position where the ray would hit the texture
+// calc steps which pixels to draw going downwards, wallheight is never the same
+// figure out what to do if wallheight is higher than screen height when walking into wall
 void	draw_vertical_line(t_game *g, int x)
 {
 	int	y;
+	// double	tx;
+	// int		px = 0;
 	int	wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
-	//printf("perpwalldist %f\n",g->ray.perp_wall_dist);
-	// printf(ANSI_RED"wall height =				%i\n"ANSI_RESET, wall_height);
 	int	draw_start = -wall_height / 2 + S_HEIGHT / 2;
 	int draw_end = wall_height + draw_start;
 	if (draw_end > S_HEIGHT)
 		draw_end = S_HEIGHT - 1;
 	int	ceiling_color = get_rgba(20, 20, 255, 255);
 	int	wall_color = get_rgba(130, 90, 0, 255);
+	// int	wall_color = get_rgba(g->wall->pixels[y], g->wall->pixels[y + 1], g->wall->pixels[y + 2], g->wall->pixels[y + 3]);
 	int	wall_color2 = get_rgba(250, 20, 20, 255);
 	if (g->ray.hit_x_wall)
 	{
@@ -243,7 +151,12 @@ void	draw_vertical_line(t_game *g, int x)
 		wall_color2 /= 2;
 	}
 	int	floor_color = get_rgba(0, 130, 70, 255);
+
 	y = 0;
+	// tx = g->ray.y_intersect * (double)g->wall->width;
+	// if (g->ray.hit_x_wall)
+		// tx = g->ray.x_intersect * (double)g->wall->width;
+	// x = x * x_hitintersect;
 	// printf(ANSI_RED"start %i\n", draw_start);
 	// printf("end %i\n"ANSI_RESET, draw_end);
 	// if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_CONTROL))
@@ -258,16 +171,20 @@ void	draw_vertical_line(t_game *g, int x)
 	}
 	while (y < draw_end)
 	{
-		// if (g->map.max_x > g->ray.tile_x && g->ray.tile_y < g->map.max_y)
-		// {
-			if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-				&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1')
-				mlx_put_pixel(g->bg, x, y, wall_color);
-			else if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-					&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
-				mlx_put_pixel(g->bg, x, y, wall_color2);
-		// }
+		// if (g->ray.hit_x_wall );
+		// else
+			// px -= g->wall->width * tx;
+		// printf("y %d\n", y);
+		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
+			&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1')
+			mlx_put_pixel(g->bg, x, y, wall_color);
+			// mlx_put_pixel(g->bg, x, y, get_rgba(g->wall->pixels[px], g->wall->pixels[px + 1], g->wall->pixels[px + 2], g->wall->pixels[px + 3]));
+		else if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
+				&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
+			mlx_put_pixel(g->bg, x, y, wall_color2);
+
 		y++;
+
 	}
 	while (y < S_HEIGHT)
 	{
