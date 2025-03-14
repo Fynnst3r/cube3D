@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/03/13 16:11:25 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/14 12:30:09 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,137 @@ void	pixset(mlx_image_t *img, int colour)
 	}
 }
 
+// void	draw_line(t_game *game)
+// {
+// 	t_cords_int32	yx;
+// 	t_height_width	height_width;
+// 	float			x_diff;
+// 	float			y_diff;
+// 	float			slope;
+// 	// game->img->instances->x = 10;
+// 	// game->img->instances->y = 100;
+// 	// int	x = game->img->instances->x;
+// 	// int	y = game->img->instances->y;
+// 	// int	x = game->player.pos.x;
+// 	// int	y = game->player.pos.y;
+// 	int	x = game->miniplayer->instances->x;
+// 	int	y = game->miniplayer->instances->y;
+// 	printf("%s %d x %d \n", __FILE__, __LINE__, x);
+// 	printf("%s %d y %d \n", __FILE__, __LINE__, y);
+
+// 	// xstart < xend  ystart < yends => top left to bottom right
+// 	// game.dir_x = 100;
+// 	// game.dir_y = 80;
+
+// 	// xstart > xend  ystart < yend => top right to bottom left
+// 	// game->dir_x = 1;
+// 	// game->dir_y = 80;
+
+// 	// // xstart < xend  ystart > yend => botom left to top right
+// 	// game->dir_x = 100;
+// 	// game->dir_y = 8;
+// 	printf("%s %d dir big    x %f\n", __FILE__, __LINE__, game->player.dir.x);
+// 	printf("%s %d dir big    y %f\n", __FILE__, __LINE__, game->player.dir.y);
+// 	// game->dir_x = (game->player.pos.x + game->player.dir.x)* MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+// 	// game->dir_y = (game->player.pos.y + game->player.dir.y)* MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+// 	// game->dir_x = (game->player.pos.x + game->player.dir.x) * MINI_UNITS_PER_TILE;
+// 	// game->dir_y = (game->player.pos.y + game->player.dir.y) * MINI_UNITS_PER_TILE;
+// 	game->dir_x = (x + game->player.dir.x * MINI_UNITS_PER_TILE);
+// 	game->dir_y = (y + game->player.dir.y * MINI_UNITS_PER_TILE);
+// 	printf("%s %d dir        x %f\n", __FILE__, __LINE__, game->dir_x);
+// 	printf("%s %d dir        y %f\n", __FILE__, __LINE__, game->dir_y);
+// 	// x_diff = game->dir_x - game->img->instances->x;
+// 	// y_diff = game->dir_y - game->img->instances->y;
+// 	// x_diff = game->dir_x - game->player.pos.x;
+// 	// y_diff = game->dir_y - game->player.pos.y;
+// 	x_diff = game->dir_x - game->miniplayer->instances->x;
+// 	y_diff = game->dir_y - game->miniplayer->instances->y;
+// 	// printf("%s %d x diff %d  y diff %d \n", __FILE__, __LINE__, x_diff, y_diff);
+// 	// printf("%s %d\n", __FILE__, __LINE__);
+// 	printf("%s %d x diff %f  y diff %f \n", __FILE__, __LINE__, x_diff, y_diff);
+// 	slope = y_diff / x_diff;
+// 	if (x_diff < 0)
+// 		x_diff *= -1;
+// 	if (y_diff < 0)
+// 		y_diff *= -1;
+// 	// printf("%s %d slope %d\n", __FILE__, __LINE__, slope);
+// 	printf("%s %d slope %f\n", __FILE__, __LINE__, slope);
+// 	height_width.width = MINI_LINE_WIDTH;
+// 	height_width.height = MINI_LINE_WIDTH;
+// 	// game->line = mlx_new_image(game->mlx, x_diff, y_diff);
+// 	// game->line = mlx_new_image(game->mlx, x_diff * 10, y_diff * 10);
+// 	// printf("%s %d xdiff + height * ")
+// 	game->line = mlx_new_image(game->mlx, (x_diff + height_width.width) * MINI_UNITS_PER_TILE,
+// 		 (y_diff + height_width.height) * MINI_UNITS_PER_TILE);
+// 	if (!game->line)
+// 		ft_error("mlx_new_image for game->line unsuccessful\n", 42, game);
+// 	// xstart < xend  ystart < yends => top left to bottom right
+// 	// if (game->dir_x > game->img->instances->x && game->dir_y > game->img->instances->y )
+// 	// if (game->dir_x > game->player.pos.x && game->dir_y > game->player.pos.y )
+// 	if (game->dir_x > game->miniplayer->instances->x && game->dir_y >= game->miniplayer->instances->y )
+// 	{
+// 		printf("%s %d\n", __FILE__, __LINE__);
+// 		while (x <= game->dir_x)
+// 		{
+// 			printf("%s %d x %d \n", __FILE__, __LINE__, x);
+// 			// y = slope * (x - game->img->instances->x) + game->img->instances->y;
+// 			// y = slope * (x - game->player.pos.x) + game->player.pos.y ;
+// 			y = slope * (x - game->miniplayer->instances->x) + game->miniplayer->instances->y;
+// 			printf("%s %d y %d\n", __FILE__, __LINE__, y);
+// 			// mlx_put_pixel(game.line, x, y, get_rgba(255, 255, 0, 255));
+// 			yx.x = x;
+// 			yx.y = y;
+// 			printf("%s %d\n", __FILE__, __LINE__);
+// 			pixset_yx_height_width(game->line, get_rgba(222, 222, 0, 255), yx, height_width);
+// 			// pixset_yx_height_width(game->line, get_rgba(0, 0, 0, 255), yx, height_width);
+// 			printf("%s %d\n", __FILE__, __LINE__);
+// 			// mlx_image_to_window(game->mlx, game->line, game->miniplayer->instances->x, game->miniplayer->instances->y);
+// 			x++;
+// 		}
+// 	}
+// 	// xstart > xend  ystart < yend => top right to bottom left
+// 	// if (game->dir_x < game->img->instances->x && game->dir_y > game->img->instances->y )
+// 	// {
+// 	// 	printf("%s %d\n", __FILE__, __LINE__);
+// 	// 	while (x >= game->dir_x)
+// 	// 	{
+// 	// 		// y = slope * (x - game->img->instances->x) + game->img->instances->y;
+// 	// 		y = slope * (x - game->img->instances->x) + game->img->instances->y;
+// 	// 		// mlx_put_pixel(game.line, x, y, get_rgba(255, 255, 0, 255));
+// 	// 		yx.x = x;
+// 	// 		yx.y = y;
+// 	// 		pixset_yx_height_width(game->line, get_rgba(255, 255, 0, 255), yx, height_width);
+// 	// 		x--;
+// 	// 	}
+// 	// }
+// 	// // // xstart < xend  ystart > yend => botom left to top right
+// 	// if (game->dir_x > game->img->instances->x && game->dir_y < game->img->instances->y )
+// 	// {
+// 	// 	printf("%s %d\n", __FILE__, __LINE__);
+// 	// 	while (x <= game->dir_x)
+// 	// 	{
+// 	// 		printf("%s %d x %d \n", __FILE__, __LINE__, x);
+// 	// 		y = game->img->instances->y + slope * (x - game->img->instances->x);
+// 	// 		printf("%s %d y %d\n", __FILE__, __LINE__, y);
+// 	// 		// mlx_put_pixel(game.line, x, y, get_rgba(255, 255, 0, 255));
+// 	// 		yx.x = x;
+// 	// 		yx.y = y;
+// 	// 		// printf("%s %d\n", __FILE__, __LINE__);
+// 	// 		pixset_yx_height_width(game->line, get_rgba(111, 222, 2, 255), yx, height_width);
+// 	// 		// printf("%s %d\n", __FILE__, __LINE__);
+// 	// 		x++;
+// 	// 	}
+// 	// }
+// 	printf("%s %d line width %d height %d\n", __FILE__, __LINE__, game->line->width, game->line->height);
+// 	// mlx_image_to_window(game->mlx, game->line, game->dir_x, game->dir_y);
+// 	// mlx_image_to_window(game->mlx, game->line, game->miniplayer->instances->x, game->miniplayer->instances->y);
+// 	mlx_image_to_window(game->mlx, game->line, 0, 0);
+// 	// mlx_resize_image(game->line, game->line->width * MINI_RESIZE_FACTOR,
+// 	// 	game->line->height * MINI_RESIZE_FACTOR);
+// 	// mlx_resize_image(game->line, game->line->width,
+// 	// 	game->line->height);
+// 	printf("%s %d\n", __FILE__, __LINE__);
+// }
 void	draw_line(t_game *game)
 {
 	int				x;
@@ -49,18 +180,32 @@ void	draw_line(t_game *game)
 	float			y_diff;
 	float			slope;
 
+	if (game->line != NULL)
+	{
+		mlx_delete_image(game->mlx, game->line);
+		// yx.x = game->line->instances->x;
+		// yx.y = game->line->instances->y;
+		// height_width.width = game->line->width;
+		// height_width.height = game->line->height;
+		// pixset_yx_height_width(game->line, 0, yx, height_width);
+		// if (mlx_image_to_window(game->mlx, game->line,
+		// 	game->line->instances->x, game->line->instances->y) < 0)
+		// {
+		// 	ft_error("Error\nImage didn't arrive at window", 1, game);
+		// }
+	}
 	x = game->miniplayer->instances->x;
 	y = game->miniplayer->instances->y;
-	yx.x = 0;
-	yx.y = 0;
 	height_width.height = MINI_LINE_HEIGHT;
 	height_width.width = MINI_LINE_WIDTH;
 	game->dir_x = (x + game->player.dir.x * MINI_UNITS_PER_TILE);
 	game->dir_y = (y + game->player.dir.y * MINI_UNITS_PER_TILE);
-	// printf("%s %d dir big    x %f\n", __FILE__, __LINE__, game->player.dir.x);
-	// printf("%s %d dir big    y %f\n", __FILE__, __LINE__, game->player.dir.y);
-	// printf("%s %d dir        x %f\n", __FILE__, __LINE__, game->dir_x);
-	// printf("%s %d dir        y %f\n", __FILE__, __LINE__, game->dir_y);
+	// game->dir_x = (x + (game->player.dir.x + 1)* MINI_UNITS_PER_TILE);
+	// game->dir_y = (y + (game->player.dir.y + 1) * MINI_UNITS_PER_TILE);
+	printf("%s %d dir big    x %f\n", __FILE__, __LINE__, game->player.dir.x);
+	printf("%s %d dir big    y %f\n", __FILE__, __LINE__, game->player.dir.y);
+	printf("%s %d dir        x %f\n", __FILE__, __LINE__, game->dir_x);
+	printf("%s %d dir        y %f\n", __FILE__, __LINE__, game->dir_y);
 	x_diff = game->dir_x - game->miniplayer->instances->x;
 	y_diff = game->dir_y - game->miniplayer->instances->y;
 	printf("%s %d x diff %f  y diff %f \n", __FILE__, __LINE__, x_diff, y_diff);
@@ -70,43 +215,46 @@ void	draw_line(t_game *game)
 	// 		x_diff *= -1;
 	// 	if (y_diff < 0)
 	// 		y_diff *= -1;
-	// printf("%s %d (x_diff + height_width.width) %f\n", __FILE__, __LINE__, (x_diff + height_width.width) );
-	// printf("%s %d (y_diff + height_width.heigth) %f\n", __FILE__, __LINE__, (y_diff + height_width.height) );
+	// printf("%s %d (x_diff + height_width.width) * MINI_UNITS_PER_TILE %f\n", __FILE__, __LINE__, (x_diff + height_width.width) * MINI_UNITS_PER_TILE);
+	// printf("%s %d (y_diff + height_width.heigth) * MINI_UNITS_PER_TILE %f\n", __FILE__, __LINE__, (y_diff + height_width.height) * MINI_UNITS_PER_TILE);
+	printf("%s %d (x_diff + height_width.width) %f\n", __FILE__, __LINE__, (x_diff + height_width.width) );
+	printf("%s %d (y_diff + height_width.heigth) %f\n", __FILE__, __LINE__, (y_diff + height_width.height) );
+	// game->line = mlx_new_image(game->mlx, (x_diff + height_width.width) * MINI_UNITS_PER_TILE,
+	// 				(y_diff + height_width.height) * MINI_UNITS_PER_TILE);
 	game->line = mlx_new_image(game->mlx, (x_diff + height_width.width),
-					(y_diff + height_width.height));
+	(y_diff + height_width.height));
 	if (!game->line)
-		ft_error("mlx_new_image for game->line unsuccessful\n", 42, game);
-	// passing transparent black to clear img
-	// pixset_yx_height_width(game->line, 0, yx, height_width);
+	ft_error("mlx_new_image for game->line unsuccessful\n", 42, game);
 	printf("%s %d new img height %d width %d\n", __FILE__, __LINE__, game->line->height, game->line->width);
-	// if (game->dir_x > game->miniplayer->instances->x && game->dir_y >= game->miniplayer->instances->y )
-	// {
-		printf("%s %d\n", __FILE__, __LINE__);
-		while (x <= game->dir_x)
-		{
-			if (slope)
-				y = slope * (x - game->miniplayer->instances->x) + game->miniplayer->instances->y;
-			printf("%s %d            x %d\n", __FILE__, __LINE__, x);
-			printf("%s %d            y %d\n\n", __FILE__, __LINE__, y);
-			yx.x = x - game->miniplayer->instances->x;
-			yx.y = y - game->miniplayer->instances->y;
-			pixset_yx_height_width(game->line, get_rgba(222, 222, 0, 255), yx, height_width);
-			x++;
-		}
-	// }
-	if (mlx_image_to_window(game->mlx, game->line,
-		game->player.pos.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR,
-		game->player.pos.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR) < 0)
+	while (x <= game->dir_x)
 	{
-		ft_error("Error\nImage didn't arrive at window", 1, game);
+		if (slope)
+		y = slope * (x - game->miniplayer->instances->x) + game->miniplayer->instances->y;
+		printf("%s %d            x %d\n", __FILE__, __LINE__, x);
+		printf("%s %d            y %d\n\n", __FILE__, __LINE__, y);
+		// yx.x = x;
+		// yx.y = y;
+		yx.x = x - game->miniplayer->instances->x;
+		yx.y = y - game->miniplayer->instances->y;
+		pixset_yx_height_width(game->line, get_rgba(222, 222, 0, 255), yx, height_width);
+		x++;
 	}
-	// game->line->instances->x = game->player.pos.x * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
-	// game->line->instances->y = game->player.pos.y * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+	
+	// yx.y = 0;
+	// yx.x = 0;
+	// pixset_yx_height_width(game->line, get_rgba(222, 222, 0, 255), yx,
+	// 	height_width);
+	if (mlx_image_to_window(game->mlx, game->line,
+		game->miniplayer->instances->x, game->miniplayer->instances->y) < 0)
+		{
+			ft_error("Error\nImage didn't arrive at window", 1, game);
+		}
 	game->line->instances->x = game->miniplayer->instances->x;
 	game->line->instances->y = game->miniplayer->instances->y;
-	// printf("%s %d mini x %d  mini y %d\n", __FILE__, __LINE__, game->line->instances->x, game->line->instances->y);
-	// mlx_resize_image(game->line, game->line->width * MINI_RESIZE_FACTOR,
-	// 		game->line->height * MINI_RESIZE_FACTOR);
+		// mlx_resize_image(game->line, game->line->width * MINI_RESIZE_FACTOR,
+		// 	game->line->height * MINI_RESIZE_FACTOR);
+	// pixset_yx_height_width(game->line, 0, yx, height_width);
+	printf("%s %d mini x %d  mini y %d\n", __FILE__, __LINE__, game->line->instances->x, game->line->instances->y);
 }
 
 // # define BPP sizeof(int32_t) /* Only support RGBA */
