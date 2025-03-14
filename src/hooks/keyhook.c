@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 15:51:35 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 17:02:56 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,7 @@ void	movement_keyhook(t_game *g)
 void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_game			*g;
+
 	g = (t_game *)param;
 	// double	rt_speed = g->mlx->delta_time * RT_SPEED;
 	// double	mv_speed = 0.12;
@@ -142,6 +143,8 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		mlx_close_window(g->mlx);
 		ft_error("Game closed with esc.\n", 0, g);
 	}
+	if (keydata.key == MLX_KEY_M)
+		g->show_minimap = true;
 	if (g->ray.hit_x_wall && mlx_is_key_down(g->mlx, MLX_KEY_TAB))
 	{
 		print_ray_status(g);
@@ -152,6 +155,24 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		print_ray_status(g);
 		printf(ANSI_GREEN"xintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
 	}
-	// printf(ANSI_GREEN"pos x %f, pos y %f\n", game->player.pos.x, game->player.pos.y);
-	// printf("PLAYERdir x %f - PLAYERdir y %f\n"ANSI_RESET, game->player.dir.x, game->player.dir.y);
+	if (g->show_minimap)
+	{
+		// printf("%s %d            \n\n", __FILE__, __LINE__);
+		if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
+		{
+			ft_error("Error\nImage didn't arrive at window", 1, g);
+		}
+		// printf("%s %d            \n\n", __FILE__, __LINE__);
+
+			// printf("%s %d            \n\n", __FILE__, __LINE__);
+		draw_mini_player(g);
+		// g->miniplayer->instances->x = g->player.pos.x * MINI_UNITS_PER_TILE;
+		// g->miniplayer->instances->y = g->player.pos.y * MINI_UNITS_PER_TILE;
+		g->miniplayer->instances->x = g->player.pos.x * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+		// printf("%s %d            \n\n", __FILE__, __LINE__);
+		g->miniplayer->instances->y = g->player.pos.y * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+		// g->line->instances->x = g->player.pos.x * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+		// g->line->instances->y = g->player.pos.y * MINI_RESIZE_FACTOR * MINI_UNITS_PER_TILE;
+		draw_line(g);
+	}
 }

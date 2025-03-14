@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 15:53:49 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 16:33:01 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@
 #  define S_HEIGHT 900
 # endif
 
+# ifndef MINI
+#  define MINI_RESIZE_FACTOR 3
+#  define MINI_UNITS_PER_TILE 10
+// #  define MINI_PLAYER_WIDTH 10
+// #  define MINI_PLAYER_HEIGHT 10
+#  define MINI_PLAYER_WIDTH MINI_UNITS_PER_TILE
+#  define MINI_PLAYER_HEIGHT MINI_UNITS_PER_TILE
+#  define MINI_LINE_HEIGHT 3
+#  define MINI_LINE_WIDTH 3
+// #  define MV_SPEED_MINI 1
+# endif
+
 # include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
@@ -47,6 +59,13 @@ typedef struct coordinates
 
 }		t_cords;
 
+typedef struct	coordinates_int32
+{
+	int32_t	y;
+	int32_t	x;
+}		t_cords_int32;
+
+//<<<<<<< fforster
 // holds player info like position and spawn rules
 typedef struct player
 {
@@ -57,6 +76,16 @@ typedef struct player
 	// saves direction N/E/S/W
 	char	looking;
 }		t_player;
+
+//=======
+
+typedef struct	height_width
+{
+	u_int32_t	height;
+	u_int32_t	width;
+}				t_height_width;
+
+//>>>>>>> nsloniow_pullFynn
 
 // holds info about map like size and each tiles content
 typedef struct map
@@ -126,6 +155,12 @@ typedef struct master_struct
 	t_player		player;
 	t_ray			ray;
 
+	bool			show_minimap;
+	mlx_image_t		*minimap;
+	mlx_image_t		*miniplayer;
+	mlx_image_t		*line;
+	double			dir_x;
+	double			dir_y;
 }		t_game;
 
 //src/main.c
@@ -153,4 +188,12 @@ void	draw_half_tex(t_game *g);
 void	ft_error(char *msg, int errcode, t_game	*game);
 // void	delete_textures(t_game *a);
 
+//src/graphic/image.c
+void	draw_mini_map(t_game *game);
+void	draw_mini_player(t_game *game);
+void	draw_line(t_game *game);
+int		get_rgba(int r, int g, int b, int a);
+void	pixset(mlx_image_t *img, int colour);
+void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
+			t_height_width height_width);
 #endif

@@ -6,11 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:13:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 15:34:20 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/14 16:16:26 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cub3D.h"
+#include "../../includes/cub3D.h"
 
 int	*create_color_array(t_game *g, mlx_texture_t *tex)
 {
