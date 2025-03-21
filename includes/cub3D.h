@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 16:33:01 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/21 10:58:30 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 #  define MINI_PLAYER_HEIGHT MINI_UNITS_PER_TILE
 #  define MINI_LINE_HEIGHT 3
 #  define MINI_LINE_WIDTH 3
+#  define MINI_RAY_LENGRH 10
 // #  define MV_SPEED_MINI 1
 # endif
 
