@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/21 10:58:30 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/18 19:08:35 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@
 # endif
 
 # ifndef MINI
-#  define MINI_RESIZE_FACTOR 3
+#  define MINI_RESIZE_FACTOR 10
 #  define MINI_UNITS_PER_TILE 10
-// #  define MINI_PLAYER_WIDTH 10
-// #  define MINI_PLAYER_HEIGHT 10
-#  define MINI_PLAYER_WIDTH MINI_UNITS_PER_TILE
-#  define MINI_PLAYER_HEIGHT MINI_UNITS_PER_TILE
-#  define MINI_LINE_HEIGHT 3
-#  define MINI_LINE_WIDTH 3
-#  define MINI_RAY_LENGRH 10
+#  define MINI_PLAYER_WIDTH 1
+#  define MINI_PLAYER_HEIGHT 1
+// #  define MINI_PLAYER_WIDTH MINI_UNITS_PER_TILE
+// #  define MINI_PLAYER_HEIGHT MINI_UNITS_PER_TILE
+#  define MINI_LINE_HEIGHT 1
+#  define MINI_LINE_WIDTH 1
+#  define MINI_RAY_LENGRH 1
 // #  define MV_SPEED_MINI 1
 # endif
 
