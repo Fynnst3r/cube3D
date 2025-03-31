@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/21 11:02:12 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/31 03:03:23 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,14 +157,20 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	}
 	if (g->show_minimap)
 	{
-		// printf("%s %d            \n\n", __FILE__, __LINE__);
+		printf("%s %d            \n\n", __FILE__, __LINE__);
+		draw_mini_map(g);
+		// draw_line(g);
+		draw_cone(g);
+		// mlx_resize_image(game->minimap, game->bg->width/MINI_RESIZE_FACTOR,
+			// 	game->bg->height/MINI_RESIZE_FACTOR);
+		// mlx_resize_image(g->minimap, g->minimap->width * MINI_RESIZE_FACTOR,
+			// g->minimap->height * MINI_RESIZE_FACTOR);
 		if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
 		{
 			ft_error("Error\nImage didn't arrive at window", 1, g);
 		}
 		// printf("%s %d            \n\n", __FILE__, __LINE__);
-
-			// printf("%s %d            \n\n", __FILE__, __LINE__);
+		// printf("%s %d            \n\n", __FILE__, __LINE__);
 		draw_mini_player(g);
 		g->miniplayer->instances->x = g->player.pos.x * MINI_UNITS_PER_TILE;
 		g->miniplayer->instances->y = g->player.pos.y * MINI_UNITS_PER_TILE;

@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/18 19:08:35 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/31 03:00:27 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@
 #  define MINI_LINE_WIDTH 1
 #  define MINI_RAY_LENGRH 1
 // #  define MV_SPEED_MINI 1
+// Total spread in degrees
+#  define ANGLE_SPREAD 10.0  
+#  define FOV 0.77
 # endif
 
 # include <stdio.h>
@@ -191,6 +194,7 @@ void	ft_error(char *msg, int errcode, t_game	*game);
 
 //src/graphic/image.c
 void	draw_mini_map(t_game *game);
+void	draw_cone(t_game *game);
 void	draw_mini_player(t_game *game);
 void	draw_line(t_game *game);
 int		get_rgba(int r, int g, int b, int a);

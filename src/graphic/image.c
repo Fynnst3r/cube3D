@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/03/23 15:02:09 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/03/31 02:07:08 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,48 @@ void	pixset(mlx_image_t *img, int colour)
 	}
 }
 
+void draw_cone(t_game *game)
+{
+    double start_x = game->player.pos.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+    double start_y = game->player.pos.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+
+    int num_lines = 50;  // Number of lines in the cone
+    double cone_angle = 0.01;  // The amount by which we shift each line (in radians)
+	
+	double			x;
+	double			y;
+	x = game->player.pos.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+	y = game->player.pos.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+	game->dir_x = (x + game->player.dir.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR * MINI_RAY_LENGRH);
+	game->dir_y = (y + game->player.dir.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR * MINI_RAY_LENGRH);
+	printf("%s %d dir big    x %f\n", __FILE__, __LINE__, game->player.dir.x);
+	printf("%s %d dir big    y %f\n", __FILE__, __LINE__, game->player.dir.y);
+	printf("%s %d dir        x %f\n", __FILE__, __LINE__, game->dir_x);
+	printf("%s %d dir        y %f\n", __FILE__, __LINE__, game->dir_y);
+    // Draw the original line first
+    // double end_x = game->dir_x;
+    // double end_y = game->dir_y;
+    // draw_line(game);
+    
+	// draw cone
+	int lines_per_side_off_direction_line = -num_lines/2;
+    // draw additional lines to form a cone
+	
+	// half on the left side, half on the right side
+    while ( lines_per_side_off_direction_line <= num_lines / 2 ) 
+    {
+        // Calculate the new angle for each cone line
+        double angle = atan2(game->player.dir.y, game->player.dir.x) +
+						( lines_per_side_off_direction_line * cone_angle);
+        
+        // Calculate the direction vector for this new angle
+        game->dir_x = start_x + cos(angle) * MINI_RAY_LENGRH * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+        game->dir_y = start_y + sin(angle) * MINI_RAY_LENGRH * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+        draw_line(game);
+		lines_per_side_off_direction_line++;
+    }
+}
+
 void	draw_line(t_game *game)
 {
 	double			start_x;
@@ -50,10 +92,11 @@ void	draw_line(t_game *game)
 	double			x_diff;
 	double			y_diff;
 	double			slope;
-	int				r = 0;
-	int				g = 0;
-	int				b = 0;
-	int				a = 125;
+	int				r = 111;
+	int				g = 11;
+	int				b = 11;
+	// int				a = 125;
+	int				a = 255;
 
 	printf("%s %d           \n", __FILE__, __LINE__);
 	start_x = game->player.pos.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
@@ -64,31 +107,31 @@ void	draw_line(t_game *game)
 	printf("%s %d start     x %f  y %f\n", __FILE__, __LINE__, x, y);
 	height_width.height = MINI_LINE_HEIGHT;
 	height_width.width = MINI_LINE_WIDTH;
-	game->dir_x = (x + game->player.dir.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR * MINI_RAY_LENGRH);
-	game->dir_y = (y + game->player.dir.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR * MINI_RAY_LENGRH);
-	printf("%s %d dir big    x %f\n", __FILE__, __LINE__, game->player.dir.x);
-	printf("%s %d dir big    y %f\n", __FILE__, __LINE__, game->player.dir.y);
-	printf("%s %d dir        x %f\n", __FILE__, __LINE__, game->dir_x);
-	printf("%s %d dir        y %f\n", __FILE__, __LINE__, game->dir_y);
+	// game->dir_x = (x + game->player.dir.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR * MINI_RAY_LENGRH);
+	// game->dir_y = (y + game->player.dir.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR * MINI_RAY_LENGRH);
+	// printf("%s %d dir big    x %f\n", __FILE__, __LINE__, game->player.dir.x);
+	// printf("%s %d dir big    y %f\n", __FILE__, __LINE__, game->player.dir.y);
+	// printf("%s %d dir        x %f\n", __FILE__, __LINE__, game->dir_x);
+	// printf("%s %d dir        y %f\n", __FILE__, __LINE__, game->dir_y);
 	x_diff = game->dir_x - x;
 	y_diff = game->dir_y - y;
-	printf("%s %d x diff %f  y diff %f \n", __FILE__, __LINE__, x_diff, y_diff);
-	printf("%s %d new minimap height %d width %d\n", __FILE__, __LINE__, game->minimap->height, game->minimap->width);
+	// printf("%s %d x diff %f  y diff %f \n", __FILE__, __LINE__, x_diff, y_diff);
+	// printf("%s %d new minimap height %d width %d\n", __FILE__, __LINE__, game->minimap->height, game->minimap->width);
 	if (fabs(x_diff) > fabs(y_diff))
 	{
 		if (x_diff == 0)
 			slope = 0;
 		else
 			slope = y_diff / x_diff;
-		printf("%s %d slope %f\n", __FILE__, __LINE__, slope);
+		// printf("%s %d slope %f\n", __FILE__, __LINE__, slope);
 		if (x_diff > 0)
 			while (x <= game->dir_x)
 			{
-					y = round(slope * (x - start_x) + start_y);
+				y = round(slope * (x - start_x) + start_y);
 				yx.x = (int32_t)x;
 				yx.y = (int32_t)y;
-				printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
-				printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
+				// printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
+				// printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
 				pixset_yx_height_width(game->minimap, get_rgba(r, g, b, a), yx, height_width);
 				x++;
 			}
@@ -98,8 +141,8 @@ void	draw_line(t_game *game)
 					y = round(slope * (x - start_x) + start_y);
 				yx.x = (int32_t)x;
 				yx.y = (int32_t)y;
-				printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
-				printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
+				// printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
+				// printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
 				pixset_yx_height_width(game->minimap, get_rgba(r, g, b, a), yx, height_width);
 				x--;
 			}
@@ -117,8 +160,8 @@ void	draw_line(t_game *game)
 				x = round(slope * (y - start_y) + start_x);
 				yx.x = (int32_t)x;
 				yx.y = (int32_t)y;
-				printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
-				printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
+				// printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
+				// printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
 				pixset_yx_height_width(game->minimap, get_rgba(r, g, b, a), yx, height_width);
 				y++;
 			}
@@ -128,8 +171,8 @@ void	draw_line(t_game *game)
 				x = round(slope * (y - start_y) + start_x);
 				yx.x = (int32_t)x;
 				yx.y = (int32_t)y;
-				printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
-				printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
+				// printf("%s %d            x %d\n", __FILE__, __LINE__, yx.x);
+				// printf("%s %d            y %d\n\n", __FILE__, __LINE__, yx.y);
 				pixset_yx_height_width(game->minimap, get_rgba(r, g, b, a), yx, height_width);
 				y--;
 			}

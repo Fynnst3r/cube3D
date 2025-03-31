@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 17:02:05 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/31 03:05:39 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,8 @@ void	map_len(t_map *map)
 
 	y = -1;
 	while (map->tiles[++y])
-		if (ft_strlen(map->tiles[y]) > map->max_y)
+		// if (ft_strlen(map->tiles[y]) > map->max_y)
+		if (ft_strlen(map->tiles[y]) > map->max_x)
 			map->max_x = ft_strlen(map->tiles[y]);
 	map->max_y = y;
 	printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
@@ -64,7 +65,9 @@ int	main(int ac, char **av)
 	(void)av;
 	init_garbage_collector();
 	ft_bzero(&game, sizeof(t_game));
-	game.map.tiles = read_tiles("maps/simple.cub");
+	// game.map.tiles = read_tiles("maps/simple.cub");
+	// game.map.tiles = read_tiles("maps/TEST.cub");
+	game.map.tiles = read_tiles("maps/test_short.cub");
 	if (!game.map.tiles)
 		ft_error("Error\nNo map", 2, &game);
 	map_len(&game.map);
@@ -97,8 +100,10 @@ int	main(int ac, char **av)
 	mlx_resize_image(game.img, 100, 100);
 	init_raycaster(&game);
 	draw_mini_map(&game);
-	mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
-		game.minimap->height * MINI_RESIZE_FACTOR);
+	// draw_line(&game);
+	draw_cone(&game);
+	// mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
+	// 	game.minimap->height * MINI_RESIZE_FACTOR);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
 	mlx_loop(game.mlx);
