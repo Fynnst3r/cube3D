@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:13:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 16:16:26 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:38:49 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,10 @@ void	draw_half_tex(t_game *g)
 	{
 		while (x < g->img->width)
 		{
-			mlx_put_pixel(g->img, x, y, get_rgba(g->textures.walltex->pixels[i],
-					g->textures.walltex->pixels[i + 1],
-					g->textures.walltex->pixels[i + 2],
-					g->textures.walltex->pixels[i + 3]));
+			mlx_put_pixel(g->img, x, y, get_rgba(g->textures.no_tex->pixels[i],
+					g->textures.no_tex->pixels[i + 1],
+					g->textures.no_tex->pixels[i + 2],
+					g->textures.no_tex->pixels[i + 3]));
 			x++;
 			i += 4;
 		}

@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 15:54:33 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:28:18 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void	draw_vertical_line(t_game *g, int x)
 	int draw_end = wall_height + draw_start;
 	if (draw_end > S_HEIGHT)
 		draw_end = S_HEIGHT - 1;
-	int	ceiling_color = get_rgba(20, 20, 255, 255);
+	int	ceiling_color = g->map.ceiling_color;
 	int	wall_color = get_rgba(130, 90, 0, 255);
 	// int	wall_color = get_rgba(g->wall->pixels[y], g->wall->pixels[y + 1], g->wall->pixels[y + 2], g->wall->pixels[y + 3]);
 	int	wall_color2 = get_rgba(250, 20, 20, 255);
@@ -150,7 +150,7 @@ void	draw_vertical_line(t_game *g, int x)
 		wall_color /= 2;
 		wall_color2 /= 2;
 	}
-	int	floor_color = get_rgba(0, 130, 70, 255);
+	int	floor_color = g->map.floor_color;
 
 	y = 0;
 	// tx = g->ray.y_intersect * (double)g->wall->width;

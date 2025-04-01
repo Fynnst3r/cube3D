@@ -8,6 +8,8 @@ LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
+		src/parse/parse_scene.c\
+		src/parse/parse_map.c\
 		src/init/init_ray.c \
 		src/hooks/game_loop.c \
 		src/hooks/keyhook.c \
@@ -52,6 +54,7 @@ $(OBJ_DIR)/%.o: %.c | create_dirs
 create_dirs:
 	@mkdir -p $(OBJ_DIR)/src \
 		$(OBJ_DIR)/src/error \
+		$(OBJ_DIR)/src/parse \
 		$(OBJ_DIR)/src/init \
 		$(OBJ_DIR)/src/graphic \
 		$(OBJ_DIR)/src/hooks \

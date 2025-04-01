@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 16:33:01 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/31 21:19:11 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,17 @@
 # include "garbage_collector.h"
 # include "colors.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+
+enum e_scene_dir
+{
+	NO = 1,
+	SO = 2,
+	WE = 3,
+	EA = 4,
+	FLOOR = 5,
+	CEILING = 6,
+	UNIDENTIFIED = 7
+};
 
 // changing to double because math librarys are using double on iOS
 typedef struct coordinates
@@ -97,6 +108,8 @@ typedef struct map
 	size_t	max_x;
 	t_cords	spawn;
 
+	int		floor_color;
+	int		ceiling_color;
 }		t_map;
 
 // holds variables needed for the raycasting
@@ -138,6 +151,10 @@ typedef struct raycaster
 typedef struct textures
 {
 	mlx_texture_t	*walltex;
+	mlx_texture_t	*no_tex;
+	mlx_texture_t	*so_tex;
+	mlx_texture_t	*we_tex;
+	mlx_texture_t	*ea_tex;
 	int				*wallcolors;
 
 }		t_textures;
@@ -166,6 +183,13 @@ typedef struct master_struct
 //src/main.c
 int		get_rgba(int r, int g, int b, int a);
 
+//src/parse/parse_scene.c
+void	parse_scene(t_game *game, int ac, char **av);
+char	**read_scenefile(char *av);
+//src/parse/parse_map.c
+void	parse_map(t_map *map, t_player *player, t_textures *tex);
+
+
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
 //src/hooks/game_loop.c
@@ -186,6 +210,7 @@ void	draw_half_tex(t_game *g);
 
 //src/error.c
 void	ft_error(char *msg, int errcode, t_game	*game);
+void	parse_error(t_map *map, t_textures *tex, char *msg, int errcode);
 // void	delete_textures(t_game *a);
 
 //src/graphic/image.c

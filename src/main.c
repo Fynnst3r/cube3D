@@ -6,55 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 17:02:05 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/01 17:38:40 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cub3D.h"
-
-// READS ENTIRE FILE no checks at all
-// and it deletes all empty lines because of ft_split
-char	**read_tiles(char *av)
-{
-	int		fd;
-	char	*map_lines;
-	char	*buff;
-	char	*tmp;
-	char	**res;
-
-	map_lines = ft_strdup("");
-	fd = open(av, O_RDONLY);
-	while (1)
-	{
-		tmp = map_lines;
-		buff = get_next_line(fd);
-		if (buff == NULL)
-			break ;
-		map_lines = f_strjoin(tmp, buff);
-		ft_free(tmp);
-		tmp = NULL;
-		ft_free(buff);
-		buff = NULL;
-	}
-	res = ft_split(map_lines, '\n');
-	ft_free(map_lines);
-	map_lines = NULL;
-	close(fd);
-	return (res);
-}
-
-// tiles needs to be seperated from other scene variables like NS or F and C
-void	map_len(t_map *map)
-{
-	size_t	y;
-
-	y = -1;
-	while (map->tiles[++y])
-		if (ft_strlen(map->tiles[y]) > map->max_y)
-			map->max_x = ft_strlen(map->tiles[y]);
-	map->max_y = y;
-	printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
-}
 
 int	main(int ac, char **av)
 {
@@ -64,10 +20,8 @@ int	main(int ac, char **av)
 	(void)av;
 	init_garbage_collector();
 	ft_bzero(&game, sizeof(t_game));
-	game.map.tiles = read_tiles("maps/simple.cub");
-	if (!game.map.tiles)
-		ft_error("Error\nNo map", 2, &game);
-	map_len(&game.map);
+	parse_scene(&game, ac, av);
+	parse_map(&game.map, &game.player, &game.textures);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game.mlx = mlx_init(S_WIDTH, S_HEIGHT, "cub3D", true);
 	if (!game.mlx)
@@ -78,7 +32,7 @@ int	main(int ac, char **av)
 	game.textures.walltex = mlx_load_png("./textures/test.png");
 	if (!game.textures.walltex)
 		ft_error("Error\nCould not create wall image\n", 42, &game);
-	game.img = mlx_new_image(game.mlx, game.textures.walltex->width, game.textures.walltex->height);
+	game.img = mlx_new_image(game.mlx, game.textures.no_tex->width, game.textures.no_tex->height);
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
 	// game.wall = mlx_texture_to_image(game.mlx, game.textures.walltex);

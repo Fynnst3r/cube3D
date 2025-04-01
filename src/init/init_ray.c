@@ -6,42 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:39:25 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 15:48:57 by fforster         ###   ########.fr       */
+/*   Updated: 2025/03/31 16:00:49 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
-
-static int	find_player(t_game *g)
-{
-	size_t	x;
-	size_t	y;
-	int		found;
-
-	x = 0;
-	y = 0;
-	found = 0;
-	while (g->map.tiles[y])
-	{
-		while (g->map.tiles[y][x])
-		{
-			if (g->map.tiles[y][x] == 'N' || g->map.tiles[y][x] == 'E'
-				|| g->map.tiles[y][x] == 'S' || g->map.tiles[y][x] == 'W')
-			{
-				g->player.pos.x = x + 0.5;
-				g->player.pos.y = y + 0.5;
-			printf(ANSI_GREEN"player.pos.x = %f\nplayer.pos.y = %f\n"ANSI_RESET, g->player.pos.x, g->player.pos.y);
-				found++;
-				g->player.looking = g->map.tiles[y][x];
-				g->map.tiles[y][x] = '0';
-			}
-			x++;
-		}
-		x = 0;
-		y++;
-	}
-	return (found);
-}
 
 //look dirs (N/E/S/W)
 //						N =(x = 0, Y = -1)
@@ -100,8 +69,6 @@ static void	set_plane(t_ray *r, char d)
 
 void	init_raycaster(t_game *g)
 {
-	if (find_player(g) != 1)
-		ft_error("Too many or no players!", 4, g);
 	decide_dir(&g->player);
 	set_plane(&g->ray, g->player.looking);
 }
