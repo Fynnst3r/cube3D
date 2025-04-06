@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/06 20:49:50 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:31:22 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ void	draw_vertical_line(t_game *g, int x)
 		// printf("%s %d y %d draw_start %d y_tx %d r %d g %d b %d a %d\n", __FILE__,
 		//        __LINE__, y, draw_start, y_tx, g->textures[0].walltex->pixels[y_tx], g->textures[0].walltex->pixels[y_tx + 1], 
 		// 	g->textures[0].walltex->pixels[y_tx + 2], g->textures[0].walltex->pixels[y_tx + 3]);
-		if ((y_tx + 3) <= (g->textures->walltex->width * g->textures->walltex->height * 4))
+		if ((y_tx + 3) <= (int)(g->textures->walltex->width * g->textures->walltex->height * 4))
 		{
 			// printf("%s %d y %d  y_tx %d \n", __FILE__, __LINE__, y, y_tx);
 			wall_color = get_rgba(g->textures[0].walltex->pixels[y_tx], g->textures[0].walltex->pixels[y_tx + 1], 
@@ -188,7 +188,7 @@ void	draw_vertical_line(t_game *g, int x)
 			// // this makes it in proportion
 			y_tx = round((y - draw_start) * y_proportion);
 			// // printf("%s %d y %d  y_tx %d \n", __FILE__, __LINE__, y, y_tx);
-			if (y_tx >= g->textures->walltex->height)
+			if (y_tx >= (int)g->textures->walltex->height)
 				y_tx = g->textures->walltex->height - 1;
 
 			y_tx *= g->textures->walltex->width;

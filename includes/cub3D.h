@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/31 03:00:27 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:28:07 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # endif
 
 # ifndef MINI
-#  define MINI_RESIZE_FACTOR 10
+#  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
 #  define MINI_PLAYER_WIDTH 1
 #  define MINI_PLAYER_HEIGHT 1
@@ -153,7 +153,8 @@ typedef struct master_struct
 	mlx_image_t		*bg;
 	mlx_image_t		*img;
 	mlx_image_t		*wall;
-	t_textures		textures;
+	// t_textures		textures;
+	t_textures		textures[2];
 
 	t_map			map;
 	t_player		player;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/13 19:32:32 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/06 21:32:39 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,22 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 
 void	delete_textures(t_game *g)
 {
-	if (g->textures.walltex)
+	// if (g->textures.walltex)
+	// {
+	// 	mlx_delete_texture(g->textures.walltex);
+	// 	if (g->textures.wallcolors)
+	// 		ft_free(g->textures.wallcolors);
+	// }
+	if (g->textures[0].walltex)
 	{
-		mlx_delete_texture(g->textures.walltex);
-		if (g->textures.wallcolors)
-			ft_free(g->textures.wallcolors);
+		mlx_delete_texture(g->textures[0].walltex);
+		if (g->textures[0].wallcolors)
+			ft_free(g->textures[0].wallcolors);
+	}
+	if (g->textures[1].walltex)
+	{
+		mlx_delete_texture(g->textures[1].walltex);
+		if (g->textures[1].wallcolors)
+			ft_free(g->textures[1].wallcolors);
 	}
 }
