@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/08 19:12:09 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:26:54 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ int	main(int ac, char **av)
 	ft_bzero(&game, sizeof(t_game));
 	parse_scene(&game, ac, av);
 	parse_map(&game.map, &game.player, &game.textures, av[1]);
-	printf(ANSI_RED"AAAAAAAA\n"ANSI_RESET);
 	mlx_set_setting(MLX_STRETCH_IMAGE, true);
 	game.mlx = mlx_init(S_WIDTH, S_HEIGHT, "cub3D", true);
 	if (!game.mlx)
@@ -33,9 +32,6 @@ int	main(int ac, char **av)
 	game.textures.walltex = mlx_load_png("./textures/test.png");
 	if (!game.textures.walltex)
 		ft_error("Error\nCould not create wall image\n", 42, &game);
-	game.img = mlx_new_image(game.mlx, game.textures.no_tex->width, game.textures.no_tex->height);
-	if (!game.img)
-		ft_error("Error\nImage didn't create", 1, &game);
 	// game.wall = mlx_texture_to_image(game.mlx, game.textures.walltex);
 	// game.wall = mlx_new_image(game.mlx, 100, 100);
 	// if (!game.wall)
@@ -48,12 +44,10 @@ int	main(int ac, char **av)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
 	// if (mlx_image_to_window(game.mlx, game.wall, 100, 100) < 0)
 		// ft_error("Error\nImage didn't arrive at window", 1, &game);
-	draw_half_tex(&game);
-	mlx_resize_image(game.img, 100, 100);
 	init_raycaster(&game);
-	// draw_mini_map(&game);
-	// mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
-	// 	game.minimap->height * MINI_RESIZE_FACTOR);
+	draw_mini_map(&game);
+	mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
+		game.minimap->height * MINI_RESIZE_FACTOR);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
 	mlx_loop(game.mlx);

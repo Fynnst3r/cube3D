@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/08 16:38:42 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:28:42 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,10 @@ typedef struct textures
 	mlx_texture_t	*so_tex;
 	mlx_texture_t	*we_tex;
 	mlx_texture_t	*ea_tex;
-	int				*wallcolors;
+	int				*color_no;
+	int				*color_so;
+	int				*color_we;
+	int				*color_ea;
 
 }		t_textures;
 
@@ -169,8 +172,6 @@ typedef struct master_struct
 	mlx_t			*mlx;
 
 	mlx_image_t		*bg;
-	mlx_image_t		*img;
-	mlx_image_t		*wall;
 	t_textures		textures;
 
 	t_map			map;
