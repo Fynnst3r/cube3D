@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:43:30 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 14:25:40 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 16:01:30 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,8 @@ int	load_texture(t_textures *t, char *path, int dir)
 	if (!path)
 		return (printf("Error\nCould not find path of texture\n"), 1);
 	tmp = mlx_load_png(path);
+	if (!tmp)
+		return (printf("Texture %s failed to load!\n", path), 1);
 	ft_free(path);
 	path = NULL;
 	if (!tmp)

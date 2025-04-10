@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/03 18:26:27 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:49:46 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,48 +133,59 @@ void	ray_len_and_hitpoint(const t_player p, t_ray *r)
 // figure out what to do if wallheight is higher than screen height when walking into wall
 void	draw_vertical_line(t_game *g, int x)
 {
-	int	y = 0;
-
-	int	wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
-	int	draw_start = -wall_height / 2 + S_HEIGHT / 2;
-	int draw_end = wall_height + draw_start;
+	int				y;
+	unsigned int	x_tx = 0;
+	int				wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
+	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
+	int				draw_end = wall_height + draw_start;
+	int				ceiling_color = get_rgba(20, 20, 255, 255);
+	int				wall_color;
+	int				floor_color = get_rgba(0, 130, 70, 255);
+	
 	if (draw_end > S_HEIGHT)
 		draw_end = S_HEIGHT - 1;
-	int	ceiling_color = g->map.ceiling_color;
-	int	wall_color = get_rgba(130, 90, 0, 255);
-	// int	wall_color = get_rgba(g->img->pixels[y], g->img->pixels[y + 1], g->img->pixels[y + 2], g->textures.img->pixels[y + 3]);
-	int	wall_color2 = get_rgba(250, 20, 20, 255);
-	if (g->ray.hit_x_wall)
-	{
-		wall_color /= 2;
-		wall_color2 /= 2;
-	}
-	int	floor_color = g->map.floor_color;
-
-	// printf(ANSI_RED"start %i\n", draw_start);
-	// printf("end %i\n"ANSI_RESET, draw_end);
-	// if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_CONTROL))
-	// {
-	// 	draw_start /= 4;
-	// 	draw_end = draw_start + wall_height;
-	// }
+	y = 0;
 	while (y < draw_start)
 	{
 		mlx_put_pixel(g->bg, x, y, ceiling_color);
 		y++;
 	}
+	double y_proportion = (((double) g->textures[0].walltex->height / (double) wall_height));
+	int	y_tx = 0;
 	while (y < draw_end)
 	{
-		// printf("y %d\n", y);
-		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-			&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1')
+		if ((y_tx + 3) <= (int)(g->textures->walltex->width * g->textures->walltex->height * 4))
+		{
+
+mlx_texture_t	*tex;
+if (g->ray.hit_x_wall)
+	tex = (g->ray.ray_dir.x > 0) ? g->textures[0].walltex : g->textures[1].walltex;
+else
+	tex = (g->ray.ray_dir.y > 0) ? g->textures[2].walltex : g->textures[3].walltex;
+
+			// wall_color = get_rgba(g->textures[0].walltex->pixels[y_tx], g->textures[0].walltex->pixels[y_tx + 1], 
+			// 				g->textures[0].walltex->pixels[y_tx + 2], g->textures[0].walltex->pixels[y_tx + 3]);
+			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1], 
+				tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
 			mlx_put_pixel(g->bg, x, y, wall_color);
-		else if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-				&& g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
-			mlx_put_pixel(g->bg, x, y, wall_color2);
-
-		y++;
-
+		}
+			y++;
+			// this makes it in proportion
+			y_tx = round((y - draw_start) * y_proportion);
+			if (y_tx >= (int)g->textures->walltex->height)
+				y_tx = g->textures->walltex->height - 1;
+			y_tx *= g->textures->walltex->width;
+			x_tx = round(g->ray.x_intersect * g->textures[0].walltex->width);	
+			if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
+				|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
+				x_tx = round((1 - g->ray.x_intersect) * g->textures[0].walltex->width);
+			else
+				// x_tx = round(g->ray.x_intersect * g->textures[0].walltex->width);	
+				x_tx = round(g->ray.x_intersect * g->textures[0].walltex->width);	
+			if ( x_tx >= g->textures[0].walltex->width)
+				x_tx = g->textures[0].walltex->width - 1;
+			y_tx += x_tx;
+			y_tx *= 4;
 	}
 	while (y < S_HEIGHT)
 	{

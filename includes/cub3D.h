@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:28:42 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 15:55:25 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,25 @@
 #  define S_HEIGHT 900
 # endif
 
+# ifndef COLORS
+#  define CEILING_COLOR 4278195967
+#  define FLOOR_COLOR 
+# endif
+
 # ifndef MINI
-#  define MINI_RESIZE_FACTOR 3
+#  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
-// #  define MINI_PLAYER_WIDTH 10
-// #  define MINI_PLAYER_HEIGHT 10
-#  define MINI_PLAYER_WIDTH MINI_UNITS_PER_TILE
-#  define MINI_PLAYER_HEIGHT MINI_UNITS_PER_TILE
-#  define MINI_LINE_HEIGHT 3
-#  define MINI_LINE_WIDTH 3
-// #  define MV_SPEED_MINI 1
+#  define R 111
+#  define G 11
+#  define B 11
+#  define A 255
+#  define FOV 0.77
+// The amount by which we shift each line (in radians)
+#  define ANGLE_SPREAD 0.01
+// #  define Lines_FOR_CONE 50
+#  define MINI_RAY_LENGRH 1
+#  define MINI_LINE_HEIGHT 1
+#  define MINI_LINE_WIDTH 1
 # endif
 
 # include <stdio.h>
@@ -70,13 +79,12 @@ typedef struct coordinates
 
 }		t_cords;
 
-typedef struct	coordinates_int32
+typedef struct coordinates_int32
 {
 	int32_t	y;
 	int32_t	x;
 }		t_cords_int32;
 
-//<<<<<<< fforster
 // holds player info like position and spawn rules
 typedef struct player
 {
@@ -88,15 +96,11 @@ typedef struct player
 	char	looking;
 }		t_player;
 
-//=======
-
-typedef struct	height_width
+typedef struct height_width
 {
 	u_int32_t	height;
 	u_int32_t	width;
 }				t_height_width;
-
-//>>>>>>> nsloniow_pullFynn
 
 // holds info about map like size and each tiles content
 typedef struct map
@@ -165,7 +169,7 @@ typedef struct textures
 	int				*color_we;
 	int				*color_ea;
 
-}		t_textures;
+}					t_textures;
 
 typedef struct master_struct
 {
@@ -180,11 +184,9 @@ typedef struct master_struct
 
 	bool			show_minimap;
 	mlx_image_t		*minimap;
-	mlx_image_t		*miniplayer;
-	mlx_image_t		*line;
-	double			dir_x;
-	double			dir_y;
-}		t_game;
+	double			fov_line_end_x;
+	double			fov_line_end_y;
+}					t_game;
 
 //src/main.c
 int		get_rgba(int r, int g, int b, int a);
@@ -200,6 +202,17 @@ void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
 
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
+//src/error.c
+void	ft_error(char *msg, int errcode, t_game	*game);
+void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
+void	ft_free_dp(char **dp);
+// void	delete_textures(t_game *a);
+
+//src/graphic/minimap.c
+void	draw_fov_direction_line(t_game *game);
+void	draw_mini_fov(t_game *game);
+void	draw_mini_map(t_game *game);
+
 //src/hooks/game_loop.c
 void	raycaster_loop(void *param);
 void	step_which_side(t_game *g);
@@ -212,15 +225,12 @@ void	print_ray_status(t_game *g);
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
 
+//src/init/init_ray.c
+void	init_raycaster(t_game *g);
+
 //src/textures.c
 int		*create_color_array(t_game *g, mlx_texture_t *tex);
 void	draw_half_tex(t_game *g);
-
-//src/error.c
-void	ft_error(char *msg, int errcode, t_game	*game);
-void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
-void	ft_free_dp(char **dp);
-// void	delete_textures(t_game *a);
 
 //src/graphic/image.c
 void	draw_mini_map(t_game *game);

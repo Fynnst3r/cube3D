@@ -15,13 +15,14 @@ SRCS =  src/main.c\
 		src/init/init_ray.c \
 		src/hooks/game_loop.c \
 		src/hooks/keyhook.c \
-		src/graphic/textures.c \
-		src/graphic/image.c \
 		src/error/error.c \
 		garbage_collector/garbage_start.c \
 		garbage_collector/ft_malloc.c \
 		garbage_collector/free.c \
-			
+		src/graphic/image.c \
+		src/graphic/minimap.c \
+		src/graphic/textures.c \
+
 
 OBJS = $(SRCS:.c=.o)
 OBJ_DIR = obj
