@@ -1,5 +1,25 @@
-111111
-100101
-101001
-1100N1
-111111
+C 225,30,0
+C 225,30,0
+C 225,30,0
+C 225,30,0
+F 220,100,0
+
+NO ./textures/test.png
+EA ./textures/wallcub.png                                                         
+EA ./textures/wallcub.png                                                         
+EA ./textures/wallcub.png                                                         
+SO            ./textures/wallcub.png   
+         WE ./textures/wallcub.png
+         WE ./textures/wallcub.png
+						NO ./textures/wallcub.png
+EA ./textures/wallcub.png                                                         
+         WE ./textures/wallcub2.png
+         WE ./textures/wallcub.png
+         WE ./textures/wallcub.png
+
+111111111111
+100000000001
+100000000001
+10000N000001
+100000000001
+222222222222

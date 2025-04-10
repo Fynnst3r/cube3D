@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:43:30 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/01 18:44:06 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:25:40 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,133 +91,168 @@ int	check_tex_dir(char dir_identifer[3])
 	return (0);
 }
 
-void	load_texture(t_textures *t, char *path, int dir)
+void	overwrite_texture(mlx_texture_t **old, mlx_texture_t *new)
+{
+	if (*old)
+	{
+		mlx_delete_texture(*old);
+		*old = new;
+	}
+	else
+		*old = new;
+}
+
+int	load_texture(t_textures *t, char *path, int dir)
 {
 	mlx_texture_t	*tmp;
 
 	if (!path)
-		parse_error(NULL, t, "Could not find path of texture", 4);
+		return (printf("Error\nCould not find path of texture\n"), 1);
 	tmp = mlx_load_png(path);
 	ft_free(path);
 	path = NULL;
 	if (!tmp)
-		parse_error(NULL, t, "Could not create a wall texture", 5);
+		return (printf("Error\nCould not create a wall texture"), 2);
 	if (dir == NO)
-		t->no_tex = tmp;
+		overwrite_texture(&t->no_tex, tmp);
 	if (dir == SO)
-		t->so_tex = tmp;
+		overwrite_texture(&t->so_tex, tmp);
 	if (dir == WE)
-		t->we_tex = tmp;
+		overwrite_texture(&t->we_tex, tmp);
 	if (dir == EA)
-		t->ea_tex = tmp;
+		overwrite_texture(&t->ea_tex, tmp);
+	return (0);
 }
 
-// void	get_textures(t_game *game, char **raw_scene)
-// {
-// 	size_t	i;
-// 	size_t	l;
-// 	char	dir_element[3];
-// 	char	*cur_path;
-
-// 	i = 0;
-// 	while (raw_scene[i] && i != 4)
-// 	{
-// 		l = 0;
-// 		while (raw_scene[i][l] && ft_isspace(raw_scene[i][l]))
-// 			l++;
-// 		dir_element[0] = raw_scene[i][l];
-// 		dir_element[1] = raw_scene[i][l + 1];
-// 		dir_element[2] = 0;
-// 		cur_path = get_tex_path(raw_scene[i], l + 3);
-// 		printf("cur path '%s'\n", cur_path);
-// 		load_texture(&game->textures, cur_path, check_tex_dir(dir_element));
-// 		i++;
-// 	}
-// }
-
-int	check_element(const char *element)
+int	which_element(const char *line, size_t *l)
 {
-	if (!ft_strncmp(element, "NO", 3))
-		return (NO);
-	if (!ft_strncmp(element, "SO", 3))
-		return (SO);
-	if (!ft_strncmp(element, "WE", 3))
-		return (WE);
-	if (!ft_strncmp(element, "EA", 3))
-		return (EA);
-	if (element[0] == 'F' && ft_isspace(element[1]))
-		return (FLOOR);
-	if (element[0] == 'C' && ft_isspace(element[1]))
-		return (CEILING);
+	ft_skip_spaces(line, l);
+	if (!ft_strncmp(&line[*l], "NO ", 3))
+		return (*l += 2, NO);
+	if (!ft_strncmp(&line[*l], "SO ", 3))
+		return (*l += 2, SO);
+	if (!ft_strncmp(&line[*l], "WE ", 3))
+		return (*l += 2, WE);
+	if (!ft_strncmp(&line[*l], "EA ", 3))
+		return (*l += 2, EA);
+	if (line[*l] == 'F' && ft_isspace(line[*l + 1]))
+		return (*l += 1, FLOOR);
+	if (line[*l] == 'C' && ft_isspace(line[*l + 1]))
+		return (*l += 1, CEILING);
 	return (UNIDENTIFIED);
 }
 
-void	get_color(t_game *game, const char *scene_line, int element, size_t l)
+bool	check_for_errors(const char *scene_line, size_t l)
+{
+	ft_skip_spaces(scene_line, &l);
+	while (scene_line[l] && (ft_isdigit(scene_line[l])
+			|| scene_line[l] == ',' || ft_isspace(scene_line[l])))
+		l++;
+	if (scene_line[l] != 0)
+		return (printf("Error\nNon digit in color\n"), true);
+	return (false);
+}
+
+int	make_texture(t_game *g, char *scene_line, int curr_element, size_t l)
+{
+	char	*tex_path;
+
+	tex_path = get_tex_path(scene_line, l);
+// printf("cur path '%s'\n", tex_path);
+	if (load_texture(&g->textures, tex_path, curr_element))
+		return (1);
+	return (0);
+}
+
+int	make_color(t_game *game, char *scene_line, int curr_col, size_t l)
 {
 	int	r;
 	int	g;
 	int	b;
 
-	if (element == UNIDENTIFIED)
-		parse_error(NULL, &game->textures, "Unidentified element in scene", 6);
-	ft_skip_spaces(scene_line, &l);
-printf("scene_line %s\n", scene_line);
-	if (!ft_isdigit(scene_line[l]))
-		parse_error(NULL, &game->textures, "Non digit in color", 7);
+// printf("scene_line '%s'\n", &scene_line[l]);
+	if (check_for_errors(scene_line, l))
+		return (1);
 	r = ft_atoi(&scene_line[l]);
-printf(ANSI_RED"r = %i\n"ANSI_RESET, r);
-printf("1L = %zu\n", l);
+// printf(ANSI_RED"r = %i\n"ANSI_RESET, r);
 	while (scene_line[l] && scene_line[l] != ',')
 		l++;
-printf("2L = %zu\n", l);
 	l++;
 	ft_skip_spaces(scene_line, &l);
 	g = ft_atoi(&scene_line[l]);
-printf(ANSI_GREEN"g = %i\n"ANSI_RESET, g);
-printf("3L = %zu\n", l);
+// printf(ANSI_GREEN"g = %i\n"ANSI_RESET, g);
 	while (scene_line[l] && scene_line[l] != ',')
 		l++;
-printf("4L = %zu\n", l);
 	l++;
 	ft_skip_spaces(scene_line, &l);
 	b = ft_atoi(&scene_line[l]);
 	if (r > 255 || r < 0 || g > 255 || g < 0 || b > 255 || b < 0)
-		parse_error(NULL, &game->textures, "Color value out of range", 8);
-	if (element == FLOOR)
+		return (printf("Error\nColor value out of range\n"), 2);
+	if (curr_col == FLOOR)
 		game->map.floor_color = get_rgba(r, g, b, 255);
 	else
 		game->map.ceiling_color = get_rgba(r, g, b, 255);
-printf(ANSI_BLUE"b = %i\n"ANSI_RESET, b);
+// printf(ANSI_BLUE"b = %i\n"ANSI_RESET, b);
+	return (0);
 }
-// l starts behind element, jump to first non space, continue digit until comma,
-// if false input like out of range or non digit exit(), 
+
+int	handle_element(t_game *g, char *scene_line,
+		int curr_elem, size_t l)
+{
+	if (!ft_isspace(scene_line[l]))
+		return (printf("Error\nNo 'space' after element\n"), 1);
+	if (curr_elem == NO || curr_elem == SO
+		|| curr_elem == WE || curr_elem == EA)
+		if (make_texture(g, scene_line, curr_elem, l))
+			return (2);
+	if (curr_elem == FLOOR)
+	{
+		if (make_color(g, scene_line, FLOOR, l))
+			return (3);
+		g->map.recieved_color1 = true;
+	}
+	if (curr_elem == CEILING)
+	{
+		if (make_color(g, scene_line, CEILING, l))
+			return (4);
+		g->map.recieved_color2 = true;
+	}
+	return (0);
+}
+
+bool	recieved_all_elements(t_game *game)
+{
+	if (game->textures.ea_tex && game->textures.no_tex
+		&& game->textures.we_tex && game->textures.so_tex
+		&& game->map.recieved_color1 && game->map.recieved_color2)
+		return (true);
+	return (false);
+}
 
 void	scan_elements(t_game *game, char **raw_scene)
 {
 	size_t	i;
 	size_t	l;
-	char	element[3];
-	char	*cur_path;
+	int		current_element;
 
 	i = 0;
-	while (raw_scene[i] && i != 6)
+	while (raw_scene[i])
 	{
 		l = 0;
-		while (raw_scene[i][l] && ft_isspace(raw_scene[i][l]))
-			l++;
-		element[0] = raw_scene[i][l];
-		element[1] = raw_scene[i][l + 1];
-		element[2] = 0;
-		if (check_element(element) < FLOOR)
-		{
-			cur_path = get_tex_path(raw_scene[i], l + 2);
-			printf("cur path '%s'\n", cur_path);
-			load_texture(&game->textures, cur_path, check_element(element));
-		}
-		else
-			get_color(game, raw_scene[i], check_element(element), l + 1);
+		// printf("scan[%zu]: '%s'\n", i, raw_scene[i]);
+		current_element = which_element(raw_scene[i], &l);
+		// printf("curr_elem %i\n", current_element);
+		if (current_element == UNIDENTIFIED)
+			break ;
+		if (handle_element(game, raw_scene[i], current_element, l))
+			parse_error(&game->map, &game->textures, NULL, raw_scene);
 		i++;
 	}
+	game->map.map_scene_start = i;
+	ft_free_dp(raw_scene);
+	if (!recieved_all_elements(game))
+		parse_error(&game->map, &game->textures,
+			"Missing a scene element", NULL);
 }
 
 void	parse_scene(t_game *game, int ac, char **av)
@@ -226,12 +261,11 @@ void	parse_scene(t_game *game, int ac, char **av)
 
 	raw_scene = NULL;
 	if (ac != 2)
-		parse_error(NULL, NULL, "No map or too many specified (e.g maps/[name].cub)", 2);
+		parse_error(NULL, NULL,
+			"No map or too many specified (e.g maps/[name].cub)", NULL);
 	raw_scene = read_scenefile(av[1]);
 	if (!raw_scene)
-		parse_error(NULL, NULL, "Error\nNo Scene", 3);
+		parse_error(NULL, NULL, "Error\nNo Scene", NULL);
 	scan_elements(game, raw_scene);
-	// get_textures(game, raw_scene);
+printf(ANSI_MAGENTA"START %zu\n"ANSI_RESET, game->map.map_scene_start);
 }
-// textures and colors can come in any order
-// check which element, check if its already set, check value, parse value, continue until all 6 elements are set

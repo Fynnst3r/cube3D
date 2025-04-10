@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/31 21:19:11 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/08 16:38:42 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,11 @@ typedef struct map
 {
 	// all tiles (this will be malloced())
 	char	**tiles;
+	// for parsing
+	char	**copy;
+	size_t	map_scene_start;
+	bool	recieved_color1;
+	bool	recieved_color2;
 
 	size_t	max_y;
 	size_t	max_x;
@@ -186,8 +191,10 @@ int		get_rgba(int r, int g, int b, int a);
 //src/parse/parse_scene.c
 void	parse_scene(t_game *game, int ac, char **av);
 char	**read_scenefile(char *av);
+bool	ft_isspace(char c);
+
 //src/parse/parse_map.c
-void	parse_map(t_map *map, t_player *player, t_textures *tex);
+void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
 
 
 //src/init/init_ray.c
@@ -210,7 +217,8 @@ void	draw_half_tex(t_game *g);
 
 //src/error.c
 void	ft_error(char *msg, int errcode, t_game	*game);
-void	parse_error(t_map *map, t_textures *tex, char *msg, int errcode);
+void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
+void	ft_free_dp(char **dp);
 // void	delete_textures(t_game *a);
 
 //src/graphic/image.c

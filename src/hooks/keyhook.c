@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/03/14 17:02:56 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 14:23:54 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,11 +103,11 @@ void	movement_keyhook(t_game *g)
 		mv_speed /= 2;
 		rt_speed /= 1.5;
 	}
-	if (mlx_is_key_down(g->mlx, MLX_KEY_W))
+	if (mlx_is_key_down(g->mlx, MLX_KEY_W) || mlx_is_key_down(g->mlx, 265))
 	{
 		walk_forward(g->map.tiles, &g->player.pos, &g->player.dir, mv_speed);
 	}
-	if (mlx_is_key_down(g->mlx, MLX_KEY_S))
+	if (mlx_is_key_down(g->mlx, MLX_KEY_S) || mlx_is_key_down(g->mlx, 264))
 	{
 		walk_backwards(g->map.tiles, &g->player.pos, &g->player.dir, mv_speed);
 	}
@@ -145,6 +145,11 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	}
 	if (keydata.key == MLX_KEY_M)
 		g->show_minimap = true;
+	if (keydata.key == MLX_KEY_BACKSPACE)
+	{
+		g->player.pos.y = g->map.spawn.y;
+		g->player.pos.x = g->map.spawn.x;
+	}
 	if (g->ray.hit_x_wall && mlx_is_key_down(g->mlx, MLX_KEY_TAB))
 	{
 		print_ray_status(g);
