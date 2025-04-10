@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/06 20:50:40 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/08 15:38:51 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,27 +79,37 @@ int	main(int ac, char **av)
 	game.bg = mlx_new_image(game.mlx, S_WIDTH, S_HEIGHT);
 	if (!game.bg)
 		ft_error("Error\nImage didn't create", 1, &game);
-		// game.textures[0].walltex = mlx_load_png("./textures/tx10x10px.png");
+		game.textures[0].walltex = mlx_load_png("./textures/tx10x10px.png");
 	// game.textures[0].walltex = mlx_load_png("./textures/test.png");
 	// game.textures.walltex = mlx_load_png("./textures/wallcub.png");
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	// game.textures->walltex = mlx_load_png("./textures/wallcub.png");
-	game.textures[0].walltex = mlx_load_png("./textures/wallcub.png");
+	// game.textures[0].walltex = mlx_load_png("./textures/wallcub.png");
 	// game.textures[0].walltex = mlx_load_png("./textures/wallcub2.png");
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	if (!game.textures[0].walltex)
 		ft_error("Error\nCould not create wall image\n", 42, &game);
-	game.img = mlx_new_image(game.mlx, game.textures[0].walltex->width, game.textures[0].walltex->height);
+	game.img = mlx_new_image(game.mlx, game.textures[0].walltex->width,
+								game.textures[0].walltex->height);
 	// game.img = mlx_new_image(game.mlx, game.textures[1].walltex->width, game.textures[1].walltex->height);
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
-		// printf("%s %d            \n\n", __FILE__, __LINE__);
+	game.textures[2].walltex = mlx_load_png("./textures/green_tx10x10px.png");
+	if (!game.textures[2].walltex)
+		ft_error("Error\nCould not create wall image\n", 42, &game);
+	game.textures[3].walltex = mlx_load_png("./textures/blue_tx10x10px.png");
+	if (!game.textures[3].walltex)
+		ft_error("Error\nCould not create wall image\n", 42, &game);
+	game.textures[4].walltex = mlx_load_png("./textures/yellow_tx10x10px.png");
+	if (!game.textures[4].walltex)
+		ft_error("Error\nCould not create wall image\n", 42, &game);
 	game.textures[1].walltex = mlx_load_png("./textures/wallcub2.png");
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	if (!game.textures[1].walltex)
 		ft_error("Error\nCould not create wall image\n", 42, &game);
 		
-	game.img = mlx_new_image(game.mlx, game.textures[0].walltex->width, game.textures[0].walltex->height);
+	game.img = mlx_new_image(game.mlx, game.textures[0].walltex->width,
+								game.textures[0].walltex->height);
 	if (!game.img)
 		ft_error("Error\nImage didn't create", 1, &game);
 	// game.wall = mlx_texture_to_image(game.mlx, game.textures.walltex);
@@ -111,7 +121,8 @@ int	main(int ac, char **av)
 		ft_error("Image didn't create", 1, &game);
 
 	// Set every pixel of img to white
-	ft_memset(game.bg->pixels, 255, game.bg->width * game.bg->height * sizeof(int32_t));
+	ft_memset(game.bg->pixels, 255, game.bg->width * game.bg->height
+				* sizeof(int32_t));
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
@@ -126,8 +137,8 @@ int	main(int ac, char **av)
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	draw_mini_map(&game);
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
-	// draw_line(&game);
-	draw_cone(&game);
+	// draw_fov_direction_line(&game);
+	draw_mini_fov(&game);
 	// mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
 	// 	game.minimap->height * MINI_RESIZE_FACTOR);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
