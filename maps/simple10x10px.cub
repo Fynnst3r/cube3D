@@ -1,0 +1,24 @@
+C 225,30,0
+C 225,30,0
+C 225,30,0
+C 225,30,0
+F 220,100,0
+
+NO ./textures/wallcub.png
+EA ./textures/wallcub.png                                                         
+EA ./textures/wallcub.png                                                         
+SO            ./textures/yellow_tx10x10px.png
+         WE ./textures/wallcub.png
+         WE ./textures/wallcub.png
+						NO ./textures/tx10x10px.png
+EA ./textures/blue_tx10x10px.png                                                         
+EA ./textures/wallcub2.png          ß                                               
+         WE ./textures/wallcub.png
+         WE ./textures/wallcub2.png
+         WE ./textures/green_tx10x10px.png
+
+11111
+10001
+10N01
+10001
+22222

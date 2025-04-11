@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:55:25 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 19:17:49 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,8 +188,8 @@ typedef struct master_struct
 	double			fov_line_end_y;
 }					t_game;
 
-//src/main.c
-int		get_rgba(int r, int g, int b, int a);
+// //src/main.c
+// int		get_rgba(int r, int g, int b, int a);
 
 //src/parse/parse_scene.c
 void	parse_scene(t_game *game, int ac, char **av);
@@ -206,7 +206,7 @@ void	init_raycaster(t_game *g);
 void	ft_error(char *msg, int errcode, t_game	*game);
 void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
 void	ft_free_dp(char **dp);
-// void	delete_textures(t_game *a);
+void	delete_textures(t_textures *t);
 
 //src/graphic/minimap.c
 void	draw_fov_direction_line(t_game *game);
@@ -230,13 +230,13 @@ void	init_raycaster(t_game *g);
 
 //src/textures.c
 int		*create_color_array(t_game *g, mlx_texture_t *tex);
-void	draw_half_tex(t_game *g);
+void	fill_texture_colors(t_game *game);
 
 //src/graphic/image.c
 void	draw_mini_map(t_game *game);
 void	draw_mini_player(t_game *game);
 void	draw_line(t_game *game);
-int		get_rgba(int r, int g, int b, int a);
+unsigned int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 			t_height_width height_width);

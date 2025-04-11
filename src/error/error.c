@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:42:30 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:29:39 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
+
+void    delete_textures(t_textures *t);
 
 // for fatal errors, cleans everything and prints error message
 void	ft_error(char *msg, int errcode, t_game	*game)
@@ -19,9 +21,9 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 		printf("Error\n%s\nErrorcode: %d\n", msg, errcode);
 	else if (mlx_errno != 0)
 		printf("MLX ERROR: %s\n", mlx_strerror(mlx_errno));
-	// delete_textures(game->textures);
 	if (game)
 	{
+			delete_textures(&game->textures);
 		if (game->mlx)
 			mlx_terminate(game->mlx);
 	}
@@ -30,38 +32,24 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 	exit(errcode);
 }
 
-void	delete_textures(t_textures *t)
+void    delete_textures(t_textures *t)
 {
-	if (t->walltex)
-	{
-		mlx_delete_texture(t->walltex);
-		if (t->wallcolors)
-			ft_free(t->wallcolors);
-	}
-	if (t->no_tex)
-	{
-		mlx_delete_texture(t->no_tex);
-		if (t->wallcolors)
-			ft_free(t->wallcolors);
-	}
-	if (t->so_tex)
-	{
-		mlx_delete_texture(t->so_tex);
-		if (t->wallcolors)
-			ft_free(t->wallcolors);
-	}
-	if (t->we_tex)
-	{
-		mlx_delete_texture(t->we_tex);
-		if (t->wallcolors)
-			ft_free(t->wallcolors);
-	}
-	if (t->ea_tex)
-	{
-		mlx_delete_texture(t->ea_tex);
-		if (t->wallcolors)
-			ft_free(t->wallcolors);
-	}
+    if (t->no_tex)
+        mlx_delete_texture(t->no_tex);
+    if (t->so_tex)
+        mlx_delete_texture(t->so_tex);
+    if (t->we_tex)
+        mlx_delete_texture(t->we_tex);
+    if (t->ea_tex)
+        mlx_delete_texture(t->ea_tex);
+    if (t->color_no)
+        ft_free(t->color_no);
+    if (t->color_so)
+        ft_free(t->color_so);
+    if (t->color_we)
+        ft_free(t->color_we);
+    if (t->color_ea)
+        ft_free(t->color_ea);
 }
 
 void	ft_free_dp(char **dp)

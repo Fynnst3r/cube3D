@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   image.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/04/10 15:42:45 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/10 18:20:10 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_mlx_draw_pixel(uint8_t *pixel, uint32_t color);
 void	ft_mlx_put_pixel(mlx_image_t *image, uint32_t x, uint32_t y,
 			uint32_t color);
-int		get_rgba(int r, int g, int b, int a);
+unsigned int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 							t_height_width height_width);
@@ -44,7 +44,7 @@ void	ft_mlx_put_pixel(mlx_image_t *image, uint32_t x, uint32_t y,
 	// printf("%s %d put px  y %u x %u\n", __FILE__, __LINE__, y, x) ;
 }
 
-int	get_rgba(int r, int g, int b, int a)
+unsigned int	get_rgba(int r, int g, int b, int a)
 {
 	return (r << 24 | g << 16 | b << 8 | a);
 }

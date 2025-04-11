@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_loop.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:49:46 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:32:39 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,9 @@ void	draw_vertical_line(t_game *g, int x)
 	int				ceiling_color = get_rgba(20, 20, 255, 255);
 	int				wall_color;
 	int				floor_color = get_rgba(0, 130, 70, 255);
+	double			y_proportion;
+	int				y_tx;
+	mlx_texture_t	*tex;
 	
 	if (draw_end > S_HEIGHT)
 		draw_end = S_HEIGHT - 1;
@@ -150,42 +153,45 @@ void	draw_vertical_line(t_game *g, int x)
 		mlx_put_pixel(g->bg, x, y, ceiling_color);
 		y++;
 	}
-	double y_proportion = (((double) g->textures[0].walltex->height / (double) wall_height));
-	int	y_tx = 0;
+	if (g->ray.hit_x_wall)
+	{
+		if (g->ray.ray_dir.x > 0)
+			tex = g->textures.ea_tex;
+		else
+			tex= g->textures.we_tex;
+	}
+	else
+	{
+		if (g->ray.ray_dir.y > 0)
+			tex = g->textures.so_tex;
+		else
+			tex = g->textures.no_tex;
+	}
+	y_proportion = (((double) tex->height / (double) wall_height));
+	y_tx = 0;
 	while (y < draw_end)
 	{
-		if ((y_tx + 3) <= (int)(g->textures->walltex->width * g->textures->walltex->height * 4))
+		if ((y_tx + 3) <= (int)(tex->width * tex->height * 4))
 		{
-
-mlx_texture_t	*tex;
-if (g->ray.hit_x_wall)
-	tex = (g->ray.ray_dir.x > 0) ? g->textures[0].walltex : g->textures[1].walltex;
-else
-	tex = (g->ray.ray_dir.y > 0) ? g->textures[2].walltex : g->textures[3].walltex;
-
-			// wall_color = get_rgba(g->textures[0].walltex->pixels[y_tx], g->textures[0].walltex->pixels[y_tx + 1], 
-			// 				g->textures[0].walltex->pixels[y_tx + 2], g->textures[0].walltex->pixels[y_tx + 3]);
 			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1], 
 				tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
 			mlx_put_pixel(g->bg, x, y, wall_color);
 		}
-			y++;
-			// this makes it in proportion
-			y_tx = round((y - draw_start) * y_proportion);
-			if (y_tx >= (int)g->textures->walltex->height)
-				y_tx = g->textures->walltex->height - 1;
-			y_tx *= g->textures->walltex->width;
-			x_tx = round(g->ray.x_intersect * g->textures[0].walltex->width);	
-			if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
-				|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
-				x_tx = round((1 - g->ray.x_intersect) * g->textures[0].walltex->width);
-			else
-				// x_tx = round(g->ray.x_intersect * g->textures[0].walltex->width);	
-				x_tx = round(g->ray.x_intersect * g->textures[0].walltex->width);	
-			if ( x_tx >= g->textures[0].walltex->width)
-				x_tx = g->textures[0].walltex->width - 1;
-			y_tx += x_tx;
-			y_tx *= 4;
+		y++;
+		y_tx = round((y - draw_start) * y_proportion);
+		if (y_tx >= (int)tex->height)
+			y_tx = tex->height - 1;
+		y_tx *= tex->width;
+		x_tx = round(g->ray.x_intersect * tex->width);
+		if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
+			|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
+			x_tx = round((1 - g->ray.x_intersect) * tex->width);
+		else
+			x_tx = round(g->ray.x_intersect * tex->width);	
+		if ( x_tx >= tex->width)
+			x_tx = tex->width - 1;
+		y_tx += x_tx;
+		y_tx *= 4;
 	}
 	while (y < S_HEIGHT)
 	{
