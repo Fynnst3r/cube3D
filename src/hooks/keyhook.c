@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:50:18 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/13 15:09:28 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,37 @@ void	movement_keyhook(t_game *g)
 	{
 		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed);
 	}
+	if (g->show_minimap)
+	{
+		// init_minimap(g);
+		if (!g->minimap_drawn)
+		{
+			g->minimap->enabled = true;
+			g->minifov->enabled = true;
+			// save_pixels_for_reinstate(g);
+			if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
+			ft_error("Error\nImage didn't arrive at window", 1, g);
+			g->minimap_drawn = true;
+		}
+		// printf("%d \n", __LINE__);
+		// clear_img(g->minifov);
+		draw_mini_fov(g);
+		if (mlx_image_to_window(g->mlx, g->minifov, 0, 0) < 0)
+			ft_error("Error\nImage didn't arrive at window", 1, g);
+	}
+	else
+	{
+		if (g->minimap_drawn)
+		{
+			// mlx_delete_image(g->mlx, g->minifov);
+			g->minimap->enabled = false;
+			g->minifov->enabled = false;
+			// if (mlx_image_to_window(g->mlx, g->minimap_clear, 0, 0) < 0)
+			// if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
+				// ft_error("Error\nImage didn't arrive at window", 1, g);
+			g->minimap_drawn = false;
+		}
+	}
 }
 
 void	my_keyhook(mlx_key_data_t keydata, void *param)
@@ -142,8 +173,12 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		mlx_close_window(g->mlx);
 		ft_error("Game closed with esc.\n", 0, g);
 	}
-	if (keydata.key == MLX_KEY_M)
-		g->show_minimap = true;
+	// if (keydata.key == MLX_KEY_M)
+	// 	g->show_minimap = true;
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+	{
+		g->show_minimap = !g->show_minimap;
+	}
 	if (keydata.key == MLX_KEY_BACKSPACE)
 	{
 		g->player.pos.y = g->map.spawn.y;
@@ -159,13 +194,13 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		print_ray_status(g);
 		printf(ANSI_GREEN"xintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
 	}
-	if (g->show_minimap)
-	{
-		draw_mini_map(g);
-		draw_mini_fov(g);
-		if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
-			ft_error("Error\nImage didn't arrive at window", 1, g);
-	}
+	// if (g->show_minimap)
+	// {
+	// 	init_minimap(g);
+	// 	draw_mini_fov(g);
+	// 	if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
+	// 		ft_error("Error\nImage didn't arrive at window", 1, g);
+	// }
 	// else
 	// {
 	// 	if (g->minimap)

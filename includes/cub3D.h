@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 19:17:49 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/13 14:28:07 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,7 +183,11 @@ typedef struct master_struct
 	t_ray			ray;
 
 	bool			show_minimap;
+	bool			minimap_drawn;
+	mlx_image_t		mini_previouse_pixels;
 	mlx_image_t		*minimap;
+	mlx_image_t		*minimap_clear;
+	mlx_image_t		*minifov;
 	double			fov_line_end_x;
 	double			fov_line_end_y;
 }					t_game;
@@ -199,7 +203,6 @@ bool	ft_isspace(char c);
 //src/parse/parse_map.c
 void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
 
-
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
 //src/error.c
@@ -209,9 +212,11 @@ void	ft_free_dp(char **dp);
 void	delete_textures(t_textures *t);
 
 //src/graphic/minimap.c
+void	clear_img(mlx_image_t *img);
 void	draw_fov_direction_line(t_game *game);
 void	draw_mini_fov(t_game *game);
-void	draw_mini_map(t_game *game);
+void	init_minimap(t_game *game);
+void	save_pixels_for_reinstate(t_game *game);
 
 //src/hooks/game_loop.c
 void	raycaster_loop(void *param);
@@ -225,17 +230,11 @@ void	print_ray_status(t_game *g);
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
 
-//src/init/init_ray.c
-void	init_raycaster(t_game *g);
-
 //src/textures.c
 int		*create_color_array(t_game *g, mlx_texture_t *tex);
 void	fill_texture_colors(t_game *game);
 
 //src/graphic/image.c
-void	draw_mini_map(t_game *game);
-void	draw_mini_player(t_game *game);
-void	draw_line(t_game *game);
 unsigned int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,

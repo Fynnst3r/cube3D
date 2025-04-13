@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/11 14:32:39 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/11 14:42:58 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,9 +138,9 @@ void	draw_vertical_line(t_game *g, int x)
 	int				wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
 	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
 	int				draw_end = wall_height + draw_start;
-	int				ceiling_color = get_rgba(20, 20, 255, 255);
+	int				ceiling_color = get_rgba(177, 222, 222, 255);
 	int				wall_color;
-	int				floor_color = get_rgba(0, 130, 70, 255);
+	int				floor_color = get_rgba(177, 222, 111, 255);
 	double			y_proportion;
 	int				y_tx;
 	mlx_texture_t	*tex;
