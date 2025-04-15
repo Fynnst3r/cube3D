@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:55:25 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:39:12 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 # endif
 
 # ifndef S_WIDTH
-// #  define S_WIDTH 960
-#  define S_WIDTH 1600
+#  define S_WIDTH 960
+// #  define S_WIDTH 1600
 # endif
 
 # ifndef S_HEIGHT
-// #  define S_HEIGHT 540
-#  define S_HEIGHT 900
+#  define S_HEIGHT 540
+// #  define S_HEIGHT 900
 # endif
 
 # ifndef COLORS
@@ -164,11 +164,7 @@ typedef struct textures
 	mlx_texture_t	*so_tex;
 	mlx_texture_t	*we_tex;
 	mlx_texture_t	*ea_tex;
-	int				*color_no;
-	int				*color_so;
-	int				*color_we;
-	int				*color_ea;
-
+	mlx_texture_t	*hands[4];
 }					t_textures;
 
 typedef struct master_struct
@@ -176,6 +172,7 @@ typedef struct master_struct
 	mlx_t			*mlx;
 
 	mlx_image_t		*bg;
+	mlx_image_t		*hands[4];
 	t_textures		textures;
 
 	t_map			map;
@@ -183,6 +180,7 @@ typedef struct master_struct
 	t_ray			ray;
 
 	bool			show_minimap;
+	bool			punch;
 	mlx_image_t		*minimap;
 	double			fov_line_end_x;
 	double			fov_line_end_y;
@@ -206,7 +204,7 @@ void	init_raycaster(t_game *g);
 void	ft_error(char *msg, int errcode, t_game	*game);
 void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
 void	ft_free_dp(char **dp);
-// void	delete_textures(t_game *a);
+void	delete_textures(t_textures *t);
 
 //src/graphic/minimap.c
 void	draw_fov_direction_line(t_game *game);
@@ -224,6 +222,7 @@ void	print_ray_status(t_game *g);
 //src/hooks/keyhook.c
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
+void	my_cursor(double xpos, double ypos, void *param);
 
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
@@ -240,4 +239,11 @@ int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 			t_height_width height_width);
+
+//src/graphics/hands.c
+void	draw_hands(t_game *g);
+void	punch(t_game *g);
+void	my_mouse_button(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
+
 #endif

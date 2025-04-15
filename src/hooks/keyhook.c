@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 15:50:18 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 15:27:17 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,12 +127,20 @@ void	movement_keyhook(t_game *g)
 	{
 		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed);
 	}
+	if (g->punch)
+		punch(g);
+	if (g->show_minimap)
+	{
+		draw_mini_map(g);
+		draw_mini_fov(g);
+		if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
+			ft_error("Error\nImage didn't arrive at window", 1, g);
+	}
 }
 
 void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_game			*g;
-
 	g = (t_game *)param;
 	// double	rt_speed = g->mlx->delta_time * RT_SPEED;
 	// double	mv_speed = 0.12;
@@ -159,13 +167,8 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		print_ray_status(g);
 		printf(ANSI_GREEN"xintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
 	}
-	if (g->show_minimap)
-	{
-		draw_mini_map(g);
-		draw_mini_fov(g);
-		if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
-			ft_error("Error\nImage didn't arrive at window", 1, g);
-	}
+
+
 	// else
 	// {
 	// 	if (g->minimap)
@@ -175,4 +178,55 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	// 	}
 	// }
 
+}
+
+// g->hands[1]->enabled = false; // extend arm
+// g->hands[2]->enabled = true;
+// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_REPEAT)
+// {
+// 	g->hands[2]->enabled = false; // full punch
+// 	g->hands[3]->enabled = true;
+// }
+// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_REPEAT)
+// {
+// 	g->hands[3]->enabled = false; //retreat punch
+// 	g->hands[2]->enabled = true;
+// }
+// if (button != MLX_MOUSE_BUTTON_LEFT)
+// {
+// 	g->hands[2]->enabled = false; //end
+// 	g->hands[1]->enabled = true;
+// }
+void	my_mouse_button(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+{
+	t_game	*g;
+
+	g = (t_game *)param;
+	(void)mods;
+	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	{
+		g->punch = true;
+	}
+}
+
+void	my_cursor(double xpos, double ypos, void *param)
+{
+	t_game	*g;
+	double	rt_speed;
+
+	g = (t_game *)param;
+	(void)ypos;
+	mlx_set_cursor_mode(g->mlx, MLX_MOUSE_HIDDEN);
+	rt_speed = g->mlx->delta_time * RT_SPEED;
+	// printf("xpos = %lf\nypos = %lf\n", xpos, ypos);
+	// printf("xpos  - g->mlx->width / 2 = %lf\n", xpos - g->mlx->width / 2);
+	if (xpos > g->mlx->width / 2 + 0.3)
+	{
+		rotate_player(&g->player.dir, &g->ray.plane, rt_speed * (xpos - g->mlx->width / 2) * M_PI_4 / 4);
+	}
+	if (g->mlx->width / 2 - 0.3 > xpos)
+	{
+		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed * (g->mlx->width / 2 - xpos) * M_PI_4 / 4);
+	}
+	mlx_set_mouse_pos(g->mlx, g->mlx->width / 2, g->mlx->height / 2);
 }
