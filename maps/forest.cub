@@ -6,6 +6,11 @@
 SO ./textures/wallcub.png
    WE            ./textures/wallcub.png
 
+                 NO    ./textures/green_tx10x10px.png                        
+        EA    ./textures/wallcub.png                                     
+SO ./textures/blue_tx10x10px.png
+   WE            ./textures/wallcub2.png
+
 
 
 C 20,10,200

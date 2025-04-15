@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 15:27:17 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:36:50 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,31 +127,52 @@ void	movement_keyhook(t_game *g)
 	{
 		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed);
 	}
+	if (mlx_is_key_down(g->mlx, MLX_KEY_SPACE))
+		g->punch = true;
+	if (mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
+	{
+		g->punch = true;
+	}
 	if (g->punch)
 		punch(g);
 	if (g->show_minimap)
 	{
-		draw_mini_map(g);
+		if (!g->minimap_drawn)
+		{
+			g->minimap->enabled = true;
+			g->minifov->enabled = true;
+			// save_pixels_for_reinstate(g);
+			g->minimap_drawn = true;
+		}
+		// printf("%d \n", __LINE__);
+		// clear_img(g->minifov);
 		draw_mini_fov(g);
-		if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
-			ft_error("Error\nImage didn't arrive at window", 1, g);
+	}
+	else
+	{
+		if (g->minimap_drawn)
+		{
+			g->minimap->enabled = false;
+			g->minifov->enabled = false;
+			g->minimap_drawn = false;
+		}
 	}
 }
 
 void	my_keyhook(mlx_key_data_t keydata, void *param)
 {
 	t_game			*g;
+
 	g = (t_game *)param;
-	// double	rt_speed = g->mlx->delta_time * RT_SPEED;
-	// double	mv_speed = 0.12;
-	// printf("mv_speed %f\n rt_speed %f\n", mv_speed, rt_speed);
  	if (keydata.key == MLX_KEY_ESCAPE)
 	{
 		mlx_close_window(g->mlx);
 		ft_error("Game closed with esc.\n", 0, g);
 	}
-	if (keydata.key == MLX_KEY_M)
-		g->show_minimap = true;
+	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
+	{
+		g->show_minimap = !g->show_minimap;
+	}
 	if (keydata.key == MLX_KEY_BACKSPACE)
 	{
 		g->player.pos.y = g->map.spawn.y;
@@ -167,17 +188,6 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		print_ray_status(g);
 		printf(ANSI_GREEN"xintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
 	}
-
-
-	// else
-	// {
-	// 	if (g->minimap)
-	// 	{
-	// 		mlx_delete_image(g->mlx, g->minimap);
-	// 		g->minimap = NULL;
-	// 	}
-	// }
-
 }
 
 // g->hands[1]->enabled = false; // extend arm
@@ -202,11 +212,14 @@ void	my_mouse_button(mouse_key_t button, action_t action, modifier_key_t mods, v
 	t_game	*g;
 
 	g = (t_game *)param;
+	(void)button;
+	(void)action;
 	(void)mods;
-	if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
-	{
-		g->punch = true;
-	}
+	// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	// if (mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
+	// {
+	// 	g->punch = true;
+	// }
 }
 
 void	my_cursor(double xpos, double ypos, void *param)

@@ -3,6 +3,11 @@ SO ./textures/wallcub.png
 WE ./textures/wallcub2.png
 EA ./textures/yellow_tx10x10px.png
 
+              NO    ./textures/blue_tx10x10px.png                        
+        EA    ./textures/wallcub.png                                     
+SO ./textures/green_tx10x10px.png
+   WE            ./textures/wallcub2.png
+
 F 220,100,0
 C 225,30,0
 

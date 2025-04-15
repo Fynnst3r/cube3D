@@ -6,11 +6,13 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 15:39:19 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:17:35 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
+
+void    delete_textures(t_textures *t);
 
 // for fatal errors, cleans everything and prints error message
 void	ft_error(char *msg, int errcode, t_game	*game)
@@ -30,7 +32,7 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 	exit(errcode);
 }
 
-void	delete_textures(t_textures *t)
+void    delete_textures(t_textures *t)
 {
 	if (t->no_tex)
 		mlx_delete_texture(t->no_tex);

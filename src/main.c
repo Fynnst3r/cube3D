@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 15:36:28 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:28:25 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,20 +32,16 @@ int	main(int ac, char **av)
 	// Set every pixel of img to white
 	ft_memset(game.bg->pixels, 255, game.bg->width * game.bg->height
 				* sizeof(int32_t));
-	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// if (mlx_image_to_window(game.mlx, game.wall, 100, 100) < 0)
-		// ft_error("Error\nImage didn't arrive at window", 1, &game);
-	// draw_half_tex(&game);
-	// mlx_resize_image(game.img, 100, 100);
 	init_raycaster(&game);
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
-	draw_mini_map(&game);
+	// draw_mini_map(&game);
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	// draw_fov_direction_line(&game);
-	draw_mini_fov(&game);
 	draw_hands(&game);
+	init_minimap(&game);
+	// draw_mini_fov(&game);
 	// mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
 	// 	game.minimap->height * MINI_RESIZE_FACTOR);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
@@ -53,10 +49,9 @@ int	main(int ac, char **av)
 	mlx_set_mouse_pos(game.mlx, game.mlx->width / 2, game.mlx->height / 2);
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	mlx_mouse_hook(game.mlx, my_mouse_button, &game);
+	mlx_key_hook(game.mlx, my_keyhook, &game);
 	mlx_loop_hook(game.mlx, &raycaster_loop, &game);
-	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	mlx_loop(game.mlx);
-	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	mlx_terminate(game.mlx);
 	delete_trash();
 	ft_bzero(get_workers(), sizeof(t_trashman));

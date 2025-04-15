@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 15:00:48 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:59:14 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void	ray_len_and_hitpoint(const t_player p, t_ray *r)
 // 	int				wall_color = get_rgba(200, 0, 5, 255);
 // 	int				wall_color2 = get_rgba(0, 200, 5, 255);
 // 	int				floor_color = get_rgba(0, 130, 70, 255);
-	
+
 // 	if (draw_end > S_HEIGHT)
 // 		draw_end = S_HEIGHT - 1;
 // 	y = 0;
@@ -205,18 +205,69 @@ void	ray_len_and_hitpoint(const t_player p, t_ray *r)
 // 	if (g->punch)
 // 		punch(g);
 // }
+
+//it would be better to check for that in the main draw_vertical_line, because this is counting twice for one wall...
+void	draw_wallcrack(t_game *g, int x, int wall_height)
+{
+	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
+	int				draw_end = wall_height + draw_start;
+	int	y;
+	int	y_tx;
+	double	y_proportion;
+	unsigned int	x_tx;
+	int	wall_color;
+
+	if (draw_end > S_HEIGHT)
+		draw_end = S_HEIGHT - 1;
+	y_proportion = (((double) g->wallcrack->height / (double) wall_height));
+	y_tx = 0;
+	x_tx = 0;
+	y = 0;
+	while (y < draw_start)
+	{
+		// mlx_put_pixel(g->bg, x, y, ceiling_color);
+		y++;
+	}
+	while (y < draw_end + 1)
+	{
+		// printf(ANSI_MAGENTA"wallheight %i\ndrawstart %i\n x %i\n y %i\n"ANSI_RESET, wall_height, draw_start, x, y);
+		if ((y_tx + 3) <= (int)(g->wallcrack->width * g->wallcrack->height * 4)
+			&& g->wallcrack->pixels[y_tx + 3] != 0)
+		{
+			wall_color = get_rgba(g->wallcrack->pixels[y_tx], g->wallcrack->pixels[y_tx + 1], 
+					g->wallcrack->pixels[y_tx + 2], g->wallcrack->pixels[y_tx + 3]);
+			mlx_put_pixel(g->bg, x, y, wall_color);
+		}
+		y++;
+		y_tx = round((y - draw_start) * y_proportion);
+		if (y_tx >= (int)g->wallcrack->height)
+			y_tx = g->wallcrack->height - 1;
+		y_tx *= g->wallcrack->width;
+		x_tx = round(g->ray.x_intersect * g->wallcrack->width);
+		if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
+			|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
+			x_tx = round((1 - g->ray.x_intersect) * g->wallcrack->width);
+		else
+			x_tx = round(g->ray.x_intersect * g->wallcrack->width);
+		if (x_tx >= g->wallcrack->width)
+			x_tx = g->wallcrack->width - 1;
+		y_tx += x_tx;
+		y_tx *= 4;
+	}
+}
+
 void	draw_vertical_line(t_game *g, int x)
 {
-	int				y;
-	unsigned int	x_tx = 0;
 	int				wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
 	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
 	int				draw_end = wall_height + draw_start;
 	int				ceiling_color = g->map.ceiling_color;
 	int				wall_color;
 	int				floor_color = g->map.floor_color;
+	int				y;
 	double			y_proportion;
 	int				y_tx;
+	unsigned int	x_tx = 0;
 	mlx_texture_t	*tex;
 	
 	if (draw_end > S_HEIGHT)
@@ -232,7 +283,7 @@ void	draw_vertical_line(t_game *g, int x)
 		if (g->ray.ray_dir.x > 0)
 			tex = g->textures.ea_tex;
 		else
-			tex= g->textures.we_tex;
+			tex = g->textures.we_tex;
 	}
 	else
 	{
@@ -248,7 +299,7 @@ void	draw_vertical_line(t_game *g, int x)
 		if ((y_tx + 3) <= (int)(tex->width * tex->height * 4))
 		{
 			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1], 
-				tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
+					tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
 			mlx_put_pixel(g->bg, x, y, wall_color);
 		}
 		y++;
@@ -261,12 +312,14 @@ void	draw_vertical_line(t_game *g, int x)
 			|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
 			x_tx = round((1 - g->ray.x_intersect) * tex->width);
 		else
-			x_tx = round(g->ray.x_intersect * tex->width);	
-		if ( x_tx >= tex->width)
+			x_tx = round(g->ray.x_intersect * tex->width);
+		if (x_tx >= tex->width)
 			x_tx = tex->width - 1;
 		y_tx += x_tx;
 		y_tx *= 4;
 	}
+	if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
+		draw_wallcrack(g, x, wall_height);
 	while (y < S_HEIGHT)
 	{
 		mlx_put_pixel(g->bg, x, y, floor_color);

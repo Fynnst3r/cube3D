@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:55:02 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 15:08:08 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/15 18:54:06 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,14 @@ void	draw_hands(t_game *g)
 	if (mlx_image_to_window(g->mlx, g->hands[3], 0, g->mlx->height - g->hands[3]->height) < 0)
 		ft_error("Error\nImage didn't arrive at window", 11, g);
 	// g->hands[1]->enabled = false;
+
+	g->textures.wallcrack = mlx_load_png("./textures/wallcrack.png");
+	if (!g->textures.wallcrack)
+		ft_error("Texture ./textures/wallcrack.png failed to load!", 1, g);
+	g->wallcrack = mlx_texture_to_image(g->mlx, g->textures.wallcrack);
+	if (!g->wallcrack)
+		ft_error("Error\nImage didn't create", 2, g);
+
 	g->hands[2]->enabled = false;
 	g->hands[3]->enabled = false;
 }
@@ -67,6 +75,7 @@ void	punch(t_game *g)
 {
 	double static	start_time = 0.0;
 	static bool		animation_end = true;
+	char			**map;
 
 	if (animation_end)
 		start_time = mlx_get_time();
@@ -78,13 +87,26 @@ void	punch(t_game *g)
 		g->hands[2]->enabled = false; // full punch
 		g->hands[3]->enabled = true;
 	}
-	if (start_time + 0.3 < mlx_get_time())
+	if (start_time + 0.33 < mlx_get_time())
 	{
 		g->hands[3]->enabled = false; //retreat punch
 		g->hands[2]->enabled = true;
 	}
-	if (start_time + 0.35 < mlx_get_time())
+	if (start_time + 0.38 < mlx_get_time())
 	{
+		map = g->map.tiles;
+		if (map[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] == '1'
+			&& g->player.dir.y >= 0)
+			map[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] = '2';
+		else if (map[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] == '1'
+			&& g->player.dir.y <= 0)
+			map[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] = '2';
+		else if (map[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] == '1'
+			&& g->player.dir.x >= 0)
+			map[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] = '2';
+		else if (map[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] == '1'
+			&& g->player.dir.x <= 0)
+			map[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] = '2';
 		g->hands[2]->enabled = false; //end
 		g->hands[1]->enabled = true;
 		animation_end = true;
