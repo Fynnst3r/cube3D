@@ -11,8 +11,8 @@ SO            ./textures/yellow_tx10x10px.png
          WE ./textures/wallcub.png
          WE ./textures/wallcub.png
 						NO ./textures/tx10x10px.png
-EA ./textures/blue_tx10x10px.png                                                         
 EA ./textures/wallcub2.png          ß                                               
+EA ./textures/blue_tx10x10px.png                                                         
          WE ./textures/wallcub.png
          WE ./textures/wallcub2.png
          WE ./textures/green_tx10x10px.png

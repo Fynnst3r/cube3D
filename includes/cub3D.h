@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/13 14:28:07 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/15 10:12:42 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ typedef struct master_struct
 	mlx_image_t		*minifov;
 	double			fov_line_end_x;
 	double			fov_line_end_y;
+	mlx_image_t		*img;
 }					t_game;
 
 // //src/main.c
@@ -239,4 +240,5 @@ unsigned int		get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 			t_height_width height_width);
+void	draw_half_tex(t_game *g);
 #endif

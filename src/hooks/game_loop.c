@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/11 14:42:58 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/15 11:35:12 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,8 @@ void	draw_vertical_line(t_game *g, int x)
 	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
 	int				draw_end = wall_height + draw_start;
 	int				ceiling_color = get_rgba(177, 222, 222, 255);
-	int				wall_color;
+	// int				wall_color;
+	int				*wall_color;
 	int				floor_color = get_rgba(177, 222, 111, 255);
 	double			y_proportion;
 	int				y_tx;
@@ -156,26 +157,58 @@ void	draw_vertical_line(t_game *g, int x)
 	if (g->ray.hit_x_wall)
 	{
 		if (g->ray.ray_dir.x > 0)
+		{
 			tex = g->textures.ea_tex;
+			wall_color = g->textures.color_ea;
+		}
 		else
+		{
 			tex= g->textures.we_tex;
+			wall_color = g->textures.color_we;
+		}
 	}
 	else
 	{
 		if (g->ray.ray_dir.y > 0)
+		{
 			tex = g->textures.so_tex;
+			wall_color = g->textures.color_so;
+		}
 		else
+		{
 			tex = g->textures.no_tex;
+			wall_color = g->textures.color_no;
+		}
 	}
 	y_proportion = (((double) tex->height / (double) wall_height));
 	y_tx = 0;
 	while (y < draw_end)
 	{
-		if ((y_tx + 3) <= (int)(tex->width * tex->height * 4))
+		// if ((y_tx + 3) <= (int)(tex->width * tex->height * 4))
+		// {
+		// 	wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1], 
+		// 		tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
+		// 	mlx_put_pixel(g->bg, x, y, wall_color);
+		// }
+		// y++;
+		// y_tx = round((y - draw_start) * y_proportion);
+		// if (y_tx >= (int)tex->height)
+		// 	y_tx = tex->height - 1;
+		// y_tx *= tex->width;
+		// x_tx = round(g->ray.x_intersect * tex->width);
+		// if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
+		// 	|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
+		// 	x_tx = round((1 - g->ray.x_intersect) * tex->width);
+		// else
+		// 	x_tx = round(g->ray.x_intersect * tex->width);	
+		// if ( x_tx >= tex->width)
+		// 	x_tx = tex->width - 1;
+		// y_tx += x_tx;
+		// y_tx *= 4;
+		if ((y_tx) <= (int)(tex->width * tex->height))
 		{
-			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1], 
-				tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
-			mlx_put_pixel(g->bg, x, y, wall_color);
+			// wall_color = c[y_tx]);
+			mlx_put_pixel(g->bg, x, y, wall_color[y_tx]);
 		}
 		y++;
 		y_tx = round((y - draw_start) * y_proportion);
@@ -191,7 +224,7 @@ void	draw_vertical_line(t_game *g, int x)
 		if ( x_tx >= tex->width)
 			x_tx = tex->width - 1;
 		y_tx += x_tx;
-		y_tx *= 4;
+		// y_tx *= 4;
 	}
 	while (y < S_HEIGHT)
 	{
