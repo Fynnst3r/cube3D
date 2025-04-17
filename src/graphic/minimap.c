@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/04/13 14:55:23 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:06:48 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,7 @@ static void draw_line_to_left(t_game *game, double start_x, double start_y,
 	while (x >= game->fov_line_end_x)
 	{
 		y = round(slope * (x - start_x) + start_y);
+		
 		yx.x = (int32_t)x;
 		yx.y = (int32_t)y;
 		pixset_yx_height_width(game->minifov, get_rgba(R, G, B, A), yx,
@@ -210,18 +211,21 @@ void	draw_fov_direction_line(t_game *game)
 	height_width.width = MINI_LINE_WIDTH;
 	x_diff = game->fov_line_end_x - start.x;
 	y_diff = game->fov_line_end_y - start.y;
+	// if (fabs(x_diff) >= fabs(y_diff))
 	if (fabs(x_diff) > fabs(y_diff))
 	{
 		if (x_diff > 0)
 			draw_line_to_right(game, start.x, start.y, slope(x_diff, y_diff));
-		if (x_diff < 0)
+		// if (x_diff < 0)
+		if (x_diff <= 0)
 			draw_line_to_left(game, start.x, start.y, slope(x_diff, y_diff));
 	}
 	else
 	{
 		if (y_diff > 0)
 			draw_line_to_bottom(game, start.x, start.y, slope(y_diff, x_diff));
-		if (y_diff < 0)
+		// if (y_diff < 0)
+		if (y_diff <= 0)
 			draw_line_to_top(game, start.x, start.y, slope(y_diff, x_diff));
 	}
 }

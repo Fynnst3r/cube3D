@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 10:12:42 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/17 13:11:02 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@
 #  define A 255
 #  define FOV 0.77
 // The amount by which we shift each line (in radians)
-#  define ANGLE_SPREAD 0.01
+// the smaller the more lines are drawn, which affects performance but has no 
+// non set pixels
+#  define ANGLE_SPREAD 0.001
 // #  define Lines_FOR_CONE 50
 #  define MINI_RAY_LENGRH 1
 #  define MINI_LINE_HEIGHT 1
-#  define MINI_LINE_WIDTH 1
+#  define MINI_LINE_WIDTH 2
 # endif
 
 # include <stdio.h>
