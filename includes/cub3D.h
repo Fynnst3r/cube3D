@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 13:11:02 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:23:48 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,16 @@
 
 # ifndef S_WIDTH
 // #  define S_WIDTH 960
-#  define S_WIDTH 1600
+#  define S_WIDTH 1280
+// #  define S_WIDTH 1600
+// #  define S_WIDTH 1920
 # endif
 
 # ifndef S_HEIGHT
 // #  define S_HEIGHT 540
-#  define S_HEIGHT 900
+#  define S_HEIGHT 720
+// #  define S_HEIGHT 900
+// #  define S_HEIGHT 1080
 # endif
 
 # ifndef COLORS
@@ -96,6 +100,9 @@ typedef struct player
 	t_cords	dir;
 	// saves direction N/E/S/W
 	char	looking;
+	bool	moving;
+	bool	punch;
+	bool	look_x_wall;
 }		t_player;
 
 typedef struct height_width
@@ -161,16 +168,16 @@ typedef struct raycaster
 
 typedef struct textures
 {
-	mlx_texture_t	*walltex;
 	mlx_texture_t	*no_tex;
 	mlx_texture_t	*so_tex;
 	mlx_texture_t	*we_tex;
 	mlx_texture_t	*ea_tex;
+	mlx_texture_t	*hands[4];
+	mlx_texture_t	*wallcrack;
 	int				*color_no;
 	int				*color_so;
 	int				*color_we;
 	int				*color_ea;
-
 }					t_textures;
 
 typedef struct master_struct
@@ -178,13 +185,17 @@ typedef struct master_struct
 	mlx_t			*mlx;
 
 	mlx_image_t		*bg;
+	mlx_image_t		*hands[4];
+	mlx_image_t		*wallcrack;
 	t_textures		textures;
 
 	t_map			map;
 	t_player		player;
 	t_ray			ray;
 
+	bool			steal_mouse;
 	bool			show_minimap;
+	bool			changed_map;
 	bool			minimap_drawn;
 	mlx_image_t		mini_previouse_pixels;
 	mlx_image_t		*minimap;
@@ -220,6 +231,7 @@ void	draw_fov_direction_line(t_game *game);
 void	draw_mini_fov(t_game *game);
 void	init_minimap(t_game *game);
 void	save_pixels_for_reinstate(t_game *game);
+void	minimap_change(t_game *game);
 
 //src/hooks/game_loop.c
 void	raycaster_loop(void *param);
@@ -232,15 +244,25 @@ void	print_ray_status(t_game *g);
 //src/hooks/keyhook.c
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
+void	my_mouse_button(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
+void	my_cursor(double xpos, double ypos, void *param);
 
 //src/textures.c
 int		*create_color_array(t_game *g, mlx_texture_t *tex);
 void	fill_texture_colors(t_game *game);
 
 //src/graphic/image.c
-unsigned int		get_rgba(int r, int g, int b, int a);
-void	pixset(mlx_image_t *img, int colour);
-void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
-			t_height_width height_width);
-void	draw_half_tex(t_game *g);
+unsigned int	get_rgba(int r, int g, int b, int a);
+void			pixset(mlx_image_t *img, int colour);
+void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
+				t_height_width height_width);
+
+//src/graphics/hands.c
+void	draw_hands(t_game *g);
+bool	change_map_element(t_game *g, char src, char dest);
+void	punch(t_game *g);
+void	sway_hands(t_game *g);
+
+
 #endif

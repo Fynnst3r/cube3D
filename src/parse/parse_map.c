@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:40:53 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/10 14:23:30 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:38:14 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	map_len(t_map *map)
 			if (map->tiles[y][x] != '1' && map->tiles[y][x] != '0'
 				&& map->tiles[y][x] != 'N' && map->tiles[y][x] != 'E'
 				&& map->tiles[y][x] != 'S' && map->tiles[y][x] != 'W'
-				&& map->tiles[y][x] != ' ' && map->tiles[y][x] != '2')
+				&& map->tiles[y][x] != ' ' && map->tiles[y][x] != 'D')
 				return (1);
 		if (ft_strlen(map->tiles[y]) > map->max_x)
 			map->max_x = ft_strlen(map->tiles[y]);
@@ -100,12 +100,11 @@ void	check_walled_map(t_map *map, t_textures *t, size_t y, size_t x)
 	if (y > map->max_y - 1 || x > ft_strlen(map->copy[y]) - 1)
 		parse_error(map, t, "Map is not walled correctly1", NULL);
 	if (map->max_x <= x || map->max_y <= y || map->copy[y][x] == '-'
-		|| map->copy[y][x] == '1' || map->copy[y][x] == '2')
+		|| map->copy[y][x] == '1' || map->copy[y][x] == 'D')
 		return ;
 	if (map->copy[y][x] == '0')
 		map->copy[y][x] = '-';
-	else if (map->copy[y][x] != '1' || map->copy[y][x] != '2'
-			|| map->copy[y][x] == 0)
+	else if (map->copy[y][x] != '1' || map->copy[y][x] == 0)
 		parse_error(map, t, "Map is not walled correctly2", NULL);
 	check_walled_map(map, t, y + 1, x);
 	check_walled_map(map, t, y - 1, x);

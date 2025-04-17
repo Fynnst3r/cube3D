@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/11 14:29:39 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:17:35 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 		printf("Error\n%s\nErrorcode: %d\n", msg, errcode);
 	else if (mlx_errno != 0)
 		printf("MLX ERROR: %s\n", mlx_strerror(mlx_errno));
+	delete_textures(&game->textures);
 	if (game)
 	{
-			delete_textures(&game->textures);
 		if (game->mlx)
 			mlx_terminate(game->mlx);
 	}
@@ -34,22 +34,22 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 
 void    delete_textures(t_textures *t)
 {
-    if (t->no_tex)
-        mlx_delete_texture(t->no_tex);
-    if (t->so_tex)
-        mlx_delete_texture(t->so_tex);
-    if (t->we_tex)
-        mlx_delete_texture(t->we_tex);
-    if (t->ea_tex)
-        mlx_delete_texture(t->ea_tex);
-    if (t->color_no)
-        ft_free(t->color_no);
-    if (t->color_so)
-        ft_free(t->color_so);
-    if (t->color_we)
-        ft_free(t->color_we);
-    if (t->color_ea)
-        ft_free(t->color_ea);
+	if (t->no_tex)
+		mlx_delete_texture(t->no_tex);
+	if (t->so_tex)
+		mlx_delete_texture(t->so_tex);
+	if (t->we_tex)
+		mlx_delete_texture(t->we_tex);
+	if (t->ea_tex)
+		mlx_delete_texture(t->ea_tex);
+	if (t->hands[0])
+		mlx_delete_texture(t->hands[0]);
+	if (t->hands[1])
+		mlx_delete_texture(t->hands[1]);
+	if (t->hands[2])
+		mlx_delete_texture(t->hands[2]);
+	if (t->hands[3])
+		mlx_delete_texture(t->hands[3]);
 }
 
 void	ft_free_dp(char **dp)

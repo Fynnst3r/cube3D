@@ -22,6 +22,7 @@ SRCS =  src/main.c\
 		src/graphic/image.c \
 		src/graphic/minimap.c \
 		src/graphic/textures.c \
+		src/graphic/hands.c \
 
 
 OBJS = $(SRCS:.c=.o)

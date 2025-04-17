@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/13 15:09:28 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/17 18:20:26 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,34 +127,42 @@ void	movement_keyhook(t_game *g)
 	{
 		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed);
 	}
+	if (mlx_is_key_down(g->mlx, MLX_KEY_SPACE)
+		|| mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
+		g->player.punch = true;
+	if (mlx_is_key_down(g->mlx, MLX_KEY_B)
+		|| mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_RIGHT))
+	{
+		change_map_element(g, '0', 'D');
+	}
+	if (g->player.punch)
+		punch(g);
+	if (mlx_is_key_down(g->mlx, MLX_KEY_W) || mlx_is_key_down(g->mlx, 265) || mlx_is_key_down(g->mlx, MLX_KEY_S) || mlx_is_key_down(g->mlx, 264) || mlx_is_key_down(g->mlx, MLX_KEY_A) || mlx_is_key_down(g->mlx, MLX_KEY_D))
+		g->player.moving = true;
+	else
+		g->player.moving = false;
+	sway_hands(g);
 	if (g->show_minimap)
 	{
-		// init_minimap(g);
 		if (!g->minimap_drawn)
 		{
 			g->minimap->enabled = true;
 			g->minifov->enabled = true;
-			// save_pixels_for_reinstate(g);
-			if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
-			ft_error("Error\nImage didn't arrive at window", 1, g);
 			g->minimap_drawn = true;
 		}
-		// printf("%d \n", __LINE__);
-		// clear_img(g->minifov);
+		if (g->changed_map)
+		{
+			minimap_change(g);
+			g->changed_map = false;
+		}
 		draw_mini_fov(g);
-		if (mlx_image_to_window(g->mlx, g->minifov, 0, 0) < 0)
-			ft_error("Error\nImage didn't arrive at window", 1, g);
 	}
 	else
 	{
 		if (g->minimap_drawn)
 		{
-			// mlx_delete_image(g->mlx, g->minifov);
 			g->minimap->enabled = false;
 			g->minifov->enabled = false;
-			// if (mlx_image_to_window(g->mlx, g->minimap_clear, 0, 0) < 0)
-			// if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
-				// ft_error("Error\nImage didn't arrive at window", 1, g);
 			g->minimap_drawn = false;
 		}
 	}
@@ -165,16 +173,11 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	t_game			*g;
 
 	g = (t_game *)param;
-	// double	rt_speed = g->mlx->delta_time * RT_SPEED;
-	// double	mv_speed = 0.12;
-	// printf("mv_speed %f\n rt_speed %f\n", mv_speed, rt_speed);
  	if (keydata.key == MLX_KEY_ESCAPE)
 	{
 		mlx_close_window(g->mlx);
 		ft_error("Game closed with esc.\n", 0, g);
 	}
-	// if (keydata.key == MLX_KEY_M)
-	// 	g->show_minimap = true;
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
 		g->show_minimap = !g->show_minimap;
@@ -194,20 +197,66 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 		print_ray_status(g);
 		printf(ANSI_GREEN"xintersection = %f\n"ANSI_RESET, g->ray.x_intersect);
 	}
-	// if (g->show_minimap)
-	// {
-	// 	init_minimap(g);
-	// 	draw_mini_fov(g);
-	// 	if (mlx_image_to_window(g->mlx, g->minimap, 0, 0) < 0)
-	// 		ft_error("Error\nImage didn't arrive at window", 1, g);
-	// }
-	// else
-	// {
-	// 	if (g->minimap)
-	// 	{
-	// 		mlx_delete_image(g->mlx, g->minimap);
-	// 		g->minimap = NULL;
-	// 	}
-	// }
+}
 
+// g->hands[1]->enabled = false; // extend arm
+// g->hands[2]->enabled = true;
+// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_REPEAT)
+// {
+// 	g->hands[2]->enabled = false; // full punch
+// 	g->hands[3]->enabled = true;
+// }
+// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_REPEAT)
+// {
+// 	g->hands[3]->enabled = false; //retreat punch
+// 	g->hands[2]->enabled = true;
+// }
+// if (button != MLX_MOUSE_BUTTON_LEFT)
+// {
+// 	g->hands[2]->enabled = false; //end
+// 	g->hands[1]->enabled = true;
+// }
+void	my_mouse_button(mouse_key_t button, action_t action, modifier_key_t mods, void *param)
+{
+	t_game	*g;
+
+	g = (t_game *)param;
+	(void)button;
+	(void)action;
+	(void)mods;
+	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_PRESS)
+	{
+		g->steal_mouse = !g->steal_mouse;
+		mlx_set_cursor_mode(g->mlx, MLX_MOUSE_NORMAL);
+	}
+
+	// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
+	// if (mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
+	// {
+	// 	g->punch = true;
+	// }
+}
+
+void	my_cursor(double xpos, double ypos, void *param)
+{
+	t_game	*g;
+	double	rt_speed;
+
+	g = (t_game *)param;
+	(void)ypos;
+	if (!g->steal_mouse)
+		return ;
+	mlx_set_cursor_mode(g->mlx, MLX_MOUSE_HIDDEN);
+	rt_speed = g->mlx->delta_time * RT_SPEED;
+	// printf("xpos = %lf\nypos = %lf\n", xpos, ypos);
+	// printf("xpos  - g->mlx->width / 2 = %lf\n", xpos - g->mlx->width / 2);
+	if (xpos > g->mlx->width / 2 + 0.3)
+	{
+		rotate_player(&g->player.dir, &g->ray.plane, rt_speed * (xpos - g->mlx->width / 2) * M_PI_4 / 4);
+	}
+	if (g->mlx->width / 2 - 0.3 > xpos)
+	{
+		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed * (g->mlx->width / 2 - xpos) * M_PI_4 / 4);
+	}
+	mlx_set_mouse_pos(g->mlx, g->mlx->width / 2, g->mlx->height / 2);
 }
