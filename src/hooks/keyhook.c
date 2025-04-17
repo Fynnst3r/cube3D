@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 17:36:50 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:52:45 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,14 +127,21 @@ void	movement_keyhook(t_game *g)
 	{
 		rotate_player(&g->player.dir, &g->ray.plane, -rt_speed);
 	}
-	if (mlx_is_key_down(g->mlx, MLX_KEY_SPACE))
-		g->punch = true;
-	if (mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
+	if (mlx_is_key_down(g->mlx, MLX_KEY_SPACE)
+		|| mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
+		g->player.punch = true;
+	if (mlx_is_key_down(g->mlx, MLX_KEY_B)
+		|| mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_RIGHT))
 	{
-		g->punch = true;
+		change_map_element(g, '0', 'D');
 	}
-	if (g->punch)
+	if (g->player.punch)
 		punch(g);
+	if (mlx_is_key_down(g->mlx, MLX_KEY_W) || mlx_is_key_down(g->mlx, 265) || mlx_is_key_down(g->mlx, MLX_KEY_S) || mlx_is_key_down(g->mlx, 264) || mlx_is_key_down(g->mlx, MLX_KEY_A) || mlx_is_key_down(g->mlx, MLX_KEY_D))
+		g->player.moving = true;
+	else
+		g->player.moving = false;
+	sway_hands(g);
 	if (g->show_minimap)
 	{
 		if (!g->minimap_drawn)
@@ -215,6 +222,12 @@ void	my_mouse_button(mouse_key_t button, action_t action, modifier_key_t mods, v
 	(void)button;
 	(void)action;
 	(void)mods;
+	if (button == MLX_MOUSE_BUTTON_MIDDLE && action == MLX_PRESS)
+	{
+		g->steal_mouse = !g->steal_mouse;
+		mlx_set_cursor_mode(g->mlx, MLX_MOUSE_NORMAL);
+	}
+
 	// if (button == MLX_MOUSE_BUTTON_LEFT && action == MLX_PRESS)
 	// if (mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_LEFT))
 	// {
@@ -229,6 +242,8 @@ void	my_cursor(double xpos, double ypos, void *param)
 
 	g = (t_game *)param;
 	(void)ypos;
+	if (!g->steal_mouse)
+		return ;
 	mlx_set_cursor_mode(g->mlx, MLX_MOUSE_HIDDEN);
 	rt_speed = g->mlx->delta_time * RT_SPEED;
 	// printf("xpos = %lf\nypos = %lf\n", xpos, ypos);

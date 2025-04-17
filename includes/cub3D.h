@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 17:45:09 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/17 14:44:09 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,17 @@
 # endif
 
 # ifndef S_WIDTH
-#  define S_WIDTH 960
+// #  define S_WIDTH 960
+#  define S_WIDTH 1280
 // #  define S_WIDTH 1600
+// #  define S_WIDTH 1920
 # endif
 
 # ifndef S_HEIGHT
-#  define S_HEIGHT 540
+// #  define S_HEIGHT 540
+#  define S_HEIGHT 720
 // #  define S_HEIGHT 900
+// #  define S_HEIGHT 1080
 # endif
 
 # ifndef COLORS
@@ -94,6 +98,9 @@ typedef struct player
 	t_cords	dir;
 	// saves direction N/E/S/W
 	char	looking;
+	bool	moving;
+	bool	punch;
+	bool	look_x_wall;
 }		t_player;
 
 typedef struct height_width
@@ -180,8 +187,9 @@ typedef struct master_struct
 	t_player		player;
 	t_ray			ray;
 
+	bool			steal_mouse;
 	bool			show_minimap;
-	bool			punch;
+	bool			changed_map;
 	bool			minimap_drawn;
 	mlx_image_t		mini_previouse_pixels;
 	mlx_image_t		*minimap;
@@ -228,20 +236,22 @@ void	print_ray_status(t_game *g);
 //src/hooks/keyhook.c
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
+void	my_mouse_button(mouse_key_t button, action_t action,
+			modifier_key_t mods, void *param);
 void	my_cursor(double xpos, double ypos, void *param);
-
 //src/textures.c
 
 //src/graphic/image.c
-unsigned int		get_rgba(int r, int g, int b, int a);
+unsigned int	get_rgba(int r, int g, int b, int a);
 void	pixset(mlx_image_t *img, int colour);
 void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 			t_height_width height_width);
 
 //src/graphics/hands.c
 void	draw_hands(t_game *g);
+bool	change_map_element(t_game *g, char src, char dest);
 void	punch(t_game *g);
-void	my_mouse_button(mouse_key_t button, action_t action,
-			modifier_key_t mods, void *param);
+void	sway_hands(t_game *g);
+
 
 #endif

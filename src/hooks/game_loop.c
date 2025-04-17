@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 18:59:14 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/16 19:30:17 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ void	raycaster_loop(void *param)
 		step_which_side(g);
 // printf(ANSI_UNDERLINE"main loop : %d\n"ANSI_RESET,  __LINE__);
 		shoot_ray(g);
+		if (x == S_WIDTH / 2)
+			g->player.look_x_wall = g->ray.hit_x_wall;
 // printf(ANSI_UNDERLINE"main loop shot ray: %d\n"ANSI_RESET,  __LINE__);
 		ray_len_and_hitpoint(g->player, &g->ray);
 // printf(ANSI_UNDERLINE"main loop shot ray: %d\n"ANSI_RESET,  __LINE__);
@@ -103,8 +105,7 @@ void	shoot_ray(t_game *g)
 		}
 // printf("y %zu, x %zu, shoot loop: %d\n", g->ray.tile_y, g->ray.tile_x, __LINE__);
 		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
-			&& (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '1'
-				|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'))
+			&& (g->map.tiles[g->ray.tile_y][g->ray.tile_x] != '0'))
 		{
 		// printf("!!!HIT WALL!!! on y %zu, x %zu,\n", g->ray.tile_y, g->ray.tile_x);
 			hit_wall = true;
@@ -222,12 +223,10 @@ void	draw_wallcrack(t_game *g, int x, int wall_height)
 	y_proportion = (((double) g->wallcrack->height / (double) wall_height));
 	y_tx = 0;
 	x_tx = 0;
-	y = 0;
-	while (y < draw_start)
-	{
-		// mlx_put_pixel(g->bg, x, y, ceiling_color);
-		y++;
-	}
+	y = draw_start;
+	if (draw_start < 0)
+		y = 0;
+	// printf("draw start %i y %i\n", draw_start, y);
 	while (y < draw_end + 1)
 	{
 		// printf(ANSI_MAGENTA"wallheight %i\ndrawstart %i\n x %i\n y %i\n"ANSI_RESET, wall_height, draw_start, x, y);
@@ -298,8 +297,11 @@ void	draw_vertical_line(t_game *g, int x)
 	{
 		if ((y_tx + 3) <= (int)(tex->width * tex->height * 4))
 		{
-			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1], 
+			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1],
 					tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
+			if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'D'
+				|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd')
+				wall_color /= 2;
 			mlx_put_pixel(g->bg, x, y, wall_color);
 		}
 		y++;
@@ -318,14 +320,15 @@ void	draw_vertical_line(t_game *g, int x)
 		y_tx += x_tx;
 		y_tx *= 4;
 	}
-	if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2')
+	if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'
+		|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd')
 		draw_wallcrack(g, x, wall_height);
 	while (y < S_HEIGHT)
 	{
 		mlx_put_pixel(g->bg, x, y, floor_color);
 		y++;
 	}
-	if (g->punch)
+	if (g->player.punch)
 		punch(g);
 }
 
@@ -342,4 +345,10 @@ void	print_ray_status(t_game *g)
 	printf(ANSI_MAGENTA"delta_dist x %f - delta_dist y %f\n"ANSI_RESET, g->ray.delta_dist.x, g->ray.delta_dist.y);
 	printf("perpendicular_wall_dist %f\n", g->ray.perp_wall_dist);
 	printf("go x %i, go y %i\n\n", g->ray.go_x, g->ray.go_y);
+	printf("\n\nmlx width %d height %d\nleft hand w %d h %d x %d y %d\nright hand w %d h %d x %d y %d\n", g->mlx->width, g->mlx->height, g->hands[1]->width, g->hands[1]->height, g->hands[1]->instances->x, g->hands[1]->instances->y, g->hands[0]->width, g->hands[0]->height, g->hands[0]->instances->x, g->hands[0]->instances->y);
+	// 	while (map->copy[y])
+	// {
+	// 	printf("copy[%zu]:	'%s'\n", y, map->copy[y]);
+	// 	y++;
+	// }
 }
