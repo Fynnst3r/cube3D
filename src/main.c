@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 17:22:39 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 11:53:04 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	main(int ac, char **av)
 	draw_hands(&game);
 	init_minimap(&game);
 	// draw_mini_fov(&game);
-	// mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
-	// 	game.minimap->height * MINI_RESIZE_FACTOR);
+	// mlx_resize_image(game.minimap, game.minimap->width * mini_resize_factor,
+	// 	game.minimap->height * mini_resize_factor);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	game.steal_mouse = true;
 	mlx_set_mouse_pos(game.mlx, game.mlx->width / 2, game.mlx->height / 2);

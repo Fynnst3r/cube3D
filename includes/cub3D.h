@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 21:23:48 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:27:51 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,15 @@
 # endif
 
 # ifndef MINI
-#  define MINI_RESIZE_FACTOR 2
+// #  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
-#  define R 111
-#  define G 11
-#  define B 11
+// #  define R 111
+// #  define G 11
+// #  define B 11
+// #  define A 255
+#  define R 233
+#  define G 166
+#  define B 0
 #  define A 255
 #  define FOV 0.77
 // The amount by which we shift each line (in radians)
@@ -197,9 +201,8 @@ typedef struct master_struct
 	bool			show_minimap;
 	bool			changed_map;
 	bool			minimap_drawn;
-	mlx_image_t		mini_previouse_pixels;
+	double			mini_resize_factor;
 	mlx_image_t		*minimap;
-	mlx_image_t		*minimap_clear;
 	mlx_image_t		*minifov;
 	double			fov_line_end_x;
 	double			fov_line_end_y;

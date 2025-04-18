@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/04/17 18:58:47 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 13:29:52 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,18 @@ void	draw_mini_fov(t_game *game)
 	height_width.width = game->minimap->width;
 	pixset_yx_height_width(game->minifov, 0 , yx, height_width);
     miniplayer_x = game->player.pos.x * MINI_UNITS_PER_TILE
-					* MINI_RESIZE_FACTOR;
+					* game->mini_resize_factor;
     miniplayer_y = game->player.pos.y * MINI_UNITS_PER_TILE
-					* MINI_RESIZE_FACTOR;
+					* game->mini_resize_factor;
 	lines_per_side_off_direction_line = -(FOV / ANGLE_SPREAD) / 2;
     while ( lines_per_side_off_direction_line <= (FOV / ANGLE_SPREAD) / 2 )
     {
         double angle = atan2(game->player.dir.y, game->player.dir.x) +
 						( lines_per_side_off_direction_line * ANGLE_SPREAD);
         game->fov_line_end_x = miniplayer_x + cos(angle) * MINI_RAY_LENGRH
-								* MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+								* MINI_UNITS_PER_TILE * game->mini_resize_factor;
         game->fov_line_end_y = miniplayer_y + sin(angle) * MINI_RAY_LENGRH
-								* MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+								* MINI_UNITS_PER_TILE * game->mini_resize_factor;
         draw_fov_direction_line(game);
 		lines_per_side_off_direction_line++;
     }
@@ -206,8 +206,8 @@ void	draw_fov_direction_line(t_game *game)
 	double			x_diff;
 	double			y_diff;
 		
-	start.x = game->player.pos.x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-	start.y = game->player.pos.y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+	start.x = game->player.pos.x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+	start.y = game->player.pos.y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	height_width.height = MINI_LINE_HEIGHT;
 	height_width.width = MINI_LINE_WIDTH;
 	x_diff = game->fov_line_end_x - start.x;
@@ -236,8 +236,8 @@ static void	draw_minimap_tile(t_game *game, size_t y, size_t x,
 {
 	t_cords_int32	yx;
 
-	yx.y = y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-	yx.x = x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+	yx.y = y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+	yx.x = x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	if (game->map.tiles[y][x] != '0' && game->map.tiles[y][x] != ' ')
 	{
 		// printf("%s %d game->map.tiles[y][x] %s\n", __FILE__, __LINE__, game->map.tiles[y][x]);
@@ -246,12 +246,12 @@ static void	draw_minimap_tile(t_game *game, size_t y, size_t x,
 		if(game->map.tiles[y][x] == 'D')
 			pixset_yx_height_width(game->minimap, get_rgba(33, 166, 188, 255), yx, hw);
 		if(game->map.tiles[y][x] == 'd')
-			pixset_yx_height_width(game->minimap, get_rgba(244, 11, 88, 255), yx, hw);
+			pixset_yx_height_width(game->minimap, get_rgba(111, 222, 0, 255), yx, hw);
 	}
 	else if (game->map.tiles[y][x] == '0')
 	{
 		pixset_yx_height_width(game->minifov, 0, yx, hw);
-		pixset_yx_height_width(game->minimap, get_rgba(0, 255, 255, 255), yx, hw);
+		pixset_yx_height_width(game->minimap, get_rgba(122, 255, 255, 255), yx, hw);
 	}
 }
 
@@ -262,16 +262,30 @@ void	init_minimap(t_game *game)
 	// t_cords_int32	yx;
 	t_height_width	height_width;
 
-	height_width.height = MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-	height_width.width = MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+	game->mini_resize_factor = 2;
+	printf("%s %d swidth %d mini width %lu *resizeFactor %f\n", __FILE__, __LINE__, S_WIDTH, game->map.max_x * MINI_UNITS_PER_TILE, game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
+	if (game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor > S_WIDTH)
+		// game->mini_resize_factor = S_WIDTH / (game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+		game->mini_resize_factor = S_WIDTH / (game->map.max_x * MINI_UNITS_PER_TILE);
+	printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
+	printf("%s %d swidth %d mini width %f\n", __FILE__, __LINE__, S_WIDTH, game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	printf("%s %d sheight %d mini heigth %lu *resizefactor %f\n", __FILE__, __LINE__, S_HEIGHT, game->map.max_y * MINI_UNITS_PER_TILE, game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	if (game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor > S_HEIGHT)
+		// game->mini_resize_factor = S_HEIGHT / (game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+		game->mini_resize_factor = (double)S_HEIGHT / (double)(game->map.max_y * MINI_UNITS_PER_TILE);
+	printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
+	printf("%s %d sheight %d mini heigth %f\n", __FILE__, __LINE__, S_HEIGHT, game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	height_width.height = MINI_UNITS_PER_TILE * game->mini_resize_factor;
+	height_width.width = MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	y = 0;
 	x = 0;
 	game->minimap = mlx_new_image(game->mlx,
-					game->map.max_x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR,
-					game->map.max_y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR);
+					game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor,
+					game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
 	game->minifov = mlx_new_image(game->mlx,
-						game->map.max_x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR,
-						game->map.max_y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR);
+						game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor,
+						game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
 	while (game->map.tiles[y] != NULL)
 	{
 		while (game->map.tiles[y][x] != 0)
@@ -295,10 +309,10 @@ void	init_minimap(t_game *game)
 	// 	ft_error("Error\nImage didn't arrive at window", 1, game);
 	// }
 	// if max size bigger 100 / 10 if bigger 1000 / 100...
-	// mlx_resize_image(game->minimap, game->bg->width/MINI_RESIZE_FACTOR,
-	// 	game->bg->height/MINI_RESIZE_FACTOR);
-	// mlx_resize_image(game->minimap, game->minimap->width * MINI_RESIZE_FACTOR,
-	// 	game->minimap->height * MINI_RESIZE_FACTOR);
+	// mlx_resize_image(game->minimap, game->bg->width/mini_resize_factor,
+	// 	game->bg->height/mini_resize_factor);
+	// mlx_resize_image(game->minimap, game->minimap->width * mini_resize_factor,
+	// 	game->minimap->height * mini_resize_factor);
 }
 
 void	minimap_change(t_game *game)
@@ -307,13 +321,13 @@ void	minimap_change(t_game *game)
 	size_t	x;
 	t_cords_int32	yx;
 	t_height_width	height_width;
-	height_width.height = MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-	height_width.width = MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+	height_width.height = MINI_UNITS_PER_TILE * game->mini_resize_factor;
+	height_width.width = MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	y = 0;
 	x = 0;
 	// game->minimap = mlx_new_image(game->mlx,
-	// 				game->map.max_x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR,
-	// 				game->map.max_y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR);					
+	// 				game->map.max_x * MINI_UNITS_PER_TILE * mini_resize_factor,
+	// 				game->map.max_y * MINI_UNITS_PER_TILE * mini_resize_factor);					
 	while (game->map.tiles[y] != NULL)
 	{
 		while (game->map.tiles[y][x] != 0)
@@ -322,21 +336,21 @@ void	minimap_change(t_game *game)
 			// draw_minimap_tile(game, y, x, height_width);
 			if(game->map.tiles[y][x] == 'D')
 			{
-				yx.y = y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-				yx.x = x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
+				yx.y = y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+				yx.x = x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
 				pixset_yx_height_width(game->minimap, get_rgba(33, 166, 188, 255), yx, height_width);
 			}
 			if(game->map.tiles[y][x] == 'd')
 			{
-				yx.y = y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-				yx.x = x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-				pixset_yx_height_width(game->minimap, get_rgba(244, 11, 88, 255), yx, height_width);
+				yx.y = y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+				yx.x = x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+				pixset_yx_height_width(game->minimap, get_rgba(111, 222, 0, 255), yx, height_width);
 			}
 			if(game->map.tiles[y][x] == '0')
 			{
-				yx.y = y * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-				yx.x = x * MINI_UNITS_PER_TILE * MINI_RESIZE_FACTOR;
-				pixset_yx_height_width(game->minimap, get_rgba(0, 255, 255, 255), yx, height_width);
+				yx.y = y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+				yx.x = x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+				pixset_yx_height_width(game->minimap, get_rgba(122, 255, 255, 255), yx, height_width);
 			}
 			x += 1;
 		}
@@ -356,8 +370,8 @@ void	minimap_change(t_game *game)
 	// 	ft_error("Error\nImage didn't arrive at window", 1, game);
 	// }
 	// if max size bigger 100 / 10 if bigger 1000 / 100...
-	// mlx_resize_image(game->minimap, game->bg->width/MINI_RESIZE_FACTOR,
-	// 	game->bg->height/MINI_RESIZE_FACTOR);
-	// mlx_resize_image(game->minimap, game->minimap->width * MINI_RESIZE_FACTOR,
-	// 	game->minimap->height * MINI_RESIZE_FACTOR);
+	// mlx_resize_image(game->minimap, game->bg->width/mini_resize_factor,
+	// 	game->bg->height/mini_resize_factor);
+	// mlx_resize_image(game->minimap, game->minimap->width * mini_resize_factor,
+	// 	game->minimap->height * mini_resize_factor);
 }
