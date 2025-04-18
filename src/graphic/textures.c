@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 19:13:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 17:36:03 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 15:00:41 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void    fill_texture_colors(t_game *game)
     // printf("%s %d rgba %d\n", __FILE__, __LINE__,
     //     game->textures.color_no[x]);
     game->textures.color_so = create_color_array(game, game->textures.so_tex);
-    game->textures.color_we = create_color_array(game, game->textures.we_tex);
+    game->textures.color_we = create_color_array(game, game->textures.we_tex);  
     game->textures.color_ea = create_color_array(game, game->textures.ea_tex);
     while (y < game->textures.ea_tex->height)
 	{

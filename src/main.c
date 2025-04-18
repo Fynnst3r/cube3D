@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/18 11:53:04 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 14:49:06 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	main(int ac, char **av)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
 	// game.img = mlx_new_image(game.mlx, game.textures.ea_tex->width, game.textures.ea_tex->height);
 	// if (!game.img)
-	// 	ft_error("Error\nImage didn't create", 1, &game);
+		// ft_error("Error\nImage didn't create", 1, &game);
 	// draw_half_tex(&game);
 	// mlx_resize_image(game.img, 500, 500);
 	init_raycaster(&game);

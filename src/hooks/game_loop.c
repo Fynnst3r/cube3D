@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 17:53:04 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:51:21 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,7 +268,7 @@ int				ceiling_color = g->map.ceiling_color;
 	int				y_tx;
 	unsigned int	x_tx = 0;
 	mlx_texture_t	*tex;
-	
+
 	if (draw_end > S_HEIGHT)
 		draw_end = S_HEIGHT - 1;
 	y = 0;
@@ -281,8 +281,20 @@ int				ceiling_color = g->map.ceiling_color;
 	{
 		if (g->ray.ray_dir.x > 0)
 		{
-			tex = g->textures.ea_tex;
-			wall_color = g->textures.color_ea;
+			// if (EASTER && g->mini_color && (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'D' || g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd'))
+			// if (EASTER && g->mini_color && (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd'))
+			if (g->mini_img && g->mini_color && (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd'))
+			{
+				// printf("EASTER");
+				tex = g->mini_tex;
+				wall_color = g->mini_color;
+				// g->mini_img = !g->mini_img;
+			}
+			else
+			{
+				tex = g->textures.ea_tex;
+				wall_color = g->textures.color_ea;
+			}
 		}
 		else
 		{

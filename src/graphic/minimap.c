@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/04/18 13:29:52 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/18 16:54:34 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void			init_minimap(t_game *game);
 void			save_pixels_for_reinstate(t_game *game);
 static double	slope(double x_diff, double y_diff);
 void			minimap_change(t_game *game);
+void			delete_minimap(t_game *game);
 
 void	clear_img(mlx_image_t *img)
 {
@@ -263,19 +264,19 @@ void	init_minimap(t_game *game)
 	t_height_width	height_width;
 
 	game->mini_resize_factor = 2;
-	printf("%s %d swidth %d mini width %lu *resizeFactor %f\n", __FILE__, __LINE__, S_WIDTH, game->map.max_x * MINI_UNITS_PER_TILE, game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
-	printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
+	// printf("%s %d swidth %d mini width %lu *resizeFactor %f\n", __FILE__, __LINE__, S_WIDTH, game->map.max_x * MINI_UNITS_PER_TILE, game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	// printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
 	if (game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor > S_WIDTH)
 		// game->mini_resize_factor = S_WIDTH / (game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
 		game->mini_resize_factor = S_WIDTH / (game->map.max_x * MINI_UNITS_PER_TILE);
-	printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
-	printf("%s %d swidth %d mini width %f\n", __FILE__, __LINE__, S_WIDTH, game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
-	printf("%s %d sheight %d mini heigth %lu *resizefactor %f\n", __FILE__, __LINE__, S_HEIGHT, game->map.max_y * MINI_UNITS_PER_TILE, game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	// printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
+	// printf("%s %d swidth %d mini width %f\n", __FILE__, __LINE__, S_WIDTH, game->map.max_x * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	// printf("%s %d sheight %d mini heigth %lu *resizefactor %f\n", __FILE__, __LINE__, S_HEIGHT, game->map.max_y * MINI_UNITS_PER_TILE, game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
 	if (game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor > S_HEIGHT)
 		// game->mini_resize_factor = S_HEIGHT / (game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
 		game->mini_resize_factor = (double)S_HEIGHT / (double)(game->map.max_y * MINI_UNITS_PER_TILE);
-	printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
-	printf("%s %d sheight %d mini heigth %f\n", __FILE__, __LINE__, S_HEIGHT, game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
+	// printf("%s %d resize factor %f\n", __FILE__, __LINE__, game->mini_resize_factor);
+	// printf("%s %d sheight %d mini heigth %f\n", __FILE__, __LINE__, S_HEIGHT, game->map.max_y * MINI_UNITS_PER_TILE * game->mini_resize_factor);
 	height_width.height = MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	height_width.width = MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	y = 0;
@@ -295,6 +296,16 @@ void	init_minimap(t_game *game)
 		}
 		x = 0;
 		y += 1;
+	}
+	if (EASTER)
+	{
+		game->mini_tex = mlx_load_png("./textures/yellowBrick.png");
+		if (game->mini_tex)
+		{
+			game->mini_color = create_color_array(game, game->mini_tex);
+			// mlx_delete_texture(game->mini_tex);
+		}
+		game->mini_img = false;
 	}
 	if (mlx_image_to_window(game->mlx, game->minimap, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, game);
@@ -374,4 +385,10 @@ void	minimap_change(t_game *game)
 	// 	game->bg->height/mini_resize_factor);
 	// mlx_resize_image(game->minimap, game->minimap->width * mini_resize_factor,
 	// 	game->minimap->height * mini_resize_factor);
+}
+
+void	delete_minimap(t_game *game)
+{
+	if (game->mini_tex)
+		mlx_delete_texture(game->mini_tex);
 }
