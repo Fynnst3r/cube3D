@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 15:16:49 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 16:22:26 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void	movement_keyhook(t_game *g)
 	if (mlx_is_key_down(g->mlx, MLX_KEY_B)
 		|| mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_RIGHT))
 	{
-		change_map_element(g, '0', 'D');
+		change_map_element(g, '0', 'D', g->map.tiles);
 	}
 	if (g->player.punch)
 		punch(g);

@@ -12,6 +12,7 @@ LIBMLXA = $(LIBMLX)/build/libmlx42.a
 SRCS =  src/main.c\
 		src/parse/parse_scene.c\
 		src/parse/parse_map.c\
+		src/init/init_hands.c \
 		src/init/init_ray.c \
 		src/hooks/game_loop.c \
 		src/hooks/keyhook.c \

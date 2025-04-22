@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:55:07 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:19:37 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,7 +266,7 @@ void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 
 //src/graphics/hands.c
 void	draw_hands(t_game *g);
-bool	change_map_element(t_game *g, char src, char dest);
+bool	change_map_element(t_game *g, char src, char dest, char **m);
 void	punch(t_game *g);
 void	sway_hands(t_game *g);
 
