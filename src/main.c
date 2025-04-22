@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/16 19:26:26 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/17 21:26:18 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,3 +66,6 @@ int	main(int ac, char **av)
 //			add breakable walls (2 is crack only, 3 is breakable and 4 is both. so 1 is not breakable, but crackable to 2, 2 is cracked, 3 is not but can be cracked to 4 and also be placed, 0 is no wall)
 //			1 D no crack
 //			2 d with crack
+//
+//
+//fix:		placing blocks is wierd, some times it places them behind or another one two infront of you

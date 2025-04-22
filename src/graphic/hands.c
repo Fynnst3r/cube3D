@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:55:02 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 14:44:19 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:39:07 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	draw_hands(t_game *g)
 	if (!g->hands[3])
 		ft_error("Error\nImage didn't create", 7, g);
 
-	// height_ref_res = 720;
-	// width_ref_res = 1280;
 	factor = 3;
 	// printf("factor_h %lf factor_w %lf\n", factor_h, factor_w);
 	// factor = 1;
@@ -61,7 +59,6 @@ void	draw_hands(t_game *g)
 	mlx_resize_image(g->hands[3], g->hands[3]->width * factor, g->hands[3]->height * factor);
 	if (mlx_image_to_window(g->mlx, g->hands[3], 0, g->mlx->height - g->hands[3]->height) < 0)
 		ft_error("Error\nImage didn't arrive at window", 11, g);
-	// g->hands[1]->enabled = false;
 
 	g->textures.wallcrack = mlx_load_png("./textures/wallcrack.png");
 	if (!g->textures.wallcrack)
@@ -86,7 +83,8 @@ bool	change_map_element(t_game *g, char src, char dest)
 		if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] == src
 			&& g->player.dir.x > 0)
 			m[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] = dest;
-		else if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] == src)
+		else if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] == src
+				&& g->player.dir.x < 0)
 			m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] = dest;
 		else
 			return (false);
@@ -94,9 +92,10 @@ bool	change_map_element(t_game *g, char src, char dest)
 	else
 	{
 		if (m[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] == src
-		&& g->player.dir.y > 0 && !g->ray.hit_x_wall)
+			&& g->player.dir.y > 0)
 			m[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] = dest;
-		else if (m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] == src)
+		else if (m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] == src
+			&& g->player.dir.y < 0)
 			m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] = dest;
 		else
 			return (false);
@@ -150,7 +149,7 @@ void	sway_hands(t_game *g)
 	int				max_x;
 	int				max_y;
 	int				min_y;
-	int				factor;
+	double			factor;
 
 	if (!g->player.moving)
 	{
@@ -168,9 +167,11 @@ void	sway_hands(t_game *g)
 		direction_x *= -1;
 	if (g->hands[0]->instances->y > max_y || min_y > g->hands[0]->instances->y)
 		direction_y *= -1;
-	factor = 1;
+	factor = 1.5;
 	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SHIFT))
-		factor = 2;
+		factor += 0.5;
+	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SUPER))
+		factor -= 0.5;
 	g->hands[0]->instances->x += direction_x * factor;
 	g->hands[1]->instances->x += direction_x * factor;
 	g->hands[0]->instances->y += direction_y * factor;

@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 14:44:09 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:41:49 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,6 +212,7 @@ void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
 
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
+
 //src/error.c
 void	ft_error(char *msg, int errcode, t_game	*game);
 void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);

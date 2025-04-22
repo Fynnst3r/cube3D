@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/16 19:30:17 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:41:25 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,7 +243,7 @@ void	draw_wallcrack(t_game *g, int x, int wall_height)
 			y_tx = g->wallcrack->height - 1;
 		y_tx *= g->wallcrack->width;
 		x_tx = round(g->ray.x_intersect * g->wallcrack->width);
-		if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
+		if ((g->ray.hit_x_wall && g->ray.ray_dir.x < 0)
 			|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
 			x_tx = round((1 - g->ray.x_intersect) * g->wallcrack->width);
 		else
@@ -299,9 +299,6 @@ void	draw_vertical_line(t_game *g, int x)
 		{
 			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1],
 					tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
-			if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'D'
-				|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd')
-				wall_color /= 2;
 			mlx_put_pixel(g->bg, x, y, wall_color);
 		}
 		y++;
@@ -310,7 +307,7 @@ void	draw_vertical_line(t_game *g, int x)
 			y_tx = tex->height - 1;
 		y_tx *= tex->width;
 		x_tx = round(g->ray.x_intersect * tex->width);
-		if ((g->ray.hit_x_wall  && g->ray.ray_dir.x < 0)
+		if ((g->ray.hit_x_wall && g->ray.ray_dir.x < 0)
 			|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
 			x_tx = round((1 - g->ray.x_intersect) * tex->width);
 		else
@@ -346,6 +343,7 @@ void	print_ray_status(t_game *g)
 	printf("perpendicular_wall_dist %f\n", g->ray.perp_wall_dist);
 	printf("go x %i, go y %i\n\n", g->ray.go_x, g->ray.go_y);
 	printf("\n\nmlx width %d height %d\nleft hand w %d h %d x %d y %d\nright hand w %d h %d x %d y %d\n", g->mlx->width, g->mlx->height, g->hands[1]->width, g->hands[1]->height, g->hands[1]->instances->x, g->hands[1]->instances->y, g->hands[0]->width, g->hands[0]->height, g->hands[0]->instances->x, g->hands[0]->instances->y);
+	printf("looking at x_wall %d\n", g->player.look_x_wall);
 	// 	while (map->copy[y])
 	// {
 	// 	printf("copy[%zu]:	'%s'\n", y, map->copy[y]);

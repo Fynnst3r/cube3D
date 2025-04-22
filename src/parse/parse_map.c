@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:40:53 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 14:38:14 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/17 15:59:38 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,9 +100,9 @@ void	check_walled_map(t_map *map, t_textures *t, size_t y, size_t x)
 	if (y > map->max_y - 1 || x > ft_strlen(map->copy[y]) - 1)
 		parse_error(map, t, "Map is not walled correctly1", NULL);
 	if (map->max_x <= x || map->max_y <= y || map->copy[y][x] == '-'
-		|| map->copy[y][x] == '1' || map->copy[y][x] == 'D')
+		|| map->copy[y][x] == '1')
 		return ;
-	if (map->copy[y][x] == '0')
+	if (map->copy[y][x] == '0' || map->copy[y][x] == 'D')
 		map->copy[y][x] = '-';
 	else if (map->copy[y][x] != '1' || map->copy[y][x] == 0)
 		parse_error(map, t, "Map is not walled correctly2", NULL);
