@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/04/18 16:54:34 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:51:26 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void			init_minimap(t_game *game);
 void			save_pixels_for_reinstate(t_game *game);
 static double	slope(double x_diff, double y_diff);
 void			minimap_change(t_game *game);
-void			delete_minimap(t_game *game);
 
 void	clear_img(mlx_image_t *img)
 {
@@ -297,16 +296,7 @@ void	init_minimap(t_game *game)
 		x = 0;
 		y += 1;
 	}
-	if (EASTER)
-	{
-		game->mini_tex = mlx_load_png("./textures/yellowBrick.png");
-		if (game->mini_tex)
-		{
-			game->mini_color = create_color_array(game, game->mini_tex);
-			// mlx_delete_texture(game->mini_tex);
-		}
-		game->mini_img = false;
-	}
+
 	if (mlx_image_to_window(game->mlx, game->minimap, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, game);
 	if (mlx_image_to_window(game->mlx, game->minifov, 0, 0) < 0)
@@ -385,10 +375,4 @@ void	minimap_change(t_game *game)
 	// 	game->bg->height/mini_resize_factor);
 	// mlx_resize_image(game->minimap, game->minimap->width * mini_resize_factor,
 	// 	game->minimap->height * mini_resize_factor);
-}
-
-void	delete_minimap(t_game *game)
-{
-	if (game->mini_tex)
-		mlx_delete_texture(game->mini_tex);
 }

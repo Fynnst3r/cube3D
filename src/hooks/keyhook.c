@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/18 16:17:36 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:49:04 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,8 +181,6 @@ void	my_keyhook(mlx_key_data_t keydata, void *param)
 	if (keydata.key == MLX_KEY_M && keydata.action == MLX_PRESS)
 	{
 		g->show_minimap = !g->show_minimap;
-		if (EASTER)
-			g->mini_img = !g->mini_img;
 	}
 	if (keydata.key == MLX_KEY_BACKSPACE)
 	{

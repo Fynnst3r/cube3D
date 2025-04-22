@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/18 16:31:59 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:51:01 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 	else if (mlx_errno != 0)
 		printf("MLX ERROR: %s\n", mlx_strerror(mlx_errno));
 	delete_textures(&game->textures);
-	delete_minimap(game);
 	if (game)
 	{
 		if (game->mlx)

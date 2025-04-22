@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/18 16:52:56 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:51:19 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@
 # ifndef MINI
 // #  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
-// #  define EASTER true
-#  define EASTER false
 // #  define R 111
 // #  define G 11
 // #  define B 11
@@ -206,8 +204,6 @@ typedef struct master_struct
 	bool			minimap_drawn;
 	double			mini_resize_factor;
 	mlx_image_t		*minimap;
-	bool			mini_img;
-	mlx_texture_t	*mini_tex;
 	int				*mini_color;
 	mlx_image_t		*minifov;
 	double			fov_line_end_x;
@@ -241,7 +237,6 @@ void	draw_mini_fov(t_game *game);
 void	init_minimap(t_game *game);
 void	save_pixels_for_reinstate(t_game *game);
 void	minimap_change(t_game *game);
-void	delete_minimap(t_game *game);
 
 //src/hooks/game_loop.c
 void	raycaster_loop(void *param);
