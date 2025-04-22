@@ -1,5 +1,6 @@
 NAME = libft.a
 CC = cc
+# CFLAGS = -Wall -Wextra -Werror
 CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 
 CFILES = 	ft_isdigit.c ft_isalpha.c ft_isalnum.c ft_isascii.c ft_isprint.c \

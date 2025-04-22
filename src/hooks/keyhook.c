@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:56:27 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:16:49 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -241,7 +241,8 @@ void	my_cursor(double xpos, double ypos, void *param)
 {
 	t_game	*g;
 	double	rt_speed;
-
+	// M_PI_4
+	// double	pi_4 = 0.785398163397448309615660845819875721;
 	g = (t_game *)param;
 	(void)ypos;
 	if (!g->steal_mouse)

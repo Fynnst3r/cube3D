@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minimap.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/04/22 14:51:26 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:07:26 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,14 +202,14 @@ static double	slope(double x_diff, double y_diff)
 void	draw_fov_direction_line(t_game *game)
 {
 	t_cords			start;
-	t_height_width	height_width;
+	// t_height_width	height_width;
 	double			x_diff;
 	double			y_diff;
-		
+
 	start.x = game->player.pos.x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	start.y = game->player.pos.y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
-	height_width.height = MINI_LINE_HEIGHT;
-	height_width.width = MINI_LINE_WIDTH;
+	// height_width.height = MINI_LINE_HEIGHT;
+	// height_width.width = MINI_LINE_WIDTH;
 	x_diff = game->fov_line_end_x - start.x;
 	y_diff = game->fov_line_end_y - start.y;
 	// if (fabs(x_diff) >= fabs(y_diff))

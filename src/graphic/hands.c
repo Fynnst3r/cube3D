@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:55:02 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:55:44 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:08:54 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,13 +130,13 @@ static void	hit_wall(t_game *g)
 	if (!change_map_element(g, '1', '2'))
 		if (!change_map_element(g, 'D', 'd'))
 			if (!change_map_element(g, 'd', '0'))
-				;
+				(void)g;
 	g->player.punch = false;
 }
 
 void	punch(t_game *g)
 {
-	double static	start_time = 0.0;
+	static double	start_time = 0.0;
 	static bool		animation_end = true;
 
 	if (animation_end)
@@ -169,7 +169,7 @@ void	sway_hands(t_game *g)
 	int				min_x;
 	int				max_y;
 	int				min_y;
-	int				factor;
+	double			factor;
 	int x1;
 	
 	x1 = (S_WIDTH -(3 * ((g->hands[0]->width + g->hands[1]->width)/2)* 1))/2;
@@ -200,7 +200,7 @@ void	sway_hands(t_game *g)
 	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SHIFT))
 		factor += 0.5;
 	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SUPER))
-		factor -= 0.5;
+		factor = 1;
 	g->hands[0]->instances->x += direction_x * factor;
 	g->hands[1]->instances->x += direction_x * factor;
 	g->hands[0]->instances->y += direction_y * factor;

@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:56:21 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 15:19:18 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -338,7 +338,7 @@ int				ceiling_color = g->map.ceiling_color;
 			x_tx = tex->width - 1;
 		y_tx += x_tx;
 	}
-	
+
 	if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'
 		|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd')
 		draw_wallcrack(g, x, wall_height);
