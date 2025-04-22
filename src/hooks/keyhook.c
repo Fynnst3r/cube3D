@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 20:09:48 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:56:27 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,11 +148,13 @@ void	movement_keyhook(t_game *g)
 		{
 			g->minimap->enabled = true;
 			g->minifov->enabled = true;
-			// save_pixels_for_reinstate(g);
 			g->minimap_drawn = true;
 		}
-		// printf("%d \n", __LINE__);
-		// clear_img(g->minifov);
+		if (g->changed_map)
+		{
+			minimap_change(g);
+			g->changed_map = false;
+		}
 		draw_mini_fov(g);
 	}
 	else

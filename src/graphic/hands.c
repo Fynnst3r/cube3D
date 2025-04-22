@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:55:02 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:39:07 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:55:44 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,20 +44,39 @@ void	draw_hands(t_game *g)
 	if (!g->hands[3])
 		ft_error("Error\nImage didn't create", 7, g);
 
-	factor = 3;
+	// height_ref_res = 720;
+	// width_ref_res = 1280;
+	factor = 2;
 	// printf("factor_h %lf factor_w %lf\n", factor_h, factor_w);
 	// factor = 1;
+	// int x1 = (S_WIDTH -(4 * g->hands[0]->width))/2;
+	// int x1 = (g->mlx->width -(4 * g->hands[0]->width * factor))/2;
+	// int x1 = (g->mlx->width -(3 * ((g->hands[0]->width + g->hands[1]->width)/2) * factor))/2;
+	// int x1 = (g->mlx->width -(3 * ((g->hands[0]->width + g->hands[1]->width)/2)* factor))/2;
+	int x1 = (S_WIDTH -(3 * ((g->hands[0]->width + g->hands[1]->width)/2)* factor))/2;
+	// int x1 = S_WIDTH -((6 * g->hands[0]->width * factor)/2);
+	// int x1 = (S_WIDTH -((6 * g->hands[0]->width * factor)/2)) * factor;
+	// int x1 = (S_WIDTH -((6 * g->hands[0]->width )/2)) * factor;
+	// printf("swidth %d right hand 0 width %d x1 %d\n", S_WIDTH,g->hands[0]->width,x1);
+	// printf("swidth %d left hand 0 width %d x1 %d\n", g->mlx->width,g->hands[1]->width,x1);
+	// x1 = 300;
+	// int x2 = S_WIDTH -x1 - g->hands[0]->width;
+	// int x2 = g->mlx->width -x1 - g->hands[0]->width * factor;
+	int x2 = S_WIDTH -x1 - g->hands[0]->width * factor;
+	// printf("swidth %d right hand 0 width %d x2 %d\n", g->mlx->width,g->hands[0]->width,x2);
 	mlx_resize_image(g->hands[0], g->hands[0]->width * factor, g->hands[0]->height * factor);
-	if (mlx_image_to_window(g->mlx, g->hands[0], g->mlx->width - g->hands[0]->width, g->mlx->height - g->hands[0]->height) < 0)
+	// if (mlx_image_to_window(g->mlx, g->hands[0], g->mlx->width - g->hands[0]->width, g->mlx->height - g->hands[0]->height) < 0)
+	if (mlx_image_to_window(g->mlx, g->hands[0], x2, g->mlx->height - g->hands[0]->height) < 0)
 		ft_error("Error\nImage didn't arrive at window", 8, g);
 	mlx_resize_image(g->hands[1], g->hands[1]->width * factor, g->hands[1]->height * factor);
-	if (mlx_image_to_window(g->mlx, g->hands[1], 0, g->mlx->height - g->hands[1]->height) < 0)
+	// if (mlx_image_to_window(g->mlx, g->hands[1], 0, g->mlx->height - g->hands[1]->height) < 0)
+	if (mlx_image_to_window(g->mlx, g->hands[1], x1, g->mlx->height - g->hands[1]->height) < 0)
 		ft_error("Error\nImage didn't arrive at window", 9, g);
 	mlx_resize_image(g->hands[2], g->hands[2]->width * factor, g->hands[2]->height * factor);
-	if (mlx_image_to_window(g->mlx, g->hands[2], 0, g->mlx->height - g->hands[2]->height) < 0)
+	if (mlx_image_to_window(g->mlx, g->hands[2], x1, g->mlx->height - g->hands[2]->height) < 0)
 		ft_error("Error\nImage didn't arrive at window", 10, g);
 	mlx_resize_image(g->hands[3], g->hands[3]->width * factor, g->hands[3]->height * factor);
-	if (mlx_image_to_window(g->mlx, g->hands[3], 0, g->mlx->height - g->hands[3]->height) < 0)
+	if (mlx_image_to_window(g->mlx, g->hands[3], x1, g->mlx->height - g->hands[3]->height) < 0)
 		ft_error("Error\nImage didn't arrive at window", 11, g);
 
 	g->textures.wallcrack = mlx_load_png("./textures/wallcrack.png");
@@ -147,23 +166,33 @@ void	sway_hands(t_game *g)
 	static int		direction_x = 1;
 	static int		direction_y = -1;
 	int				max_x;
+	int				min_x;
 	int				max_y;
 	int				min_y;
-	double			factor;
-
+	int				factor;
+	int x1;
+	
+	x1 = (S_WIDTH -(3 * ((g->hands[0]->width + g->hands[1]->width)/2)* 1))/2;
 	if (!g->player.moving)
 	{
 		// printf("mlx width %d height %d\n", g->mlx->width, g->mlx->height);
-		g->hands[0]->instances->x = S_WIDTH - g->hands[0]->width;
-		g->hands[1]->instances->x = 0;
+		// g->hands[0]->instances->x = S_WIDTH - g->hands[0]->width;
+		// g->hands[1]->instances->x = 0;
+		// x1 = (g->mlx->width -(3 * ((g->hands[0]->width + g->hands[1]->width)/2)* 1))/2;
+		// x2 = g->mlx->width -x1 - g->hands[0]->width * 1;
+
+		g->hands[0]->instances->x = S_WIDTH -x1 - g->hands[0]->width * 1;
+		g->hands[1]->instances->x = x1; 
 		g->hands[0]->instances->y = S_HEIGHT - g->hands[0]->height + 15;
 		g->hands[1]->instances->y = S_HEIGHT - g->hands[1]->height + 15;
 		return ;
 	}
-	max_x = 22;
+	max_x = x1 + 22;
+	min_x = x1 - 22;
 	max_y = g->mlx->height - g->hands[0]->height + 11 + 15;
 	min_y = max_y - 22;
-	if (g->hands[1]->instances->x > max_x || -max_x > g->hands[1]->instances->x)
+	// printf("max_x %d left hand inst x %d \n", max_x, g->hands[1]->instances->x);
+	if (g->hands[1]->instances->x > max_x || min_x > g->hands[1]->instances->x)
 		direction_x *= -1;
 	if (g->hands[0]->instances->y > max_y || min_y > g->hands[0]->instances->y)
 		direction_y *= -1;

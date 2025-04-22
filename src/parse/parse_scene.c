@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:43:30 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/15 16:07:53 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/17 17:50:29 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,5 +269,6 @@ void	parse_scene(t_game *game, int ac, char **av)
 	if (!raw_scene)
 		parse_error(NULL, NULL, "Error\nNo Scene", NULL);
 	scan_elements(game, raw_scene);
+	fill_texture_colors(game);
 printf(ANSI_MAGENTA"START %zu\n"ANSI_RESET, game->map.map_scene_start);
 }

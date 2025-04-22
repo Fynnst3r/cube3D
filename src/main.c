@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 21:26:18 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:56:36 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ int	main(int ac, char **av)
 				* sizeof(int32_t));
 	if (mlx_image_to_window(game.mlx, game.bg, 0, 0) < 0)
 		ft_error("Error\nImage didn't arrive at window", 1, &game);
+	// game.img = mlx_new_image(game.mlx, game.textures.ea_tex->width, game.textures.ea_tex->height);
+	// if (!game.img)
+		// ft_error("Error\nImage didn't create", 1, &game);
+	// draw_half_tex(&game);
+	// mlx_resize_image(game.img, 500, 500);
 	init_raycaster(&game);
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	// draw_mini_map(&game);
@@ -42,8 +47,8 @@ int	main(int ac, char **av)
 	draw_hands(&game);
 	init_minimap(&game);
 	// draw_mini_fov(&game);
-	// mlx_resize_image(game.minimap, game.minimap->width * MINI_RESIZE_FACTOR,
-	// 	game.minimap->height * MINI_RESIZE_FACTOR);
+	// mlx_resize_image(game.minimap, game.minimap->width * mini_resize_factor,
+	// 	game.minimap->height * mini_resize_factor);
 	mlx_key_hook(game.mlx, my_keyhook, &game);
 	game.steal_mouse = true;
 	mlx_set_mouse_pos(game.mlx, game.mlx->width / 2, game.mlx->height / 2);

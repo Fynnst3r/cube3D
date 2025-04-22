@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:41:49 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:55:07 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,25 @@
 # endif
 
 # ifndef MINI
-#  define MINI_RESIZE_FACTOR 2
+// #  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
-#  define R 111
-#  define G 11
-#  define B 11
+// #  define R 111
+// #  define G 11
+// #  define B 11
+// #  define A 255
+#  define R 233
+#  define G 166
+#  define B 0
 #  define A 255
 #  define FOV 0.77
 // The amount by which we shift each line (in radians)
-#  define ANGLE_SPREAD 0.01
+// the smaller the more lines are drawn, which affects performance but has no 
+// non set pixels
+#  define ANGLE_SPREAD 0.001
 // #  define Lines_FOR_CONE 50
 #  define MINI_RAY_LENGRH 1
 #  define MINI_LINE_HEIGHT 1
-#  define MINI_LINE_WIDTH 1
+#  define MINI_LINE_WIDTH 2
 # endif
 
 # include <stdio.h>
@@ -172,6 +178,10 @@ typedef struct textures
 	mlx_texture_t	*ea_tex;
 	mlx_texture_t	*hands[4];
 	mlx_texture_t	*wallcrack;
+	int				*color_no;
+	int				*color_so;
+	int				*color_we;
+	int				*color_ea;
 }					t_textures;
 
 typedef struct master_struct
@@ -188,15 +198,17 @@ typedef struct master_struct
 	t_ray			ray;
 
 	bool			steal_mouse;
+
 	bool			show_minimap;
 	bool			changed_map;
 	bool			minimap_drawn;
-	mlx_image_t		mini_previouse_pixels;
+	double			mini_resize_factor;
 	mlx_image_t		*minimap;
-	mlx_image_t		*minimap_clear;
+	int				*mini_color;
 	mlx_image_t		*minifov;
 	double			fov_line_end_x;
 	double			fov_line_end_y;
+	mlx_image_t		*img;
 }					t_game;
 
 // //src/main.c
@@ -225,6 +237,7 @@ void	draw_fov_direction_line(t_game *game);
 void	draw_mini_fov(t_game *game);
 void	init_minimap(t_game *game);
 void	save_pixels_for_reinstate(t_game *game);
+void	minimap_change(t_game *game);
 
 //src/hooks/game_loop.c
 void	raycaster_loop(void *param);
@@ -240,13 +253,16 @@ void	movement_keyhook(t_game *g);
 void	my_mouse_button(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
 void	my_cursor(double xpos, double ypos, void *param);
+
 //src/textures.c
+int		*create_color_array(t_game *g, mlx_texture_t *tex);
+void	fill_texture_colors(t_game *game);
 
 //src/graphic/image.c
 unsigned int	get_rgba(int r, int g, int b, int a);
-void	pixset(mlx_image_t *img, int colour);
-void	pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
-			t_height_width height_width);
+void			pixset(mlx_image_t *img, int colour);
+void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
+				t_height_width height_width);
 
 //src/graphics/hands.c
 void	draw_hands(t_game *g);

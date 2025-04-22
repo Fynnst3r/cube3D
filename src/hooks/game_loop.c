@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:41:25 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 14:56:21 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -260,15 +260,15 @@ void	draw_vertical_line(t_game *g, int x)
 	int				wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
 	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
 	int				draw_end = wall_height + draw_start;
-	int				ceiling_color = g->map.ceiling_color;
-	int				wall_color;
+	int				*wall_color;
+int				ceiling_color = g->map.ceiling_color;
 	int				floor_color = g->map.floor_color;
 	int				y;
 	double			y_proportion;
 	int				y_tx;
 	unsigned int	x_tx = 0;
 	mlx_texture_t	*tex;
-	
+
 	if (draw_end > S_HEIGHT)
 		draw_end = S_HEIGHT - 1;
 	y = 0;
@@ -280,26 +280,48 @@ void	draw_vertical_line(t_game *g, int x)
 	if (g->ray.hit_x_wall)
 	{
 		if (g->ray.ray_dir.x > 0)
-			tex = g->textures.ea_tex;
+		{
+			// if (EASTER && g->mini_color && (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'D' || g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd'))
+			// if (EASTER && g->mini_color && (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd'))
+			// if (g->mini_img && g->mini_color && (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd'))
+			// {
+			// 	// printf("EASTER");
+			// 	tex = g->mini_tex;
+			// 	wall_color = g->mini_color;
+			// 	// g->mini_img = !g->mini_img;
+			// }
+			// else
+			// {
+				tex = g->textures.ea_tex;
+				wall_color = g->textures.color_ea;
+			// }
+		}
 		else
-			tex = g->textures.we_tex;
+		{
+			tex= g->textures.we_tex;
+			wall_color = g->textures.color_we;
+		}
 	}
 	else
 	{
 		if (g->ray.ray_dir.y > 0)
+		{
 			tex = g->textures.so_tex;
+			wall_color = g->textures.color_so;
+		}
 		else
+		{
 			tex = g->textures.no_tex;
+			wall_color = g->textures.color_no;
+		}
 	}
 	y_proportion = (((double) tex->height / (double) wall_height));
 	y_tx = 0;
 	while (y < draw_end + 1)
 	{
-		if ((y_tx + 3) <= (int)(tex->width * tex->height * 4))
+		if ((y_tx) <= (int)(tex->width * tex->height))
 		{
-			wall_color = get_rgba(tex->pixels[y_tx], tex->pixels[y_tx + 1],
-					tex->pixels[y_tx + 2], tex->pixels[y_tx + 3]);
-			mlx_put_pixel(g->bg, x, y, wall_color);
+			mlx_put_pixel(g->bg, x, y, wall_color[y_tx]);
 		}
 		y++;
 		y_tx = round((y - draw_start) * y_proportion);
@@ -315,8 +337,8 @@ void	draw_vertical_line(t_game *g, int x)
 		if (x_tx >= tex->width)
 			x_tx = tex->width - 1;
 		y_tx += x_tx;
-		y_tx *= 4;
 	}
+	
 	if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'
 		|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd')
 		draw_wallcrack(g, x, wall_height);
