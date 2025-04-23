@@ -11,11 +11,15 @@ LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
 SRCS =  src/main.c\
 		src/parse/parse_scene.c\
+		src/parse/parse_scene_utils.c\
 		src/parse/parse_map.c\
+		src/parse/make_element.c\
 		src/init/init_hands.c \
 		src/init/init_ray.c \
 		src/hooks/game_loop.c \
+		src/hooks/move_player.c \
 		src/hooks/keyhook.c \
+		src/hooks/mousehook.c \
 		src/error/error.c \
 		garbage_collector/garbage_start.c \
 		garbage_collector/ft_malloc.c \

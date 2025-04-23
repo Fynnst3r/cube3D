@@ -6,13 +6,13 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:18:09 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 18:18:31 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:52:40 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
 
-void	load_hands(t_game *g)
+static void	load_hands(t_game *g)
 {
 	int		i;
 	char	*paths[5];
@@ -35,7 +35,7 @@ void	load_hands(t_game *g)
 	}
 }
 
-void	resize_hands(mlx_image_t *hands[4])
+static void	resize_hands(mlx_image_t *hands[4])
 {
 	double	referenz_w;
 	double	referenz_h;
@@ -52,7 +52,7 @@ void	resize_hands(mlx_image_t *hands[4])
 		hands[3]->height * 3 * referenz_h);
 }
 
-void	place_hands(t_game *g)
+static void	place_hands(t_game *g)
 {
 	int		x1;
 	int		x2;
@@ -77,7 +77,7 @@ void	place_hands(t_game *g)
 	g->hands[1]->instances->y += 15;
 }
 
-void	draw_hands(t_game *g)
+void	init_hands(t_game *g)
 {
 	load_hands(g);
 	resize_hands(g->hands);

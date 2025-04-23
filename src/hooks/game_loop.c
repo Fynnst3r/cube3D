@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 15:19:18 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 18:57:14 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,19 +34,17 @@ void	raycaster_loop(void *param)
 			g->ray.delta_dist.y = INFINITY;
 		else
 			g->ray.delta_dist.y = fabs(1.0 / g->ray.ray_dir.y);
-	// printf("line %d\n", __LINE__);
 		step_which_side(g);
-// printf(ANSI_UNDERLINE"main loop : %d\n"ANSI_RESET,  __LINE__);
 		shoot_ray(g);
 		if (x == S_WIDTH / 2)
 			g->player.look_x_wall = g->ray.hit_x_wall;
-// printf(ANSI_UNDERLINE"main loop shot ray: %d\n"ANSI_RESET,  __LINE__);
 		ray_len_and_hitpoint(g->player, &g->ray);
-// printf(ANSI_UNDERLINE"main loop shot ray: %d\n"ANSI_RESET,  __LINE__);
 		draw_vertical_line(g, x);
 		x++;
 	}
 	movement_keyhook(g);
+	hands_keyhook(g);
+	minimap_keyhook(g);
 }
 
 //calc next tile to go/step in to and the first side_dist (closest x/y wall)

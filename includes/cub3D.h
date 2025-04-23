@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 18:19:37 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:54:22 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 # endif
 
 # ifndef S_WIDTH
-// #  define S_WIDTH 960
-#  define S_WIDTH 1280
+#  define S_WIDTH 960
+// #  define S_WIDTH 1280
 // #  define S_WIDTH 1600
 // #  define S_WIDTH 1920
 # endif
 
 # ifndef S_HEIGHT
-// #  define S_HEIGHT 540
-#  define S_HEIGHT 720
+#  define S_HEIGHT 540
+// #  define S_HEIGHT 720
 // #  define S_HEIGHT 900
 // #  define S_HEIGHT 1080
 # endif
@@ -216,11 +216,22 @@ typedef struct master_struct
 
 //src/parse/parse_scene.c
 void	parse_scene(t_game *game, int ac, char **av);
+bool	ft_isspace(char c);
+//src/parse/parse_scene_utils.c
 char	**read_scenefile(char *av);
 bool	ft_isspace(char c);
+void	ft_skip_spaces(const char *str, size_t *index);
+bool	check_for_errors(const char *scene_line, size_t l);
+bool	recieved_all_elements(t_game *game);
+//src/parse/make_element.c
+int		make_texture(t_game *g, char *scene_line, int curr_element, size_t l);
+int		make_color(t_game *game, char *scene_line, int curr_col, size_t l);
 
 //src/parse/parse_map.c
 void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
+
+//src/init/init_hands.c
+void	init_hands(t_game *g);
 
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
@@ -247,9 +258,20 @@ void	ray_len_and_hitpoint(const t_player p, t_ray *r);
 void	draw_vertical_line(t_game *g, int i);
 void	print_ray_status(t_game *g);
 
+//src/hooks/move_player.c
+void	walk_forward(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
+void	walk_backwards(char **tiles, t_cords *pos, t_cords *dir,
+			double mv_speed);
+void	strafe_left(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
+void	strafe_right(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
+void	rotate_player(t_cords *dir, t_cords *plane, double rt_speed);
+
 //src/hooks/keyhook.c
 void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
+void	hands_keyhook(t_game *g);
+void	minimap_keyhook(t_game *g);
+//src/hooks/mousehook.c
 void	my_mouse_button(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
 void	my_cursor(double xpos, double ypos, void *param);
@@ -265,7 +287,6 @@ void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 				t_height_width height_width);
 
 //src/graphics/hands.c
-void	draw_hands(t_game *g);
 bool	change_map_element(t_game *g, char src, char dest, char **m);
 void	punch(t_game *g);
 void	sway_hands(t_game *g);

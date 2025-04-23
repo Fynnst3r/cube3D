@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:09:44 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 15:23:16 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:19:21 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int ac, char **av)
 	// draw_mini_map(&game);
 	// printf("%s %d            \n\n", __FILE__, __LINE__);
 	// draw_fov_direction_line(&game);
-	draw_hands(&game);
+	init_hands(&game);
 	init_minimap(&game);
 	// draw_mini_fov(&game);
 	// mlx_resize_image(game.minimap, game.minimap->width * mini_resize_factor,

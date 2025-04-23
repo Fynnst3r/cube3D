@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:55:02 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 18:19:06 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 20:00:41 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,9 +82,11 @@ static void	move_hands(t_game *g, double direction_x, double direction_y)
 	int	factor;
 
 	factor = 2;
-	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SHIFT))
+	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SHIFT)
+		&& !mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SUPER))
 		factor = 3;
-	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SUPER))
+	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SUPER)
+		&& !mlx_is_key_down(g->mlx, MLX_KEY_LEFT_SHIFT))
 		factor = 1;
 	g->hands[0]->instances->x += direction_x * factor;
 	g->hands[1]->instances->x += direction_x * factor;

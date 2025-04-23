@@ -6,12 +6,11 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:40:53 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/17 15:59:38 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/22 19:02:40 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
-
 
 int	map_len(t_map *map)
 {
@@ -32,9 +31,9 @@ int	map_len(t_map *map)
 			map->max_x = ft_strlen(map->tiles[y]);
 	}
 	map->max_y = y;
-	printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
 	return (0);
 }
+// printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
 
 static int	find_player(t_map *map, t_player *player)
 {
@@ -54,9 +53,6 @@ static int	find_player(t_map *map, t_player *player)
 			{
 				player->pos.x = x + 0.5;
 				player->pos.y = y + 0.5;
-				map->spawn.x = player->pos.x;
-				map->spawn.y = player->pos.y;
-			printf(ANSI_GREEN"player->pos.x = %f\nplayer->pos.y = %f\n"ANSI_RESET, player->pos.x, player->pos.y);
 				found++;
 				player->looking = map->tiles[y][x];
 				map->tiles[y][x] = '0';
@@ -124,15 +120,17 @@ void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path)
 		parse_error(map, tex, "No foreign characters in map please", NULL);
 	if (find_player(map, player) != 1)
 		parse_error(map, tex, "Too many or no players!", NULL);
+	map->spawn.x = player->pos.x;
+	map->spawn.y = player->pos.y;
 	map->copy[(size_t)player->pos.y][(size_t)player->pos.x] = '0';
 	check_walled_map(map, tex, (size_t)player->pos.y, (size_t)player->pos.x);
-	// size_t y = 0;
-	// while (map->copy[y])
-	// {
-	// 	printf("copy[%zu]:	'%s'\n", y, map->copy[y]);
-	// 	y++;
-	// }
-	// printf("copy[%zu]:	'%s'\n", y, map->copy[y]);
-	// printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
-	// printf("HEAEAEAE\n");
 }
+// size_t y = 0;
+// while (map->copy[y])
+// {
+// 	printf("copy[%zu]:	'%s'\n", y, map->copy[y]);
+// 	y++;
+// }
+// printf("copy[%zu]:	'%s'\n", y, map->copy[y]);
+// printf("map y = %zu/map x = %zu\n", map->max_y, map->max_x);
+// printf("HEAEAEAE\n");
