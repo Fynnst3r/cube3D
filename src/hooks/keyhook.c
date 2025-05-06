@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 20:03:20 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/23 18:00:27 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@ void	hands_keyhook(t_game *g)
 		g->player.punch = true;
 	if (mlx_is_key_down(g->mlx, MLX_KEY_B)
 		|| mlx_is_mouse_down(g->mlx, MLX_MOUSE_BUTTON_RIGHT))
-	{
-		change_map_element(g, '0', 'D', g->map.tiles);
-	}
+		g->player.build = true;
+	else
+		g->player.build = false;
 	if (g->player.punch)
 		punch(g);
 	if (mlx_is_key_down(g->mlx, MLX_KEY_W) || mlx_is_key_down(g->mlx, 265)
@@ -67,8 +67,7 @@ void	hands_keyhook(t_game *g)
 		g->player.moving = true;
 	else
 		g->player.moving = false;
-	if (mlx_is_key_down(g->mlx, MLX_KEY_LEFT) || mlx_is_key_down(g->mlx, MLX_KEY_RIGHT))
-		// slide_hands();
+	build_wall(g);
 	sway_hands(g);
 }
 

@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 19:54:22 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:17:53 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ enum e_scene_dir
 	EA = 4,
 	FLOOR = 5,
 	CEILING = 6,
-	UNIDENTIFIED = 7
+	WC = 7,
+	UNIDENTIFIED = 8
 };
 
 // changing to double because math librarys are using double on iOS
@@ -106,6 +107,7 @@ typedef struct player
 	char	looking;
 	bool	moving;
 	bool	punch;
+	bool	build;
 	bool	look_x_wall;
 }		t_player;
 
@@ -176,7 +178,7 @@ typedef struct textures
 	mlx_texture_t	*so_tex;
 	mlx_texture_t	*we_tex;
 	mlx_texture_t	*ea_tex;
-	mlx_texture_t	*hands[4];
+	mlx_texture_t	*hands[7];
 	mlx_texture_t	*wallcrack;
 	int				*color_no;
 	int				*color_so;
@@ -189,7 +191,7 @@ typedef struct master_struct
 	mlx_t			*mlx;
 
 	mlx_image_t		*bg;
-	mlx_image_t		*hands[4];
+	mlx_image_t		*hands[7];
 	mlx_image_t		*wallcrack;
 	t_textures		textures;
 
@@ -289,7 +291,9 @@ void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
 //src/graphics/hands.c
 bool	change_map_element(t_game *g, char src, char dest, char **m);
 void	punch(t_game *g);
+void	reset_hands(t_game *g);
 void	sway_hands(t_game *g);
+void	build_wall(t_game *g);
 
 
 #endif

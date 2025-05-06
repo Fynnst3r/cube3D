@@ -1,10 +1,10 @@
-NO ./textures/tx10x10px.png             
-SO ./textures/green_tx10x10px.png
-WE ./textures/blue_tx10x10px.png
-EA ./textures/yellow_tx10x10px.png
-
-F 120,130,30
-C 100,80,200
+NO ./textures/bush1.png             
+SO ./textures/bush2.png
+WE ./textures/bush3.png
+EA ./textures/bush4.png
+WC ./textures/wtf.png
+C 60, 189, 169
+F 117, 89, 13
 
         1111111
         1000001

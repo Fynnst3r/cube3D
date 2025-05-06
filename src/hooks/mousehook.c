@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:21:51 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 19:22:33 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:10:59 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	my_mouse_button(mouse_key_t button, action_t action,
 	{
 		g->steal_mouse = !g->steal_mouse;
 		mlx_set_cursor_mode(g->mlx, MLX_MOUSE_NORMAL);
+		mlx_set_mouse_pos(g->mlx, g->mlx->width / 2, g->mlx->height / 2);
 	}
 }
 

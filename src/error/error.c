@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 18:59:46 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:40:16 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	ft_error(char *msg, int errcode, t_game	*game)
 
 void	delete_textures(t_textures *t)
 {
+	int	i;
+
 	if (t->no_tex)
 		mlx_delete_texture(t->no_tex);
 	if (t->so_tex)
@@ -40,14 +42,13 @@ void	delete_textures(t_textures *t)
 		mlx_delete_texture(t->we_tex);
 	if (t->ea_tex)
 		mlx_delete_texture(t->ea_tex);
-	if (t->hands[0])
-		mlx_delete_texture(t->hands[0]);
-	if (t->hands[1])
-		mlx_delete_texture(t->hands[1]);
-	if (t->hands[2])
-		mlx_delete_texture(t->hands[2]);
-	if (t->hands[3])
-		mlx_delete_texture(t->hands[3]);
+	i = 0;
+	while (i < 7)
+	{
+		if (t->hands[i])
+			mlx_delete_texture(t->hands[i]);
+		i++;
+	}
 	if (t->wallcrack)
 		mlx_delete_texture(t->wallcrack);
 }

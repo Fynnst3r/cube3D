@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:43:30 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 19:18:41 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/24 14:41:47 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	which_element(const char *line, size_t *l)
 		return (*l += 2, WE);
 	if (!ft_strncmp(&line[*l], "EA ", 3))
 		return (*l += 2, EA);
+	if (!ft_strncmp(&line[*l], "WC ", 3))
+		return (*l += 2, WC);
 	if (line[*l] == 'F' && ft_isspace(line[*l + 1]))
 		return (*l += 1, FLOOR);
 	if (line[*l] == 'C' && ft_isspace(line[*l + 1]))
@@ -36,7 +38,7 @@ int	handle_element(t_game *g, char *scene_line,
 	if (!ft_isspace(scene_line[l]))
 		return (printf("Error\nNo 'space' after element\n"), 1);
 	if (curr_elem == NO || curr_elem == SO
-		|| curr_elem == WE || curr_elem == EA)
+		|| curr_elem == WE || curr_elem == EA || curr_elem == WC)
 		if (make_texture(g, scene_line, curr_elem, l))
 			return (2);
 	if (curr_elem == FLOOR)

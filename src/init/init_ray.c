@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/14 15:39:25 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 14:41:35 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:15:22 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,25 @@ static void	decide_dir(t_player *p)
 
 static void	set_plane(t_ray *r, char d)
 {
-	double	fov;
-
-	fov = 0.77;
 	if (d == 'N')
 	{
 		r->plane.y = 0;
-		r->plane.x = fov;
+		r->plane.x = FOV;
 	}
 	if (d == 'S')
 	{
 		r->plane.y = 0;
-		r->plane.x = -fov;
+		r->plane.x = -FOV;
 	}
 	if (d == 'E')
 	{
 		r->plane.x = 0;
-		r->plane.y = fov;
+		r->plane.y = FOV;
 	}
 	if (d == 'W')
 	{
 		r->plane.x = 0;
-		r->plane.y = -fov;
+		r->plane.y = -FOV;
 	}
 }
 

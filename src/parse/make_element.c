@@ -6,7 +6,7 @@
 /*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:06:01 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/22 19:18:50 by fforster         ###   ########.fr       */
+/*   Updated: 2025/04/24 15:05:33 by fforster         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ int	load_texture(t_textures *t, char *path, int dir)
 		overwrite_texture(&t->we_tex, tmp);
 	if (dir == EA)
 		overwrite_texture(&t->ea_tex, tmp);
+	if (dir == WC)
+		overwrite_texture(&t->wallcrack, tmp);
 	return (0);
 }
 
