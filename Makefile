@@ -26,6 +26,7 @@ SRCS =  src/main.c\
 		garbage_collector/free.c \
 		src/graphic/image.c \
 		src/graphic/lines.c \
+		src/graphic/minifov.c \
 		src/graphic/minimap.c \
 		src/graphic/textures.c \
 		src/graphic/hands.c \
