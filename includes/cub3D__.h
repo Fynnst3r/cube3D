@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cub3D.h                                            :+:      :+:    :+:   */
+/*   cub3D__.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/06 14:01:35 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/06 13:57:46 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 # endif
 
 # ifndef S_WIDTH
-#  define S_WIDTH 960
-// #  define S_WIDTH 1280
+// #  define S_WIDTH 960
+#  define S_WIDTH 1280
 // #  define S_WIDTH 1600
 // #  define S_WIDTH 1920
 # endif
 
 # ifndef S_HEIGHT
-#  define S_HEIGHT 540
-// #  define S_HEIGHT 720
+// #  define S_HEIGHT 540
+#  define S_HEIGHT 720
 // #  define S_HEIGHT 900
 // #  define S_HEIGHT 1080
 # endif
@@ -222,32 +222,52 @@ typedef struct miniplayer
 
 //src/parse/parse_scene.c
 void	parse_scene(t_game *game, int ac, char **av);
+char	**read_scenefile(char *av);
 bool	ft_isspace(char c);
+bool	ft_isspace(char c);
+
 //src/parse/parse_scene_utils.c
 char	**read_scenefile(char *av);
 bool	ft_isspace(char c);
 void	ft_skip_spaces(const char *str, size_t *index);
 bool	check_for_errors(const char *scene_line, size_t l);
 bool	recieved_all_elements(t_game *game);
+
 //src/parse/make_element.c
 int		make_texture(t_game *g, char *scene_line, int curr_element, size_t l);
 int		make_color(t_game *game, char *scene_line, int curr_col, size_t l);
 
 //src/parse/parse_map.c
 void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
-
 //src/init/init_hands.c
 void	init_hands(t_game *g);
 
 //src/init/init_ray.c
 void	init_raycaster(t_game *g);
-
 //src/error.c
 void	ft_error(char *msg, int errcode, t_game	*game);
 void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
 void	ft_free_dp(char **dp);
 void	delete_textures(t_textures *t);
 
+//src/graphic/minimap.c
+void	clear_mini_fov_img(t_game *game, t_cords_int32 yx);
+void	draw_fov_direction_line(t_game *game);
+void	draw_mini_fov(t_game *game);
+void	init_minimap(t_game *game);
+void	minimap_change(t_game *game);
+
+//src/hooks/game_loop.c
+void	raycaster_loop(void *param);
+void	step_which_side(t_game *g);
+void	shoot_ray(t_game *g);
+void	ray_len_and_hitpoint(const t_player p, t_ray *r);
+void	draw_vertical_line(t_game *g, int i);
+void	print_ray_status(t_game *g);
+
+//src/hooks/keyhook.c
+void	my_keyhook(mlx_key_data_t keydata, void *param);
+void	movement_keyhook(t_game *g);
 //src/graphics/lines.c
 void	draw_line_to_bottom(t_game *game, double start_x,
 			double start_y, double slope);
@@ -258,22 +278,6 @@ void	draw_line_to_right(t_game *game, double start_x, double start_y,
 void	draw_line_to_top(t_game *game, double start_x, double start_y,
 			double slope);
 double	slope(double x_diff, double y_diff);
-
-//src/graphic/minimap.c
-void	clear_img(mlx_image_t *img);
-void	draw_fov_direction_line(t_game *game);
-void	draw_mini_fov(t_game *game);
-void	init_minimap(t_game *game);
-void	save_pixels_for_reinstate(t_game *game);
-void	minimap_change(t_game *game);
-
-//src/hooks/game_loop.c
-void	raycaster_loop(void *param);
-void	step_which_side(t_game *g);
-void	shoot_ray(t_game *g);
-void	ray_len_and_hitpoint(const t_player p, t_ray *r);
-void	draw_vertical_line(t_game *g, int i);
-void	print_ray_status(t_game *g);
 
 //src/hooks/move_player.c
 void	walk_forward(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
@@ -288,6 +292,7 @@ void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
 void	hands_keyhook(t_game *g);
 void	minimap_keyhook(t_game *g);
+
 //src/hooks/mousehook.c
 void	my_mouse_button(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
@@ -299,12 +304,13 @@ void	fill_texture_colors(t_game *game);
 
 //src/graphic/image.c
 unsigned int	get_rgba(int r, int g, int b, int a);
-void			pixset(mlx_image_t *img, int colour);
-void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
-				t_height_width height_width);
+void			pixset_yx_height_width(mlx_image_t *img, int colour,
+										t_cords_int32 xy,
+										t_height_width height_width);
 
 //src/graphics/hands.c
-bool	change_map_element(t_game *g, char src, char dest, char **m);
+void	draw_hands(t_game *g);
+bool	change_map_element(t_game *g, char src, char dest);
 void	punch(t_game *g);
 void	sway_hands(t_game *g);
 

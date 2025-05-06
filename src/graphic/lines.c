@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/06 12:51:37 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/05/06 13:13:20 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/06 14:02:37 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	draw_line_to_right(t_game *game, double start_x, double start_y,
 void	draw_line_to_top(t_game *game, double start_x, double start_y,
 			double slope);
 double	slope(double x_diff, double y_diff);
-
 
 // y dominant
 void	draw_line_to_bottom(t_game *game, double start_x, double start_y,
@@ -42,7 +41,7 @@ void	draw_line_to_bottom(t_game *game, double start_x, double start_y,
 		yx.x = (int32_t)x;
 		yx.y = (int32_t)y;
 		pixset_yx_height_width(game->minifov, get_rgba(R, G, B, A), yx,
-		height_width);
+			height_width);
 		y++;
 	}
 }
