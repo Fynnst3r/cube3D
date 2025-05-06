@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3D.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/24 15:17:53 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/06 15:56:21 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,17 +22,17 @@
 # endif
 
 # ifndef S_WIDTH
-#  define S_WIDTH 960
+// #  define S_WIDTH 960
 // #  define S_WIDTH 1280
 // #  define S_WIDTH 1600
-// #  define S_WIDTH 1920
+#  define S_WIDTH 1920
 # endif
 
 # ifndef S_HEIGHT
-#  define S_HEIGHT 540
+// #  define S_HEIGHT 540
 // #  define S_HEIGHT 720
 // #  define S_HEIGHT 900
-// #  define S_HEIGHT 1080
+#  define S_HEIGHT 1080
 # endif
 
 # ifndef COLORS
@@ -41,7 +41,7 @@
 # endif
 
 # ifndef MINI
-// #  define MINI_RESIZE_FACTOR 2
+#  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
 // #  define R 111
 // #  define G 11
@@ -213,6 +213,12 @@ typedef struct master_struct
 	mlx_image_t		*img;
 }					t_game;
 
+typedef struct miniplayer
+{
+	double			x;
+	double			y;
+}					t_miniplayer;
+
 // //src/main.c
 // int		get_rgba(int r, int g, int b, int a);
 
@@ -244,12 +250,30 @@ void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
 void	ft_free_dp(char **dp);
 void	delete_textures(t_textures *t);
 
-//src/graphic/minimap.c
-void	clear_img(mlx_image_t *img);
+//src/graphics/lines.c
+void	draw_line_to_bottom(t_game *game, double start_x,
+			double start_y, double slope);
+void	draw_line_to_left(t_game *game, double start_x, double start_y,
+			double slope);
+void	draw_line_to_right(t_game *game, double start_x, double start_y,
+			double slope);
+void	draw_line_to_top(t_game *game, double start_x, double start_y,
+			double slope);
+double	slope(double x_diff, double y_diff);
+
+//src/graphic/minifov.c
+void	clear_mini_fov_img(t_game *game, t_cords_int32 yx);
 void	draw_fov_direction_line(t_game *game);
 void	draw_mini_fov(t_game *game);
+
+//src/graphic/minimap.c
+void	draw_tile_on_change(t_game *game, size_t y, size_t x,
+			t_height_width height_width);
+void	draw_minimap_tile(t_game *game, size_t y, size_t x,
+			t_height_width height_width);
 void	init_minimap(t_game *game);
-void	save_pixels_for_reinstate(t_game *game);
+void	mini_img_for_resize_factor(t_game *game,
+			t_height_width *height_width);
 void	minimap_change(t_game *game);
 
 //src/hooks/game_loop.c
@@ -273,6 +297,7 @@ void	my_keyhook(mlx_key_data_t keydata, void *param);
 void	movement_keyhook(t_game *g);
 void	hands_keyhook(t_game *g);
 void	minimap_keyhook(t_game *g);
+
 //src/hooks/mousehook.c
 void	my_mouse_button(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
@@ -284,9 +309,8 @@ void	fill_texture_colors(t_game *game);
 
 //src/graphic/image.c
 unsigned int	get_rgba(int r, int g, int b, int a);
-void			pixset(mlx_image_t *img, int colour);
-void			pixset_yx_height_width(mlx_image_t *img, int colour, t_cords_int32 xy,
-				t_height_width height_width);
+void			pixset_yx_height_width(mlx_image_t *img, int colour,
+					t_cords_int32 xy, t_height_width height_width);
 
 //src/graphics/hands.c
 bool	change_map_element(t_game *g, char src, char dest, char **m);
