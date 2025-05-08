@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/05/06 15:18:29 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:00:49 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	draw_minimap_tile(t_game *game, size_t y, size_t x,
 {
 	t_cords_int32	yx;
 
-	yx.y = y * MINI_UNITS_PER_TILE * game->mini_resize_factor;
-	yx.x = x * MINI_UNITS_PER_TILE * game->mini_resize_factor;
+	yx.y = y * height_width.height;
+	yx.x = x * height_width.width;
 	if (game->map.tiles[y][x] != '0' && game->map.tiles[y][x] != ' ')
 	{
 		pixset_yx_height_width(game->minifov, 0, yx, height_width);

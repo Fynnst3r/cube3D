@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/06 15:56:21 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 14:07:22 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,9 @@ typedef struct raycaster
 	int		go_y;
 	int		go_x;
 
+	int		draw_start;
+	int		draw_end;
+	int		wall_height;
 }		t_ray;
 
 typedef struct textures
