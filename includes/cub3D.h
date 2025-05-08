@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 16:04:38 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:47:40 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,7 @@ void	draw_pixel_from_tex(t_game *g, unsigned int x, mlx_texture_t *tex,
 			int *wall_color);
 void	draw_wallcrack(t_game *g, int x, int wall_height);
 int		get_x_of_texture(t_game *game, uint32_t tex_width);
+void	print_ray_status(t_game *g);
 void	select_wall_texture(t_game *g, mlx_texture_t **tex, int **wall_color);
 
 //src/textures.c

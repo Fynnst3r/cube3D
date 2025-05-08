@@ -6,11 +6,25 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 16:35:26 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:46:47 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
+
+static void	set_ray_delta_distance(t_game *game);
+
+static void	set_ray_delta_distance(t_game *game)
+{
+	if (game->ray.ray_dir.x == 0)
+		game->ray.delta_dist.x = INFINITY;
+	else
+		game->ray.delta_dist.x = fabs(1.0 / game->ray.ray_dir.x);
+	if (game->ray.ray_dir.y == 0)
+		game->ray.delta_dist.y = INFINITY;
+	else
+		game->ray.delta_dist.y = fabs(1.0 / game->ray.ray_dir.y);
+}
 
 void	raycaster_loop(void *param)
 {
@@ -21,19 +35,12 @@ void	raycaster_loop(void *param)
 	x = 0;
 	while (x < S_WIDTH)
 	{
-		g->ray.tile_x = (int)g->player.pos.x; //update when new tile has been enteredgit diff
+		g->ray.tile_x = (int)g->player.pos.x;
 		g->ray.tile_y = (int)g->player.pos.y;
-		g->ray.camera_x = 2 * x / (double)S_WIDTH - 1; //x-coordinate in camera space
+		g->ray.camera_x = 2 * x / (double)S_WIDTH - 1;
 		g->ray.ray_dir.x = g->player.dir.x + g->ray.plane.x * g->ray.camera_x;
 		g->ray.ray_dir.y = g->player.dir.y + g->ray.plane.y * g->ray.camera_x;
-		if (g->ray.ray_dir.x == 0)
-			g->ray.delta_dist.x = INFINITY;
-		else
-			g->ray.delta_dist.x = fabs(1.0 / g->ray.ray_dir.x);
-		if (g->ray.ray_dir.y == 0)
-			g->ray.delta_dist.y = INFINITY;
-		else
-			g->ray.delta_dist.y = fabs(1.0 / g->ray.ray_dir.y);
+		set_ray_delta_distance(g);
 		step_which_side(g);
 		shoot_ray(g);
 		if (x == S_WIDTH / 2)
@@ -49,9 +56,10 @@ void	raycaster_loop(void *param)
 
 //calc next tile to go/step in to and the first side_dist (closest x/y wall)
 //if ray.dir.x/y is 0 it wont be used
+// for x
+// for y
 void	step_which_side(t_game *g)
 {
-	// for x
 	if (g->ray.ray_dir.x < 0)
 	{
 		g->ray.go_x = -1;
@@ -64,7 +72,6 @@ void	step_which_side(t_game *g)
 		g->ray.side_dist.x = (g->ray.tile_x + 1.0 - g->player.pos.x)
 			* g->ray.delta_dist.x;
 	}
-	// for y
 	if (g->ray.ray_dir.y < 0)
 	{
 		g->ray.go_y = -1;
@@ -88,7 +95,6 @@ void	shoot_ray(t_game *g)
 	hit_wall = false;
 	while (!hit_wall)
 	{
-		// printf(ANSI_UNDERLINE"shoot loop : %d\n"ANSI_RESET,  __LINE__);
 		if (g->ray.side_dist.y > g->ray.side_dist.x)
 		{
 			g->ray.side_dist.x += g->ray.delta_dist.x;
@@ -101,11 +107,9 @@ void	shoot_ray(t_game *g)
 			g->ray.tile_y += (size_t)g->ray.go_y;
 			x_wall = false;
 		}
-// printf("y %zu, x %zu, shoot loop: %d\n", g->ray.tile_y, g->ray.tile_x, __LINE__);
 		if (g->map.tiles[g->ray.tile_y][g->ray.tile_x]
 			&& (g->map.tiles[g->ray.tile_y][g->ray.tile_x] != '0'))
 		{
-		// printf("!!!HIT WALL!!! on y %zu, x %zu,\n", g->ray.tile_y, g->ray.tile_x);
 			hit_wall = true;
 		}
 	}
@@ -125,26 +129,4 @@ void	ray_len_and_hitpoint(const t_player p, t_ray *r)
 		r->x_intersect = p.pos.x + r->perp_wall_dist * r->ray_dir.x;
 	}
 	r->x_intersect -= floor(r->x_intersect);
-}
-
-//prints various info of the state of the ray for debug
-void	print_ray_status(t_game *g)
-{
-	printf(ANSI_GREEN"PLAYER y %f - PLAYER x %f\n"ANSI_RESET, g->player.pos.y, g->player.pos.x);
-	printf("PLAYERdir x %f - PLAYERdir y %f\n", g->player.dir.x, g->player.dir.y);
-	printf("plane x %f - plane y %f\n", g->ray.plane.x, g->ray.plane.y);
-	printf("camera x %f\n", g->ray.camera_x);
-	printf(ANSI_BLUE"ray tile x %zu - y %zu\n"ANSI_RESET, g->ray.tile_x, g->ray.tile_y);
-	printf("ray_dir x %f - ray_dir y %f\n", g->ray.ray_dir.x, g->ray.ray_dir.y);
-	printf(ANSI_YELLOW"side_dist x %f - side_dist y %f\n"ANSI_RESET, g->ray.side_dist.x, g->ray.side_dist.y);
-	printf(ANSI_MAGENTA"delta_dist x %f - delta_dist y %f\n"ANSI_RESET, g->ray.delta_dist.x, g->ray.delta_dist.y);
-	printf("perpendicular_wall_dist %f\n", g->ray.perp_wall_dist);
-	printf("go x %i, go y %i\n\n", g->ray.go_x, g->ray.go_y);
-	printf("\n\nmlx width %d height %d\nleft hand w %d h %d x %d y %d\nright hand w %d h %d x %d y %d\n", g->mlx->width, g->mlx->height, g->hands[1]->width, g->hands[1]->height, g->hands[1]->instances->x, g->hands[1]->instances->y, g->hands[0]->width, g->hands[0]->height, g->hands[0]->instances->x, g->hands[0]->instances->y);
-	printf("looking at x_wall %d\n", g->player.look_x_wall);
-	// 	while (map->copy[y])
-	// {
-	// 	printf("copy[%zu]:	'%s'\n", y, map->copy[y]);
-	// 	y++;
-	// }
 }
