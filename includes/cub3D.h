@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 14:07:22 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:04:38 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -305,6 +305,13 @@ void	minimap_keyhook(t_game *g);
 void	my_mouse_button(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
 void	my_cursor(double xpos, double ypos, void *param);
+
+// src/hooks/vertical_line_draw.c
+void	draw_pixel_from_tex(t_game *g, unsigned int x, mlx_texture_t *tex,
+			int *wall_color);
+void	draw_wallcrack(t_game *g, int x, int wall_height);
+int		get_x_of_texture(t_game *game, uint32_t tex_width);
+void	select_wall_texture(t_game *g, mlx_texture_t **tex, int **wall_color);
 
 //src/textures.c
 int		*create_color_array(t_game *g, mlx_texture_t *tex);

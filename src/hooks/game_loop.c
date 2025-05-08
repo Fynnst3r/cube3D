@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 14:34:05 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 16:35:26 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	raycaster_loop(void *param)
 	x = 0;
 	while (x < S_WIDTH)
 	{
-		g->ray.tile_x = (int)g->player.pos.x; //update when new tile has been entered
+		g->ray.tile_x = (int)g->player.pos.x; //update when new tile has been enteredgit diff
 		g->ray.tile_y = (int)g->player.pos.y;
 		g->ray.camera_x = 2 * x / (double)S_WIDTH - 1; //x-coordinate in camera space
 		g->ray.ray_dir.x = g->player.dir.x + g->ray.plane.x * g->ray.camera_x;
@@ -125,165 +125,6 @@ void	ray_len_and_hitpoint(const t_player p, t_ray *r)
 		r->x_intersect = p.pos.x + r->perp_wall_dist * r->ray_dir.x;
 	}
 	r->x_intersect -= floor(r->x_intersect);
-}
-
-void	draw_wallcrack(t_game *g, int x, int wall_height)
-{
-	int				draw_start = -wall_height / 2 + S_HEIGHT / 2;
-	int				draw_end = wall_height + draw_start;
-	int	y;
-	int	y_tx;
-	double	y_proportion;
-	unsigned int	x_tx;
-	int	wall_color;
-
-	if (draw_end > S_HEIGHT)
-		draw_end = S_HEIGHT - 1;
-	y_proportion = (((double) g->wallcrack->height / (double) wall_height));
-	y_tx = 0;
-	x_tx = 0;
-	y = draw_start;
-	if (draw_start < 0)
-		y = 0;
-	// printf("draw start %i y %i\n", draw_start, y);
-	while (y < draw_end + 1)
-	{
-		// printf(ANSI_MAGENTA"wallheight %i\ndrawstart %i\n x %i\n y %i\n"ANSI_RESET, wall_height, draw_start, x, y);
-		if ((y_tx + 3) <= (int)(g->wallcrack->width * g->wallcrack->height * 4)
-			&& g->wallcrack->pixels[y_tx + 3] != 0)
-		{
-			wall_color = get_rgba(g->wallcrack->pixels[y_tx], g->wallcrack->pixels[y_tx + 1], 
-					g->wallcrack->pixels[y_tx + 2], g->wallcrack->pixels[y_tx + 3]);
-			mlx_put_pixel(g->bg, x, y, wall_color);
-		}
-		y++;
-		y_tx = round((y - draw_start) * y_proportion);
-		if (y_tx >= (int)g->wallcrack->height)
-			y_tx = g->wallcrack->height - 1;
-		y_tx *= g->wallcrack->width;
-		x_tx = round(g->ray.x_intersect * g->wallcrack->width);
-		if ((g->ray.hit_x_wall && g->ray.ray_dir.x < 0)
-			|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
-			x_tx = round((1 - g->ray.x_intersect) * g->wallcrack->width);
-		else
-			x_tx = round(g->ray.x_intersect * g->wallcrack->width);
-		if (x_tx >= g->wallcrack->width)
-			x_tx = g->wallcrack->width - 1;
-		y_tx += x_tx;
-		y_tx *= 4;
-	}
-}
-
-static void	select_wall_texture(t_game *g, mlx_texture_t **tex, int **wall_color)
-{
-	if (g->ray.hit_x_wall)
-	{
-		if (g->ray.ray_dir.x > 0)
-		{
-			*tex = g->textures.ea_tex;
-			*wall_color = g->textures.color_ea;
-		}
-		else
-		{
-			*tex = g->textures.we_tex;
-			*wall_color = g->textures.color_we;
-		}
-		return ;
-	}
-	if (g->ray.ray_dir.y > 0)
-	{
-		*tex = g->textures.so_tex;
-		*wall_color = g->textures.color_so;
-	}
-	else
-	{
-		*tex = g->textures.no_tex;
-		*wall_color = g->textures.color_no;
-	}
-}
-int	get_x_of_texture(t_game *game, mlx_texture_t *tex)
-{
-	unsigned int x_tex;
-
-	x_tex = round(game->ray.x_intersect * tex->width);
-	if ((game->ray.hit_x_wall && game->ray.ray_dir.x < 0)
-		|| (!game->ray.hit_x_wall && game->ray.ray_dir.y > 0))
-		x_tex = round((1 - game->ray.x_intersect) * tex->width);
-	else
-		x_tex = round(game->ray.x_intersect * tex->width);
-	if (x_tex >= tex->width)
-		x_tex = tex->width - 1;
-	return (x_tex);
-}
-
-static void	draw_pixel_from_tex(t_game *g, unsigned int x, mlx_texture_t *tex, int *wall_color)
-{
-	int				y_tex;
-	unsigned int	x_tex;
-	int				y;
-	double			y_proportion;
-
-	y_tex = 0;
-	y = g->ray.draw_start;
-	if (g->ray.draw_start < 0)
-		y = 0;
-	y_proportion = (((double) tex->height / (double) g->ray.wall_height));
-	while (y < g->ray.draw_end + 1)
-	{
-		if ( y_tex >= 0 && (y_tex) < (int)(tex->width * tex->height))
-			mlx_put_pixel(g->bg, x, y, wall_color[y_tex]);
-		y++;
-		y_tex = round((y - g->ray.draw_start) * y_proportion);
-		if (y_tex >= (int)tex->height)
-			y_tex = tex->height - 1;
-		y_tex *= tex->width;
-		x_tex = get_x_of_texture(g, tex);
-		// x_tex = round(g->ray.x_intersect * tex->width);
-		// if ((g->ray.hit_x_wall && g->ray.ray_dir.x < 0)
-		// 	|| (!g->ray.hit_x_wall && g->ray.ray_dir.y > 0))
-		// 	x_tex = round((1 - g->ray.x_intersect) * tex->width);
-		// else
-		// 	x_tex = round(g->ray.x_intersect * tex->width);
-		// if (x_tex >= tex->width)
-		// 	x_tex = tex->width - 1;
-		y_tex += x_tex;
-	}
-}
-
-void	draw_vertical_line(t_game *g, int x)
-{
-	// int				wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
-	int				*wall_color;
-	int				y;
-
-	mlx_texture_t	*tex;
-
-	g->ray.wall_height = (int)(S_HEIGHT / g->ray.perp_wall_dist);
-	g->ray.draw_start = -g->ray.wall_height / 2 + S_HEIGHT / 2;
-	g->ray.draw_end = g->ray.wall_height + g->ray.draw_start;
-	wall_color = NULL;
-	tex = NULL;
-	if (g->ray.draw_end > S_HEIGHT)
-	g->ray.draw_end = S_HEIGHT - 1;
-	y = 0;
-	while (y < g->ray.draw_start)
-	{
-		mlx_put_pixel(g->bg, x, y, g->map.ceiling_color);
-		y++;
-	}
-	select_wall_texture(g, &tex, &wall_color);
-	draw_pixel_from_tex(g, x, tex, wall_color);
-	if (g->map.tiles[g->ray.tile_y][g->ray.tile_x] == '2'
-		|| g->map.tiles[g->ray.tile_y][g->ray.tile_x] == 'd')
-		draw_wallcrack(g, x, g->ray.wall_height);
-	y = g->ray.draw_end + 1;	
-	while (y < S_HEIGHT)
-	{
-		mlx_put_pixel(g->bg, x, y, g->map.floor_color);
-		y++;
-	}
-	if (g->player.punch)
-		punch(g);
 }
 
 //prints various info of the state of the ray for debug

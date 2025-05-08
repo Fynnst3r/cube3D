@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 09:36:41 by nsloniow          #+#    #+#             */
-/*   Updated: 2025/05/08 14:00:49 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/08 15:05:46 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,8 @@ void	mini_img_for_resize_factor(t_game *game,
 				* MINI_UNITS_PER_TILE);
 	height_width->height = MINI_UNITS_PER_TILE * game->mini_resize_factor;
 	height_width->width = MINI_UNITS_PER_TILE * game->mini_resize_factor;
+	game->mini_resize_factor = (double)height_width->height
+		/ MINI_UNITS_PER_TILE;
 	game->minimap = mlx_new_image(game->mlx,
 			game->map.max_x * height_width->width,
 			game->map.max_y * height_width->height);

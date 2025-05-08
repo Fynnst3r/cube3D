@@ -20,6 +20,7 @@ SRCS =  src/main.c\
 		src/hooks/move_player.c \
 		src/hooks/keyhook.c \
 		src/hooks/mousehook.c \
+		src/hooks/vertical_line_draw.c \
 		src/error/error.c \
 		garbage_collector/garbage_start.c \
 		garbage_collector/ft_malloc.c \
