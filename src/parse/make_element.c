@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_element.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:06:01 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/24 15:05:33 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:26:47 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,8 +74,13 @@ int	load_texture(t_textures *t, char *path, int dir)
 int	make_texture(t_game *g, char *scene_line, int curr_element, size_t l)
 {
 	char	*tex_path;
+	int		fd;
 
 	tex_path = get_tex_path(scene_line, l);
+	fd = open(tex_path, O_RDONLY);
+	if (fd < 0)
+		ft_error("Path or file for texture not found.", 42, g);
+	close(fd);
 	if (load_texture(&g->textures, tex_path, curr_element))
 		return (1);
 	return (0);

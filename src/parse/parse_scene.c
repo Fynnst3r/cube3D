@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:43:30 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/12 12:37:22 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/12 13:33:08 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,13 @@ void	scan_elements(t_game *game, char **raw_scene)
 	ft_free_dp(raw_scene);
 	if (!recieved_all_elements(game))
 		parse_error(&game->map, &game->textures,
-			"Missing a scene element", NULL);
+			"Missing a scene element.", NULL);
 }
 
 void	parse_scene(t_game *game, int ac, char **av)
 {
 	char	**raw_scene;
+	int		fd;
 
 	raw_scene = NULL;
 	if (ac != 2)
@@ -98,6 +99,10 @@ void	parse_scene(t_game *game, int ac, char **av)
 		|| ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
 		parse_error(NULL, NULL,
 			"File name too short or extension is not '.cub'.", NULL);
+	fd = open(av[1], O_RDONLY);
+	if (fd < 0)
+		ft_error("Path or file not found.", 42, game);
+	close(fd);
 	raw_scene = read_scenefile(av[1]);
 	if (!raw_scene)
 		parse_error(NULL, NULL, "Error\nNo Scene", NULL);
