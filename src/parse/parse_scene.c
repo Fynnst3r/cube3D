@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   parse_scene.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:43:30 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/24 14:41:47 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:37:22 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
+
+int		handle_element(t_game *g, char *scene_line,
+			int curr_elem, size_t l);
+void	parse_scene(t_game *game, int ac, char **av);
+void	scan_elements(t_game *game, char **raw_scene);
+int		which_element(const char *line, size_t *l);
 
 int	which_element(const char *line, size_t *l)
 {
@@ -88,6 +94,10 @@ void	parse_scene(t_game *game, int ac, char **av)
 	if (ac != 2)
 		parse_error(NULL, NULL,
 			"No map or too many specified (e.g maps/[name].cub)", NULL);
+	if (ft_strlen(av[1]) < 5
+		|| ft_strncmp(av[1] + ft_strlen(av[1]) - 4, ".cub", 4) != 0)
+		parse_error(NULL, NULL,
+			"File name too short or extension is not '.cub'.", NULL);
 	raw_scene = read_scenefile(av[1]);
 	if (!raw_scene)
 		parse_error(NULL, NULL, "Error\nNo Scene", NULL);

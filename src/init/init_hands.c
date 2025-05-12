@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 18:18:09 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 15:24:21 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:28:01 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,6 @@ void	init_hands(t_game *g)
 	place_hands(g);
 	if (!g->textures.wallcrack)
 	{
-		printf("%s %d xd\n", __FILE__, __LINE__);
 		g->textures.wallcrack = mlx_load_png("./textures/wallcrack.png");
 		if (!g->textures.wallcrack)
 			ft_error("Texture ./textures/wallcrack.png failed to load!", 12, g);

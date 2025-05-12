@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/24 14:40:16 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/12 12:33:39 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,17 @@
 void	ft_error(char *msg, int errcode, t_game	*game)
 {
 	if (msg)
-		printf("Error\n%s\nErrorcode: %d\n", msg, errcode);
-	else if (mlx_errno != 0)
-		printf("MLX ERROR: %s\n", mlx_strerror(mlx_errno));
+	{
+		if (*msg == 'G')
+			printf("\n%s\n", msg);
+		else
+			printf("Error\n%s\nErrorcode: %d\n", msg, errcode);
+	}
+	else
+	{
+		if (mlx_errno != 0)
+			printf("MLX ERROR: %s\n", mlx_strerror(mlx_errno));
+	}
 	delete_textures(&game->textures);
 	if (game)
 	{
