@@ -6,13 +6,17 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 16:46:47 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:45:19 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
 
 static void	set_ray_delta_distance(t_game *game);
+void		raycaster_loop(void *param);
+void		step_which_side(t_game *g);
+void		shoot_ray(t_game *g);
+void		ray_len_and_hitpoint(const t_player p, t_ray *r);
 
 static void	set_ray_delta_distance(t_game *game)
 {

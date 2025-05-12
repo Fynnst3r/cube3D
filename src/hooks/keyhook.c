@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   keyhook.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 13:16:57 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/23 18:00:27 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/12 09:47:17 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
+
+static void	set_speeds(mlx_t *mlx, double *mv_speed, double *rt_speed);
+void		movement_keyhook(t_game *g);
+void		hands_keyhook(t_game *g);
+void		minimap_keyhook(t_game *g);
+void		my_keyhook(mlx_key_data_t keydata, void *param);
 
 // movement is much smoother when putting these keys in to the main loop
 static void	set_speeds(mlx_t *mlx, double *mv_speed, double *rt_speed)

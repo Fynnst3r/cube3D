@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/08 16:47:40 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/12 10:51:42 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,6 @@
 # ifndef MINI
 #  define MINI_RESIZE_FACTOR 2
 #  define MINI_UNITS_PER_TILE 10
-// #  define R 111
-// #  define G 11
-// #  define B 11
-// #  define A 255
 #  define R 233
 #  define G 166
 #  define B 0
@@ -56,19 +52,46 @@
 // the smaller the more lines are drawn, which affects performance but has no 
 // non set pixels
 #  define ANGLE_SPREAD 0.001
-// #  define Lines_FOR_CONE 50
 #  define MINI_RAY_LENGRH 1
 #  define MINI_LINE_HEIGHT 1
 #  define MINI_LINE_WIDTH 2
 # endif
 
-# include <stdio.h>
 # include <fcntl.h>
 # include <math.h>
-# include "../libft/libft.h"
-# include "garbage_collector.h"
+# include <stdio.h>
 # include "colors.h"
+# include "garbage_collector.h"
+# include "../libft/libft.h"
 # include "../MLX42/include/MLX42/MLX42.h"
+
+// changing to double because math librarys are using double on iOS
+typedef struct coordinates
+{
+	double	y;
+	double	x;
+}		t_cords;
+
+// mlx_put_pixel needs int32
+typedef struct coordinates_int32
+{
+	int32_t	y;
+	int32_t	x;
+}		t_cords_int32;
+
+// player coords resized for minimap FOV
+typedef struct miniplayer
+{
+	double			x;
+	double			y;
+}		t_miniplayer;
+
+// minimap tile size in pixel
+typedef struct height_width
+{
+	u_int32_t	height;
+	u_int32_t	width;
+}		t_height_width;
 
 enum e_scene_dir
 {
@@ -81,20 +104,6 @@ enum e_scene_dir
 	WC = 7,
 	UNIDENTIFIED = 8
 };
-
-// changing to double because math librarys are using double on iOS
-typedef struct coordinates
-{
-	double	y;
-	double	x;
-
-}		t_cords;
-
-typedef struct coordinates_int32
-{
-	int32_t	y;
-	int32_t	x;
-}		t_cords_int32;
 
 // holds player info like position and spawn rules
 typedef struct player
@@ -111,12 +120,6 @@ typedef struct player
 	bool	look_x_wall;
 }		t_player;
 
-typedef struct height_width
-{
-	u_int32_t	height;
-	u_int32_t	width;
-}				t_height_width;
-
 // holds info about map like size and each tiles content
 typedef struct map
 {
@@ -127,9 +130,10 @@ typedef struct map
 	size_t	map_scene_start;
 	bool	recieved_color1;
 	bool	recieved_color2;
-
+	// amount of max tiles in y and in x
 	size_t	max_y;
 	size_t	max_x;
+
 	t_cords	spawn;
 
 	int		floor_color;
@@ -170,6 +174,8 @@ typedef struct raycaster
 	int		go_y;
 	int		go_x;
 
+	// draw vertical line
+	// wall drawing
 	int		draw_start;
 	int		draw_end;
 	int		wall_height;
@@ -187,7 +193,7 @@ typedef struct textures
 	int				*color_so;
 	int				*color_we;
 	int				*color_ea;
-}					t_textures;
+}		t_textures;
 
 typedef struct master_struct
 {
@@ -204,56 +210,39 @@ typedef struct master_struct
 
 	bool			steal_mouse;
 
+	// pressed M then show mini
 	bool			show_minimap;
+	// map changed on built, crack and destroyed
 	bool			changed_map;
+	// when drawn and put into frame queue, do not draw again, use img->enable
 	bool			minimap_drawn;
 	double			mini_resize_factor;
 	mlx_image_t		*minimap;
-	int				*mini_color;
 	mlx_image_t		*minifov;
+	// coords end for fov cone line
 	double			fov_line_end_x;
 	double			fov_line_end_y;
-	mlx_image_t		*img;
-}					t_game;
-
-typedef struct miniplayer
-{
-	double			x;
-	double			y;
-}					t_miniplayer;
-
-// //src/main.c
-// int		get_rgba(int r, int g, int b, int a);
-
-//src/parse/parse_scene.c
-void	parse_scene(t_game *game, int ac, char **av);
-bool	ft_isspace(char c);
-//src/parse/parse_scene_utils.c
-char	**read_scenefile(char *av);
-bool	ft_isspace(char c);
-void	ft_skip_spaces(const char *str, size_t *index);
-bool	check_for_errors(const char *scene_line, size_t l);
-bool	recieved_all_elements(t_game *game);
-//src/parse/make_element.c
-int		make_texture(t_game *g, char *scene_line, int curr_element, size_t l);
-int		make_color(t_game *game, char *scene_line, int curr_col, size_t l);
-
-//src/parse/parse_map.c
-void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
-
-//src/init/init_hands.c
-void	init_hands(t_game *g);
-
-//src/init/init_ray.c
-void	init_raycaster(t_game *g);
+}		t_game;
 
 //src/error.c
-void	ft_error(char *msg, int errcode, t_game	*game);
-void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
-void	ft_free_dp(char **dp);
 void	delete_textures(t_textures *t);
+void	ft_error(char *msg, int errcode, t_game	*game);
+void	ft_free_dp(char **dp);
+void	parse_error(t_map *map, t_textures *tex, char *msg, char **raw_scene);
 
-//src/graphics/lines.c
+//src/graphics/hands.c
+void	build_wall(t_game *g);
+bool	change_map_element(t_game *g, char src, char dest, char **m);
+void	punch(t_game *g);
+void	reset_hands(t_game *g);
+void	sway_hands(t_game *g);
+
+//src/graphic/image.c
+int		get_rgba(int r, int g, int b, int a);
+void	pixset_yx_height_width(mlx_image_t *img, int colour,
+			t_cords_int32 xy, t_height_width height_width);
+
+	//src/graphics/lines.c
 void	draw_line_to_bottom(t_game *game, double start_x,
 			double start_y, double slope);
 void	draw_line_to_left(t_game *game, double start_x, double start_y,
@@ -280,31 +269,31 @@ void	mini_img_for_resize_factor(t_game *game,
 void	minimap_change(t_game *game);
 
 //src/hooks/game_loop.c
-void	raycaster_loop(void *param);
-void	step_which_side(t_game *g);
-void	shoot_ray(t_game *g);
-void	ray_len_and_hitpoint(const t_player p, t_ray *r);
 void	draw_vertical_line(t_game *g, int i);
 void	print_ray_status(t_game *g);
-
-//src/hooks/move_player.c
-void	walk_forward(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
-void	walk_backwards(char **tiles, t_cords *pos, t_cords *dir,
-			double mv_speed);
-void	strafe_left(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
-void	strafe_right(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
-void	rotate_player(t_cords *dir, t_cords *plane, double rt_speed);
+void	ray_len_and_hitpoint(const t_player p, t_ray *r);
+void	raycaster_loop(void *param);
+void	shoot_ray(t_game *g);
+void	step_which_side(t_game *g);
 
 //src/hooks/keyhook.c
-void	my_keyhook(mlx_key_data_t keydata, void *param);
-void	movement_keyhook(t_game *g);
 void	hands_keyhook(t_game *g);
 void	minimap_keyhook(t_game *g);
+void	movement_keyhook(t_game *g);
+void	my_keyhook(mlx_key_data_t keydata, void *param);
 
 //src/hooks/mousehook.c
+void	my_cursor(double xpos, double ypos, void *param);
 void	my_mouse_button(mouse_key_t button, action_t action,
 			modifier_key_t mods, void *param);
-void	my_cursor(double xpos, double ypos, void *param);
+
+//src/hooks/move_player.c
+void	walk_backwards(char **tiles, t_cords *pos, t_cords *dir,
+			double mv_speed);
+void	walk_forward(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
+void	rotate_player(t_cords *dir, t_cords *plane, double rt_speed);
+void	strafe_left(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
+void	strafe_right(char **tiles, t_cords *pos, t_cords *dir, double mv_speed);
 
 // src/hooks/vertical_line_draw.c
 void	draw_pixel_from_tex(t_game *g, unsigned int x, mlx_texture_t *tex,
@@ -314,21 +303,34 @@ int		get_x_of_texture(t_game *game, uint32_t tex_width);
 void	print_ray_status(t_game *g);
 void	select_wall_texture(t_game *g, mlx_texture_t **tex, int **wall_color);
 
+//src/init/init_hands.c
+void	init_hands(t_game *g);
+
+//src/init/init_ray.c
+void	init_raycaster(t_game *g);
+
+//src/main.c
+int		main(int ac, char **av);
+
+//src/parse/make_element.c
+int		make_color(t_game *game, char *scene_line, int curr_col, size_t l);
+int		make_texture(t_game *g, char *scene_line, int curr_element, size_t l);
+
+//src/parse/parse_map.c
+void	parse_map(t_map *map, t_player *player, t_textures *tex, char *path);
+
+//src/parse/parse_scene.c
+bool	ft_isspace(char c);
+void	parse_scene(t_game *game, int ac, char **av);
+
+//src/parse/parse_scene_utils.c
+bool	check_for_errors(const char *scene_line, size_t l);
+bool	ft_isspace(char c);
+void	ft_skip_spaces(const char *str, size_t *index);
+char	**read_scenefile(char *av);
+bool	recieved_all_elements(t_game *game);
+
 //src/textures.c
 int		*create_color_array(t_game *g, mlx_texture_t *tex);
 void	fill_texture_colors(t_game *game);
-
-//src/graphic/image.c
-unsigned int	get_rgba(int r, int g, int b, int a);
-void			pixset_yx_height_width(mlx_image_t *img, int colour,
-					t_cords_int32 xy, t_height_width height_width);
-
-//src/graphics/hands.c
-bool	change_map_element(t_game *g, char src, char dest, char **m);
-void	punch(t_game *g);
-void	reset_hands(t_game *g);
-void	sway_hands(t_game *g);
-void	build_wall(t_game *g);
-
-
 #endif
