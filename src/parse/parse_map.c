@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 15:40:53 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/24 12:57:04 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:35:02 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,14 @@ char	**crop_scene_to_map(char *path, size_t start)
 void	check_walled_map(t_map *map, t_textures *t, size_t y, size_t x)
 {
 	if (y > map->max_y - 1 || x > ft_strlen(map->copy[y]) - 1)
-		parse_error(map, t, "Map is not walled correctly1", NULL);
+		parse_error(map, t, "Map is missing outside walls.", NULL);
 	if (map->max_x <= x || map->max_y <= y || map->copy[y][x] == '-'
 		|| map->copy[y][x] == '1')
 		return ;
 	if (map->copy[y][x] == '0' || map->copy[y][x] == 'D')
 		map->copy[y][x] = '-';
 	else if (map->copy[y][x] != '1' || map->copy[y][x] == 0)
-		parse_error(map, t, "Map is not walled correctly2", NULL);
+		parse_error(map, t, "Map is missing outside walls.", NULL);
 	check_walled_map(map, t, y + 1, x);
 	check_walled_map(map, t, y - 1, x);
 	check_walled_map(map, t, y, x + 1);

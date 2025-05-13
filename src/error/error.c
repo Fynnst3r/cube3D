@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:34:13 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/12 12:33:39 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/13 16:34:03 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,10 @@ void	delete_textures(t_textures *t)
 	}
 	if (t->wallcrack)
 		mlx_delete_texture(t->wallcrack);
+	ft_free(t->color_no);
+	ft_free(t->color_ea);
+	ft_free(t->color_so);
+	ft_free(t->color_we);
 }
 
 void	ft_free_dp(char **dp)

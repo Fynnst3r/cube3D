@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 12:10:10 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/12 10:51:42 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:49:41 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@
 
 # ifndef S_WIDTH
 // #  define S_WIDTH 960
-// #  define S_WIDTH 1280
+#  define S_WIDTH 1280
 // #  define S_WIDTH 1600
-#  define S_WIDTH 1920
+// #  define S_WIDTH 1920
 # endif
 
 # ifndef S_HEIGHT
 // #  define S_HEIGHT 540
-// #  define S_HEIGHT 720
+#  define S_HEIGHT 720
 // #  define S_HEIGHT 900
-#  define S_HEIGHT 1080
+// #  define S_HEIGHT 1080
 # endif
 
 # ifndef COLORS
@@ -117,7 +117,6 @@ typedef struct player
 	bool	moving;
 	bool	punch;
 	bool	build;
-	bool	look_x_wall;
 }		t_player;
 
 // holds info about map like size and each tiles content
@@ -242,7 +241,7 @@ int		get_rgba(int r, int g, int b, int a);
 void	pixset_yx_height_width(mlx_image_t *img, int colour,
 			t_cords_int32 xy, t_height_width height_width);
 
-	//src/graphics/lines.c
+//src/graphics/lines.c
 void	draw_line_to_bottom(t_game *game, double start_x,
 			double start_y, double slope);
 void	draw_line_to_left(t_game *game, double start_x, double start_y,

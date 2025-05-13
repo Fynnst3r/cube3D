@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 19:21:51 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/12 09:49:01 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:49:52 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,4 @@ void	print_ray_status(t_game *g)
 		g->ray.delta_dist.x, g->ray.delta_dist.y);
 	printf("perpendicular_wall_dist %f\n", g->ray.perp_wall_dist);
 	printf("go x %i, go y %i\n\n", g->ray.go_x, g->ray.go_y);
-	printf("looking at x_wall %d\n", g->player.look_x_wall);
 }

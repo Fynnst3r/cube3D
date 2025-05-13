@@ -6,7 +6,7 @@
 /*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 16:43:31 by fforster          #+#    #+#             */
-/*   Updated: 2025/05/12 09:45:19 by nsloniow         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:55:07 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ void	raycaster_loop(void *param)
 		set_ray_delta_distance(g);
 		step_which_side(g);
 		shoot_ray(g);
-		if (x == S_WIDTH / 2)
-			g->player.look_x_wall = g->ray.hit_x_wall;
 		ray_len_and_hitpoint(g->player, &g->ray);
 		draw_vertical_line(g, x);
 		x++;
@@ -60,8 +58,6 @@ void	raycaster_loop(void *param)
 
 //calc next tile to go/step in to and the first side_dist (closest x/y wall)
 //if ray.dir.x/y is 0 it wont be used
-// for x
-// for y
 void	step_which_side(t_game *g)
 {
 	if (g->ray.ray_dir.x < 0)

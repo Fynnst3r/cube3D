@@ -1,15 +1,19 @@
 NAME	= cub3D
 CC		= cc
-# CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code
-CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -g -fsanitize=address
+CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code
+# CFLAGS	= -Wextra -Wall -Werror -Wunreachable-code -g -fsanitize=address
 
 LIBMLX	= ./MLX42
 HEADERS	= -I $(LIBMLX)/include
-# LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm 
-LIBS	= $(LIBMLX)/build/libmlx42.a -g -fsanitize=address -ldl -lglfw -pthread -lm 
+LIBS	= $(LIBMLX)/build/libmlx42.a -ldl -lglfw -pthread -lm 
+# LIBS	= $(LIBMLX)/build/libmlx42.a -g -fsanitize=address -ldl -lglfw -pthread -lm 
 LIBMLXA = $(LIBMLX)/build/libmlx42.a
 
-SRCS =  src/main.c\
+SRCS =	garbage_collector/free.c \
+		garbage_collector/ft_malloc.c \
+		garbage_collector/garbage_start.c \
+  		src/main.c\
+		src/error/error.c \
 		src/parse/parse_scene.c\
 		src/parse/parse_scene_utils.c\
 		src/parse/parse_map.c\
@@ -21,17 +25,13 @@ SRCS =  src/main.c\
 		src/hooks/keyhook.c \
 		src/hooks/mousehook.c \
 		src/hooks/vertical_line_draw.c \
-		src/error/error.c \
-		garbage_collector/garbage_start.c \
-		garbage_collector/ft_malloc.c \
-		garbage_collector/free.c \
+		src/graphic/hands.c \
+		src/graphic/hands_anim.c \
 		src/graphic/image.c \
 		src/graphic/lines.c \
 		src/graphic/minifov.c \
 		src/graphic/minimap.c \
 		src/graphic/textures.c \
-		src/graphic/hands.c \
-		src/graphic/hands_anim.c \
 
 
 OBJS = $(SRCS:.c=.o)

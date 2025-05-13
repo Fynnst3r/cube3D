@@ -3,39 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   hands.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fforster <fforster@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nsloniow <nsloniow@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 15:55:02 by fforster          #+#    #+#             */
-/*   Updated: 2025/04/24 15:22:03 by fforster         ###   ########.fr       */
+/*   Updated: 2025/05/13 15:11:06 by nsloniow         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../includes/cub3D.h"
 
+//(dir.x > -0.5 && dir.x < 0.5 && dir.y < -0.5) // NORTH
+//(dir.y > -0.5 && dir.y < 0.5 && dir.x > 0.5) // EAST
+//(dir.x > -0.5 && dir.x < 0.5 && dir.y > 0.5) // SOUTH
+//(dir.y > -0.5 && dir.y < 0.5 && dir.x < -0.5) // WEST
+
 bool	change_map_element(t_game *g, char src, char dest, char **m)
 {
-	if (g->player.look_x_wall)
-	{
-		if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] == src
-			&& g->player.dir.x > 0)
-			m[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] = dest;
-		else if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] == src
-				&& g->player.dir.x < 0)
-			m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] = dest;
-		else
-			return (false);
-	}
+	if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] == src
+		&& g->player.dir.y >= -0.5 && g->player.dir.y <= 0.5
+		&& g->player.dir.x >= 0.5)
+		m[(size_t)g->player.pos.y][(size_t)g->player.pos.x + 1] = dest;
+	else if (m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] == src
+			&& g->player.dir.y >= -0.5 && g->player.dir.y <= 0.5
+			&& g->player.dir.x <= -0.5)
+		m[(size_t)g->player.pos.y][(size_t)g->player.pos.x - 1] = dest;
+	else if (m[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] == src
+		&& g->player.dir.x >= -0.5 && g->player.dir.x <= 0.5
+		&& g->player.dir.y >= 0.5)
+		m[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] = dest;
+	else if (m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] == src
+		&& g->player.dir.x >= -0.5 && g->player.dir.x <= 0.5
+		&& g->player.dir.y <= -0.5)
+		m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] = dest;
 	else
-	{
-		if (m[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] == src
-			&& g->player.dir.y > 0)
-			m[(size_t)g->player.pos.y + 1][(size_t)g->player.pos.x] = dest;
-		else if (m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] == src
-			&& g->player.dir.y < 0)
-			m[(size_t)g->player.pos.y - 1][(size_t)g->player.pos.x] = dest;
-		else
-			return (false);
-	}
+		return (false);
 	g->changed_map = true;
 	return (true);
 }
